@@ -1,0 +1,443 @@
+<!-- Main Header Groups -->
+
+<div class="main-header">
+  <div class="content-bg-wrap bg-group"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col col-lg-8 m-auto col-md-8 col-sm-12 col-12">
+        <div class="main-header-content">
+          <h1>Manage your Friend Groups</h1>
+          <p>Welcome to your friends groups! Do you wanna know what your close friends have been up to? Groups
+            will let you easily manage your friends and put the into categories so when you enter you’ll only
+            see a newsfeed of those friends that you placed inside the group. Just click on the plus button below and start now!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <img class="img-bottom" src="assets/img/group-bottom.png" alt="friends">
+</div>
+
+<!-- ... end Main Header Groups -->
+
+<!-- Main Content Groups -->
+
+<div class="container">
+  <div class="row">
+    <div class="col col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12">
+
+      <!-- Friend Item -->
+
+      <div style="position: initial" class="friend-item friend-groups create-group" data-mh="friend-groups-item">
+
+        <a href="#" class="  full-block" data-toggle="modal" data-target="#create-friend-group-1"></a>
+        <div class="content">
+
+          <a href="#" class="  btn btn-control bg-blue" data-toggle="modal" data-target="#create-friend-group-1">
+            <svg class="olymp-plus-icon"><use xlink:href="#olymp-plus-icon"></use></svg>
+          </a>
+
+          <div class="author-content">
+            <a href="#" class="h5 author-name">Ouvrir un groupe de discussion</a>
+            <div class="country">ou rejoindre {{loadedRooms?.length}} disponible</div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ... end Friend Item -->		</div>
+
+
+    <div *ngFor="let r of loadedRooms" class="col col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12">
+      <div class="ui-block" data-mh="friend-groups-item">
+
+        <!-- Friend Item -->
+
+        <div class="friend-item friend-groups">
+
+          <div class="friend-item-content">
+
+
+            <div class="friend-avatar">
+              <div class="author-thumb">
+                <ngx-avatar size="120" [name]="r?.name"></ngx-avatar>
+              </div>
+              <div class="author-content">
+                <a href="#" class="h5 author-name">{{r?.name |titlecase}}</a>
+                <div class="country">{{r?.users.length}} Utilisateurs dans le groupe</div>
+              </div>
+            </div>
+
+            <ul class="friends-harmonic">
+              <li *ngFor="let u of r?.users">
+                <a href="#">
+                  <img [src]="u?.image" alt="friend">
+                </a>
+              </li>
+
+              <li>
+                <a href="#" class="all-users bg-blue">+15</a>
+              </li>
+            </ul>
+
+            <div class="control-block-button">
+              <a href="#" class="  btn btn-control bg-blue" data-toggle="modal" data-target="#create-friend-group-add-friends">
+                <svg class="olymp-happy-faces-icon"><use xlink:href="#olymp-happy-faces-icon"></use></svg>
+              </a>
+
+
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ... end Friend Item -->			</div>
+    </div>
+
+
+  </div>
+</div>
+
+<!-- ... end Main Content Groups -->
+
+
+
+<!-- Window-popup Create Friends Group -->
+
+<div class="modal fade" id="create-friend-group-1" tabindex="-1" role="dialog" aria-labelledby="create-friend-group-1" aria-hidden="true">
+  <div class="modal-dialog window-popup create-friend-group create-friend-group-1" role="document">
+    <div class="modal-content">
+      <a href="#" class="close icon-close" data-dismiss="modal" aria-label="Close">
+        <svg class="olymp-close-icon"><use xlink:href="#olymp-close-icon"></use></svg>
+      </a>
+      <div class="modal-header">
+        <h6 class="title">Créer un groupe de discussion</h6>
+      </div>
+
+      <div class="modal-body">
+        <form class="form-group label-floating">
+          <div class="form-group label-floating">
+          <label class="control-label">Nom du groupe</label>
+          <input class="form-control" placeholder="" value="Highschool Friends" type="text">
+          </div>
+
+          <div class="form-group label-floating">
+          <label class="control-label">Sujet</label>
+          <input class="form-control" placeholder="" value="Highschool Friends" type="text">
+          </div>
+
+            <label>Your first ng-select</label>
+            <ng-select [items]="cities"
+                       name="name"
+                       bindLabel="name"
+                       placeholder="Select city"
+                       [(ngModel)]="selectedCity">
+            </ng-select>
+            <p>
+              Selected city: {{selectedCity | json}}
+            </p>
+            <hr />
+
+
+
+        </form>
+
+
+
+        <a href="#" class="btn btn-blue btn-lg full-width">Créer</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ... end Window-popup Create Friends Group -->
+
+
+<!-- Window-popup Create Friends Group Add Friends -->
+
+<div class="modal fade" id="create-friend-group-add-friends" tabindex="-1" role="dialog" aria-labelledby="create-friend-group-add-friends" aria-hidden="true">
+  <div class="modal-dialog window-popup create-friend-group create-friend-group-add-friends" role="document">
+    <div class="modal-content">
+      <a href="#" class="close icon-close" data-dismiss="modal" aria-label="Close">
+        <svg class="olymp-close-icon"><use xlink:href="#olymp-close-icon"></use></svg>
+      </a>
+
+      <div class="modal-header">
+        <h6 class="title">Add Friends to “Freelance Clients” Group</h6>
+      </div>
+
+      <div class="modal-body">
+        <form class="form-group label-floating is-select">
+
+          <select class="selectpicker form-control style-2 show-tick" multiple data-max-options="2" data-live-search="true">
+            <option title="Green Goo Rock" data-content='<div class="inline-items">
+										<div class="author-thumb">
+											<img src="assets/img/avatar52-sm.jpg" alt="author">
+										</div>
+											<div class="h6 author-title">Green Goo Rock</div>
+
+										</div>'>Green Goo Rock
+            </option>
+
+            <option title="Mathilda Brinker" data-content='<div class="inline-items">
+											<div class="author-thumb">
+												<img src="assets/img/avatar74-sm.jpg" alt="author">
+											</div>
+											<div class="h6 author-title">Mathilda Brinker</div>
+										</div>'>Mathilda Brinker
+            </option>
+
+            <option title="Marina Valentine" data-content='<div class="inline-items">
+											<div class="author-thumb">
+												<img src="assets/img/avatar48-sm.jpg" alt="author">
+											</div>
+											<div class="h6 author-title">Marina Valentine</div>
+										</div>'>Marina Valentine
+            </option>
+
+            <option title="Dave Marinara" data-content='<div class="inline-items">
+											<div class="author-thumb">
+												<img src="assets/img/avatar75-sm.jpg" alt="author">
+											</div>
+											<div class="h6 author-title">Dave Marinara</div>
+										</div>'>Dave Marinara
+            </option>
+
+            <option title="Rachel Howlett" data-content='<div class="inline-items">
+											<div class="author-thumb">
+												<img src="assets/img/avatar76-sm.jpg" alt="author">
+											</div>
+											<div class="h6 author-title">Rachel Howlett</div>
+										</div>'>Rachel Howlett
+            </option>
+
+          </select>
+        </form>
+
+        <a href="#" class="btn btn-blue btn-lg full-width">Save Changes</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ... end Window-popup Create Friends Group Add Friends -->
+
+
+
+<a class="back-to-top" href="#">
+  <img src="assets/svg-icons/back-to-top.svg" alt="arrow" class="back-icon">
+</a>
+
+
+
+
+<!-- Window-popup-CHAT for responsive min-width: 768px -->
+
+<div class="ui-block popup-chat popup-chat-responsive" tabindex="-1" role="dialog" aria-labelledby="popup-chat-responsive" aria-hidden="true">
+
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="icon-status online"></span>
+      <h6 class="title" >Chat</h6>
+      <div class="more">
+        <svg class="olymp-three-dots-icon"><use xlink:href="#olymp-three-dots-icon"></use></svg>
+        <svg class="olymp-little-delete js-chat-open"><use xlink:href="#olymp-little-delete"></use></svg>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="mCustomScrollbar">
+        <ul class="notification-list chat-message chat-message-field">
+          <li>
+            <div class="author-thumb">
+              <img src="assets/img/avatar14-sm.jpg" alt="author" class="mCS_img_loaded">
+            </div>
+            <div class="notification-event">
+              <span class="chat-message-item">Hi James! Please remember to buy the food for tomorrow! I’m gonna be handling the gifts and Jake’s gonna get the drinks</span>
+              <span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">Yesterday at 8:10pm</time></span>
+            </div>
+          </li>
+
+          <li>
+            <div class="author-thumb">
+              <img src="assets/img/author-page.jpg" alt="author" class="mCS_img_loaded">
+            </div>
+            <div class="notification-event">
+              <span class="chat-message-item">Don’t worry Mathilda!</span>
+              <span class="chat-message-item">I already bought everything</span>
+              <span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">Yesterday at 8:29pm</time></span>
+            </div>
+          </li>
+
+          <li>
+            <div class="author-thumb">
+              <img src="assets/img/avatar14-sm.jpg" alt="author" class="mCS_img_loaded">
+            </div>
+            <div class="notification-event">
+              <span class="chat-message-item">Hi James! Please remember to buy the food for tomorrow! I’m gonna be handling the gifts and Jake’s gonna get the drinks</span>
+              <span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">Yesterday at 8:10pm</time></span>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <form class="need-validation">
+
+        <div class="form-group">
+          <textarea class="form-control" placeholder="Press enter to post..."></textarea>
+          <div class="add-options-message">
+            <a href="#" class="options-message">
+              <svg class="olymp-computer-icon"><use xlink:href="#olymp-computer-icon"></use></svg>
+            </a>
+            <div class="options-message smile-block">
+
+              <svg class="olymp-happy-sticker-icon"><use xlink:href="#olymp-happy-sticker-icon"></use></svg>
+
+              <ul class="more-dropdown more-with-triangle triangle-bottom-right">
+                <li>
+                  <a href="#">
+                    <img src="assets/img/icon-chat1.png" alt="icon">
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <img src="assets/img/icon-chat2.png" alt="icon">
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <img src="assets/img/icon-chat3.png" alt="icon">
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <img src="assets/img/icon-chat4.png" alt="icon">
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <img src="assets/img/icon-chat5.png" alt="icon">
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <img src="assets/img/icon-chat6.png" alt="icon">
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <img src="assets/img/icon-chat7.png" alt="icon">
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <img src="assets/img/icon-chat8.png" alt="icon">
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <img src="assets/img/icon-chat9.png" alt="icon">
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <img src="assets/img/icon-chat10.png" alt="icon">
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <img src="assets/img/icon-chat11.png" alt="icon">
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <img src="assets/img/icon-chat12.png" alt="icon">
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <img src="assets/img/icon-chat13.png" alt="icon">
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <img src="assets/img/icon-chat14.png" alt="icon">
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <img src="assets/img/icon-chat15.png" alt="icon">
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <img src="assets/img/icon-chat16.png" alt="icon">
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <img src="assets/img/icon-chat17.png" alt="icon">
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <img src="assets/img/icon-chat18.png" alt="icon">
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <img src="assets/img/icon-chat19.png" alt="icon">
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <img src="assets/img/icon-chat20.png" alt="icon">
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <img src="assets/img/icon-chat21.png" alt="icon">
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <img src="assets/img/icon-chat22.png" alt="icon">
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <img src="assets/img/icon-chat23.png" alt="icon">
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <img src="assets/img/icon-chat24.png" alt="icon">
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <img src="assets/img/icon-chat25.png" alt="icon">
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <img src="assets/img/icon-chat26.png" alt="icon">
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <img src="assets/img/icon-chat27.png" alt="icon">
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+</div>
+
+<!-- ... end Window-popup-CHAT for responsive min-width: 768px -->
