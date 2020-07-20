@@ -1,37 +1,68 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewEncapsulation} from '@angular/core';
 import Room from '../../../models/Room';
 import {RoomService} from '../../../services/room.service';
 import User from '../../../models/User';
 import {UserService} from '../../../services/user.service';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
+import {TitleService} from '../../../services/title.service';
 
 
 @Component({
   selector: 'app-rooms',
   templateUrl: './rooms.component.html',
-  styleUrls: ['./rooms.component.css']
+  styleUrls: ['./rooms.component.css'],
+  encapsulation: ViewEncapsulation.None
+
 })
-export class RoomsComponent implements OnInit {
+export class RoomsComponent implements OnInit, AfterViewInit {
   loadedRooms: Room[];
-  selectedUsers: User[];
+  selectedUsers: any;
   loadedUsers: User[];
-  selectedCity: any;
-  cities = [
-    {id: 1, name: 'Vilnius'},
-    {id: 2, name: 'Kaunas'},
-    {id: 3, name: 'Pavilnys', disabled: true},
-    {id: 4, name: 'Pabradė'},
-    {id: 5, name: 'Klaipėda'}
-  ];
+  roomCreated = false;
+  toastSucces = 'alert alert-success d-none';
+  roomFormGroup: FormGroup;
+  formError: 'form-group label-floating';
+
 
   constructor(
     private roomService: RoomService,
-    private userService: UserService
+    private userService: UserService,
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private titleService: TitleService
   ) {
+  }
+  ngAfterViewInit(): void {
+
+    this.loadScript('assets/js/main.js');
+    this.loadScript('assets/js/libs-init/libs-init.js');
   }
 
   ngOnInit() {
     this.loadRooms();
     this.loadUsers();
+    this.roomFormValidate();
+    this.setTitle();
+  }
+  public loadScript(url) {
+    const node = document.createElement('script');
+    node.src = url;
+    node.type = 'text/javascript';
+    document.getElementsByTagName('head')[0].appendChild(node);
+  }
+
+  roomFormValidate() {
+    this.roomFormGroup = this.formBuilder.group({
+      name: ['', Validators.required],
+      subject: ['', Validators.required],
+      users: [''],
+    });
+
+  }
+
+  setTitle() {
+    this.titleService.setTitle('Groupes des discussion');
   }
 
   loadRooms() {
@@ -47,6 +78,53 @@ export class RoomsComponent implements OnInit {
 
   }
 
+  showSucces() {
+    this.toastSucces = 'alert alert-success animated bounceInDown';
+    setTimeout(() => {
+
+      this.toastSucces = 'alert alert-success animated bounceOutUp';
+      setTimeout(() => {
+        // @ts-ignore
+        $('#create-friend-group-1').modal('toggle');
+        this.toastSucces = 'alert alert-succes d-none';
+        this.roomCreated = false;
+      }, 400);
+    }, 1500);
+
+
+  }
+
+  addRoom() {
+    if (this.roomFormGroup.valid) {
+      this.roomCreated = true;
+
+      const {name, subject} = this.roomFormGroup.value;
+      const usertoPersist: User[] = [];
+      this.selectedUsers.forEach(value => {
+        const u = new User();
+        u.id = value;
+        usertoPersist.push(u);
+      });
+      const dataRoom = {
+        name,
+        subject,
+        users: usertoPersist
+      };
+      this.roomService.addRoom(dataRoom).subscribe(room => {
+
+        this.showSucces();
+        this.loadRooms();
+
+      });
+    }
+  }
+
+
+  joinRoom(id: number) {
+    this.router.navigate(['rooms', id]);
+
+
+  }
+
+
 }
-
-

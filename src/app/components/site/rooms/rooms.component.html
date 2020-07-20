@@ -9,7 +9,8 @@
           <h1>Manage your Friend Groups</h1>
           <p>Welcome to your friends groups! Do you wanna know what your close friends have been up to? Groups
             will let you easily manage your friends and put the into categories so when you enter you’ll only
-            see a newsfeed of those friends that you placed inside the group. Just click on the plus button below and start now!</p>
+            see a newsfeed of those friends that you placed inside the group. Just click on the plus button below and
+            start now!</p>
         </div>
       </div>
     </div>
@@ -34,7 +35,9 @@
         <div class="content">
 
           <a href="#" class="  btn btn-control bg-blue" data-toggle="modal" data-target="#create-friend-group-1">
-            <svg class="olymp-plus-icon"><use xlink:href="#olymp-plus-icon"></use></svg>
+            <svg class="olymp-plus-icon">
+              <use xlink:href="#olymp-plus-icon"></use>
+            </svg>
           </a>
 
           <div class="author-content">
@@ -46,7 +49,7 @@
 
       </div>
 
-      <!-- ... end Friend Item -->		</div>
+      <!-- ... end Friend Item -->    </div>
 
 
     <div *ngFor="let r of loadedRooms" class="col col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12">
@@ -82,8 +85,11 @@
             </ul>
 
             <div class="control-block-button">
-              <a href="#" class="  btn btn-control bg-blue" data-toggle="modal" data-target="#create-friend-group-add-friends">
-                <svg class="olymp-happy-faces-icon"><use xlink:href="#olymp-happy-faces-icon"></use></svg>
+              <a (click)="joinRoom(r.id)" class="  btn btn-control bg-blue hover-color" data-toggle="modal"
+                 data-target="#create-friend-group-add-friends">
+                <svg class="olymp-happy-faces-icon">
+                  <use xlink:href="#olymp-happy-faces-icon"></use>
+                </svg>
               </a>
 
 
@@ -92,7 +98,7 @@
           </div>
         </div>
 
-        <!-- ... end Friend Item -->			</div>
+        <!-- ... end Friend Item -->      </div>
     </div>
 
 
@@ -102,50 +108,72 @@
 <!-- ... end Main Content Groups -->
 
 
-
 <!-- Window-popup Create Friends Group -->
 
-<div class="modal fade" id="create-friend-group-1" tabindex="-1" role="dialog" aria-labelledby="create-friend-group-1" aria-hidden="true">
+<div class="modal fade" id="create-friend-group-1" tabindex="-1" role="dialog" aria-labelledby="create-friend-group-1"
+     aria-hidden="true">
   <div class="modal-dialog window-popup create-friend-group create-friend-group-1" role="document">
     <div class="modal-content">
       <a href="#" class="close icon-close" data-dismiss="modal" aria-label="Close">
-        <svg class="olymp-close-icon"><use xlink:href="#olymp-close-icon"></use></svg>
+        <svg class="olymp-close-icon">
+          <use xlink:href="#olymp-close-icon"></use>
+        </svg>
       </a>
       <div class="modal-header">
         <h6 class="title">Créer un groupe de discussion</h6>
       </div>
 
       <div class="modal-body">
-        <form class="form-group label-floating">
-          <div class="form-group label-floating">
-          <label class="control-label">Nom du groupe</label>
-          <input class="form-control" placeholder="" value="Highschool Friends" type="text">
+        <form [formGroup]="roomFormGroup" class="form-group label-floating">
+          <div [ngClass]=" roomFormGroup.get('name').invalid? 'form-group label-floating has-error ' : 'form-group label-floating' ">
+            <label class="control-label">Nom du groupe</label>
+            <input id="name" formControlName="name" class="form-control" placeholder="" value="Highschool Friends" type="text">
+          </div>
+
+          <div [ngClass]=" roomFormGroup.get('subject').invalid? 'form-group label-floating has-error ' : 'form-group label-floating' ">
+            <label class="control-label">Sujet</label>
+            <input formControlName="subject" class="form-control" placeholder="" value="Highschool Friends" type="text">
           </div>
 
           <div class="form-group label-floating">
-          <label class="control-label">Sujet</label>
-          <input class="form-control" placeholder="" value="Highschool Friends" type="text">
-          </div>
 
-            <label>Your first ng-select</label>
-            <ng-select [items]="cities"
-                       name="name"
-                       bindLabel="name"
-                       placeholder="Select city"
-                       [(ngModel)]="selectedCity">
+            <ng-select
+              formControlName="users"
+              [items]="loadedUsers"
+              [multiple]="true"
+
+              bindValue="id"
+              placeholder="Inviter des collaborateurs"
+              [(ngModel)]="selectedUsers">
+              <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                <div class="ng-value" *ngFor="let item of items | slice:0:2">
+                  <span class="ng-value-label"><img class="rounded" [src]="item.image" width="20px" height="20px"><span
+                    style="padding: 0.25em"> {{item.firstName}} {{item.lastName}} </span></span>
+                  <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                </div>
+                <div class="ng-value" *ngIf="items.length > 2">
+                  <span class="ng-value-label">{{items.length - 2}} autres...</span>
+                </div>
+              </ng-template>
+
+              <ng-template ng-option-tmp let-item="item">
+                <img class="rounded" [src]="item.image" width="20px" height="20px"> <span
+                style="padding: 0.25em">{{item.firstName}} {{item.lastName}}</span>
+              </ng-template>
             </ng-select>
-            <p>
-              Selected city: {{selectedCity | json}}
-            </p>
-            <hr />
 
-
+          </div>
 
         </form>
 
 
-
-        <a href="#" class="btn btn-blue btn-lg full-width">Créer</a>
+        <button [hidden]="roomCreated" [disabled]="roomFormGroup.invalid" class="btn btn-blue btn-lg full-width" (click)="addRoom()">
+          <span *ngIf="roomCreated" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          Créer le groupe
+        </button>
+        <div [ngClass]="toastSucces" role="alert">
+          Le groupe a été créer avec <b>succès</b>
+        </div>
       </div>
     </div>
   </div>
@@ -156,11 +184,14 @@
 
 <!-- Window-popup Create Friends Group Add Friends -->
 
-<div class="modal fade" id="create-friend-group-add-friends" tabindex="-1" role="dialog" aria-labelledby="create-friend-group-add-friends" aria-hidden="true">
+<div class="modal fade" id="create-friend-group-add-friends" tabindex="-1" role="dialog"
+     aria-labelledby="create-friend-group-add-friends" aria-hidden="true">
   <div class="modal-dialog window-popup create-friend-group create-friend-group-add-friends" role="document">
     <div class="modal-content">
       <a href="#" class="close icon-close" data-dismiss="modal" aria-label="Close">
-        <svg class="olymp-close-icon"><use xlink:href="#olymp-close-icon"></use></svg>
+        <svg class="olymp-close-icon">
+          <use xlink:href="#olymp-close-icon"></use>
+        </svg>
       </a>
 
       <div class="modal-header">
@@ -170,7 +201,8 @@
       <div class="modal-body">
         <form class="form-group label-floating is-select">
 
-          <select class="selectpicker form-control style-2 show-tick" multiple data-max-options="2" data-live-search="true">
+          <select class="selectpicker form-control style-2 show-tick" multiple data-max-options="2"
+                  data-live-search="true">
             <option title="Green Goo Rock" data-content='<div class="inline-items">
 										<div class="author-thumb">
 											<img src="assets/img/avatar52-sm.jpg" alt="author">
@@ -224,25 +256,27 @@
 <!-- ... end Window-popup Create Friends Group Add Friends -->
 
 
-
 <a class="back-to-top" href="#">
   <img src="assets/svg-icons/back-to-top.svg" alt="arrow" class="back-icon">
 </a>
 
 
-
-
 <!-- Window-popup-CHAT for responsive min-width: 768px -->
 
-<div class="ui-block popup-chat popup-chat-responsive" tabindex="-1" role="dialog" aria-labelledby="popup-chat-responsive" aria-hidden="true">
+<div class="ui-block popup-chat popup-chat-responsive" tabindex="-1" role="dialog"
+     aria-labelledby="popup-chat-responsive" aria-hidden="true">
 
   <div class="modal-content">
     <div class="modal-header">
       <span class="icon-status online"></span>
-      <h6 class="title" >Chat</h6>
+      <h6 class="title">Chat</h6>
       <div class="more">
-        <svg class="olymp-three-dots-icon"><use xlink:href="#olymp-three-dots-icon"></use></svg>
-        <svg class="olymp-little-delete js-chat-open"><use xlink:href="#olymp-little-delete"></use></svg>
+        <svg class="olymp-three-dots-icon">
+          <use xlink:href="#olymp-three-dots-icon"></use>
+        </svg>
+        <svg class="olymp-little-delete js-chat-open">
+          <use xlink:href="#olymp-little-delete"></use>
+        </svg>
       </div>
     </div>
     <div class="modal-body">
@@ -287,11 +321,15 @@
           <textarea class="form-control" placeholder="Press enter to post..."></textarea>
           <div class="add-options-message">
             <a href="#" class="options-message">
-              <svg class="olymp-computer-icon"><use xlink:href="#olymp-computer-icon"></use></svg>
+              <svg class="olymp-computer-icon">
+                <use xlink:href="#olymp-computer-icon"></use>
+              </svg>
             </a>
             <div class="options-message smile-block">
 
-              <svg class="olymp-happy-sticker-icon"><use xlink:href="#olymp-happy-sticker-icon"></use></svg>
+              <svg class="olymp-happy-sticker-icon">
+                <use xlink:href="#olymp-happy-sticker-icon"></use>
+              </svg>
 
               <ul class="more-dropdown more-with-triangle triangle-bottom-right">
                 <li>

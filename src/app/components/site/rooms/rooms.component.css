@@ -1,1 +1,5 @@
 @import "~@ng-select/ng-select/themes/default.theme.css";
+.hover-color:hover{
+  background-color: #005a99;
+  cursor: pointer;
+}

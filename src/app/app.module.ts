@@ -12,7 +12,8 @@ import { HttpClientModule } from '@angular/common/http';
 import {AvatarModule} from 'ngx-avatar';
 import {UserService} from './services/user.service';
 import { NgSelectModule } from '@ng-select/ng-select';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {TitleService} from './services/title.service';
 
 
 
@@ -31,11 +32,13 @@ import {FormsModule} from '@angular/forms';
     HttpClientModule,
     AvatarModule,
     NgSelectModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [
     RoomService,
-    UserService
+    UserService,
+    TitleService
   ],
   bootstrap: [AppComponent]
 })

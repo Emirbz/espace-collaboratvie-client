@@ -1,4 +1,5 @@
-import {AfterViewInit, Component, ElementRef, OnInit} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit} from '@angular/core';
+import {TitleService} from '../../../services/title.service';
 
 @Component({
   selector: 'app-header',
@@ -6,15 +7,23 @@ import {AfterViewInit, Component, ElementRef, OnInit} from '@angular/core';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit, AfterViewInit {
+  title: string;
 
-  constructor(private elementRef: ElementRef) {}
+  constructor(private elementRef: ElementRef,
+              private titleService: TitleService,
+              private cdr: ChangeDetectorRef) {
+  }
 
   ngAfterViewInit() {
-  /* const s = document.createElement('script');
-   s.src = 'assets/js/main.js';
-   this.elementRef.nativeElement.appendChild(s);*/
+
   }
 
   ngOnInit() {
+    this.titleService.getTitle().subscribe(appTitle => {
+      this.title = appTitle;
+      this.cdr.detectChanges();
+
+
+    });
   }
 }

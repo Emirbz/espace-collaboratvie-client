@@ -15,7 +15,7 @@ export class RoomService {
   }
   addRoom(newRoom): Observable<Room> {
 
-    return this.http.post<Room>(`${this.roomUrl}/add`, newRoom);
+    return this.http.post<Room>(`${this.roomUrl}`, newRoom);
   }
   deleteProduct(id): Observable<Room> {
     return this.http.delete<Room>(`${this.roomUrl}/${id}`);

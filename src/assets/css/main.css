@@ -1467,8 +1467,7 @@ if the page has a “right panel”, add a class for BODY -- ".page-has-right-pa
     right: 0;
     top: 0;
     text-align: left;
-    -webkit-box-pack: baseline;
-        -ms-flex-pack: baseline;
+    -ms-flex-pack: baseline;
             justify-content: baseline;
     -webkit-box-align: baseline;
         -ms-flex-align: baseline;
@@ -1476,7 +1475,12 @@ if the page has a “right panel”, add a class for BODY -- ".page-has-right-pa
     padding-top: 50px;
     border-left: 1px solid #e6ecf5;
     box-shadow: 0 0 34px 0 rgba(63, 66, 87, 0.1); }
-    .header-menu a {
+
+  .header-menu {
+    -webkit-box-pack: baseline;
+  }
+
+  .header-menu a {
       padding: 15px 25px;
       color: #888da8; }
     .header-menu ul {
@@ -5243,6 +5247,9 @@ fieldset[disabled] .checkbox, fieldset[disabled] .checkbox input[type=checkbox],
   .chat-field .mCustomScrollbar {
     overflow: hidden;
     max-height: 450px; }
+.chat-field .mCustomScrollbarNew {
+  overflow-y: scroll;
+  max-height: 450px; }
   .chat-field .ps > .ps__scrollbar-y-rail, .chat-field .ps:hover > .ps__scrollbar-y-rail {
     opacity: 0;
     z-index: -1;
@@ -15408,15 +15415,15 @@ div.mejs-speed-button {
 /**
  * Swiper 3.3.1
  * Most modern mobile touch slider and framework with hardware accelerated transitions
- * 
+ *
  * http://www.idangero.us/swiper/
- * 
+ *
  * Copyright 2016, Vladimir Kharlampidi
  * The iDangero.us
  * http://www.idangero.us/
- * 
+ *
  * Licensed under MIT
- * 
+ *
  * Released on: February 7, 2016
  */
 .swiper-container {
