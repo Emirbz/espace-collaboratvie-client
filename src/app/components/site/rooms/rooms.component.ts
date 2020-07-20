@@ -14,7 +14,7 @@ export class RoomsComponent implements OnInit {
   loadedRooms: Room[];
   selectedUsers: User[];
   loadedUsers: User[];
-  selectedCity:any;
+  selectedCity: any;
   cities = [
     {id: 1, name: 'Vilnius'},
     {id: 2, name: 'Kaunas'},
