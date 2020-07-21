@@ -1,0 +1,238 @@
+/* ------------- Reaction ----------------- */
+.text-desc, [class*="reaction-"], .field-reactions, .field-reactions:checked:focus ~ .text-desc {
+  clip: rect(1px, 1px, 1px, 1px);
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.field-reactions:focus ~ .text-desc, .box:hover [class*="reaction-"], .field-reactions:checked ~ [class*="reaction-"] {
+  clip: auto;
+  overflow: visible;
+  opacity: 1;
+}
+
+
+[class*="reaction-"] {
+  border: none;
+  background-image: url('src/assets/img/facebook-reactions.png');
+  background-color: transparent;
+  display: block;
+  cursor: pointer;
+  height: 48px;
+  position: absolute;
+  width: 48px;
+  z-index: 11;
+  top: -28;
+  transform-origin: 50% 100%;
+  transform: scale(0.1);
+  transition: all .3s;
+  outline: none;
+  will-change: transform;
+  opacity: 1;
+}
+
+.box {
+  top: 0.35em;
+  display: inline-block;
+  position: relative;
+  margin-left: 10px;
+
+}
+.sender .box {
+  float: right;
+  margin-left: 0;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9;
+  visibility: hidden;
+}
+
+.field-reactions:focus ~ .label-reactions {
+  border-color: rgba(88, 144, 255, 0.3);
+}
+
+.field-reactions:checked:focus ~ .label-reactions {
+  border-color: transparent;
+}
+
+.label-reactions {
+
+  border: 2px dotted transparent;
+  display: block;
+  margin: 0 auto;
+  color: transparent;
+  cursor: pointer;
+}
+
+.toolbox {
+  background: #fff;
+  height: 41px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08), 0 2px 2px rgba(0, 0, 0, 0.15);
+  width: 14em;
+  border-radius: 40px;
+  top: 7%;
+  right: 91%;
+  position: absolute;
+  visibility: hidden;
+  opacity: 1;
+  transition: opacity .15s;
+}
+
+.legend-reaction {
+  background: rgba(0, 0, 0, 0.75);
+  border-radius: 10px;
+  box-sizing: border-box;
+  color: #fff;
+  display: inline-block;
+  font-size: 11px;
+  text-overflow: ellipsis;
+  font-weight: bold;
+  line-height: 20px;
+  max-width: 100%;
+  opacity: 0;
+  overflow: hidden;
+  padding: 0 6px;
+  transition: opacity 50ms ease;
+  left: 50%;
+  position: absolute;
+  text-align: center;
+  top: 42px;
+  transform: translateX(-50%);
+}
+
+.box:hover [class*="reaction-"] {
+  transform: scale(0.8) translateY(-40px);
+}
+
+.box:hover [class*="reaction-"]:hover, .box:hover [class*="reaction-"]:focus {
+  transition: all .2s ease-in;
+  transform: scale(1) translateY(-35px);
+}
+
+.box:hover [class*="reaction-"]:hover .legend-reaction, .box:hover [class*="reaction-"]:focus .legend-reaction {
+  opacity: 1;
+}
+
+.box:hover .toolbox {
+  opacity: 1;
+}
+
+.box:hover .toolbox {
+  visibility: visible;
+}
+
+.box:hover .reaction-love {
+  transition-delay: .06s;
+}
+
+.box:hover .reaction-haha {
+  transition-delay: .09s;
+}
+
+.box:hover .reaction-wow {
+  transition-delay: .12s;
+}
+
+
+
+
+.field-reactions:checked ~ [class*="reaction-"] {
+  transform: scale(0.8) translateY(-40px);
+}
+
+.field-reactions:checked ~ [class*="reaction-"]:hover, .field-reactions:checked ~ [class*="reaction-"]:focus {
+  transition: all .2s ease-in;
+  transform: scale(1) translateY(-35px);
+}
+
+.field-reactions:checked ~ [class*="reaction-"]:hover .legend-reaction, .field-reactions:checked ~ [class*="reaction-"]:focus .legend-reaction {
+  opacity: 1;
+}
+
+.field-reactions:checked ~ .toolbox {
+  opacity: 1;
+}
+
+.field-reactions:checked ~ .toolbox,
+.field-reactions:checked ~ .overlay {
+  visibility: visible;
+}
+
+.field-reactions:checked ~ .reaction-love {
+  transition-delay: .03s;
+}
+
+.field-reactions:checked ~ .reaction-haha {
+  transition-delay: .09s;
+}
+
+.field-reactions:checked ~ .reaction-wow {
+  transition-delay: .12s;
+}
+
+
+
+.reaction-like {
+  left: -182px;
+  top:27px;
+  background-position: 0 -144px;
+}
+
+.reaction-love {
+  background-position: -48px 0;
+  left: -136px;
+  top:27px;
+}
+
+.reaction-haha {
+  background-position: -96px 0;
+  left: -91px;
+  top:27px;
+}
+
+.reaction-wow {
+  background-position: -144px 0;
+  left: -46px;
+  top:27px;
+}
+
+.user-reactions {
+  background: #fff;
+  height: 2em;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08), 0 2px 2px rgba(0, 0, 0, 0.15);
+  width: 6.25em;
+  border-radius: 40px;
+  position: absolute;
+  opacity: 1;
+  transition: opacity .15s;
+  bottom: 1px;
+  right: 56px;
+}
+[class*="u-reaction"] {
+  border: none;
+  background-image: url('src/assets/img/facebook-reaction-2.png');
+  background-color: transparent;
+  display: block;
+  cursor: pointer;
+  height: 18px;
+  position: absolute;
+  width: 66px;
+  z-index: 11;
+  top: 3px;
+  left: 5px;
+  opacity: 1;
+}
+
+
+
+
+
+

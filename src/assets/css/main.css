@@ -5246,18 +5246,14 @@ fieldset[disabled] .checkbox, fieldset[disabled] .checkbox input[type=checkbox],
   border-left: 1px solid #e6ecf5; }
   .chat-field .mCustomScrollbar {
     overflow: hidden;
-    max-height: 450px; }
+    max-height: 600px; }
 .chat-field .mCustomScrollbarNew {
   overflow-y: scroll;
-  max-height: 450px; }
+  max-height: 680px; }
   .chat-field .ps > .ps__scrollbar-y-rail, .chat-field .ps:hover > .ps__scrollbar-y-rail {
     opacity: 0;
     z-index: -1;
     visibility: hidden; }
-  .chat-field textarea {
-    border-radius: 0;
-    border-right: 0;
-    border-left: 0; }
 
 .chat-message-field .notification-event {
   max-width: 90%; }
@@ -5461,6 +5457,7 @@ fieldset[disabled] .checkbox, fieldset[disabled] .checkbox input[type=checkbox],
 
 @media (max-width: 360px) {
   .notification-list .notification-event {
+
     max-width: 60%; }
   .chat-message-field .notification-date {
     float: none;
@@ -5469,13 +5466,8 @@ fieldset[disabled] .checkbox, fieldset[disabled] .checkbox input[type=checkbox],
     float: none; } }
 
 /*------------- #NOTIFICATION --------------*/
-.popup-chat {
-  width: 320px;
-  box-shadow: 0 0 34px 0 rgba(63, 66, 87, 0.1);
-  overflow: hidden;
-  position: relative;
-  z-index: 5; }
-  .popup-chat .modal-body {
+
+.popup-chat .modal-body {
     padding: 0; }
   .popup-chat .modal-header {
     -webkit-box-align: center;
@@ -5513,8 +5505,10 @@ fieldset[disabled] .checkbox, fieldset[disabled] .checkbox input[type=checkbox],
       margin-left: 15px; }
   .popup-chat .notification-event {
     padding-left: 10px;
-    width: 75%; }
+    max-width: 60%;
+ }
   .popup-chat .chat-message-item {
+    margin-left: 10px;
     padding: 13px;
     background-color: #f0f4f9;
     margin-top: 0;
@@ -5529,14 +5523,14 @@ fieldset[disabled] .checkbox, fieldset[disabled] .checkbox input[type=checkbox],
   .popup-chat .chat-message-field li {
     overflow: hidden;
     padding: 9px 25px; }
-    .popup-chat .chat-message-field li:nth-child(2n) .chat-message-item {
-      background-color: #7c5ac2;
+    .popup-chat .chat-message-field .sender .chat-message-item {
+      background-color: #00c4aa;
       color: #fff; }
-    .popup-chat .chat-message-field li:nth-child(2n) .author-thumb {
+    .popup-chat .chat-message-field .sender .author-thumb {
       float: right; }
-    .popup-chat .chat-message-field li:nth-child(2n) .chat-message-item {
+    .popup-chat .chat-message-field .sender .chat-message-item {
       float: right; }
-    .popup-chat .chat-message-field li:nth-child(2n) .notification-event {
+    .popup-chat .chat-message-field .sender .notification-event {
       float: right;
       padding-left: 0;
       padding-right: 10px; }
