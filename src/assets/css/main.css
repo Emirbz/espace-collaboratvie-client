@@ -5249,7 +5249,7 @@ fieldset[disabled] .checkbox, fieldset[disabled] .checkbox input[type=checkbox],
     max-height: 600px; }
 .chat-field .mCustomScrollbarNew {
   overflow-y: scroll;
-  max-height: 680px; }
+  max-height: 589px; }
   .chat-field .ps > .ps__scrollbar-y-rail, .chat-field .ps:hover > .ps__scrollbar-y-rail {
     opacity: 0;
     z-index: -1;
@@ -10016,6 +10016,11 @@ ol ol li {
 
 .mobile-margin-25 {
   margin: 0 25px; }
+.margin-15
+{
+  margin-left:15px;
+  margin-right:15px
+}
 
 .presentation-margin {
   margin: 40px 0 20px; }

@@ -1,3 +1,38 @@
+/* --- JITSI ANIMATION ----- */
+.row [class*='col-'] {
+  transition: all 0.7s ease-in-out ;
+
+
+
+}
+.margin-540{
+  margin-left: -540px;
+
+
+
+
+}
+.margin-218{
+  margin-left: -218px;
+
+}
+#jitsi {
+  -webkit-animation: 2s ease 0s normal forwards 1 fadein;
+  animation: 2s ease 0s normal forwards 1 fadein;
+}
+@keyframes fadein{
+  0% { opacity:0; }
+  66% { opacity:0; }
+  100% { opacity:1; }
+}
+
+@-webkit-keyframes fadein{
+  0% { opacity:0; }
+  66% { opacity:0; }
+  100% { opacity:1; }
+}
+
+
 /* ------------- Reaction ----------------- */
 .text-desc, [class*="reaction-"], .field-reactions, .field-reactions:checked:focus ~ .text-desc {
   clip: rect(1px, 1px, 1px, 1px);
@@ -24,7 +59,7 @@
   position: absolute;
   width: 48px;
   z-index: 11;
-  top: -28;
+  /* top: -28;*/
   transform-origin: 50% 100%;
   transform: scale(0.1);
   transition: all .3s;
@@ -85,6 +120,7 @@
   opacity: 1;
   transition: opacity .15s;
 }
+
 
 .legend-reaction {
   background: rgba(0, 0, 0, 0.75);
@@ -205,31 +241,177 @@
 }
 
 .user-reactions {
+  padding: 2px;
   background: #fff;
   height: 2em;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08), 0 2px 2px rgba(0, 0, 0, 0.15);
-  width: 6.25em;
+  width:auto;
   border-radius: 40px;
   position: absolute;
   opacity: 1;
   transition: opacity .15s;
   bottom: 1px;
-  right: 56px;
+  left: 51px;
 }
-[class*="u-reaction"] {
-  border: none;
-  background-image: url('src/assets/img/facebook-reaction-2.png');
-  background-color: transparent;
-  display: block;
-  cursor: pointer;
-  height: 18px;
+.sender .user-reactions
+{
+  right: 46px;
+  left: unset;
+}
+
+.reaction { list-style-type: none; cursor: pointer; display: table-cell; position: relative; text-align: center; padding-left: 5px; padding-right: 5px; }
+
+
+.reaction .count-reaction
+{
+  font-size: 12px;
+  font-weight: bold;
+  padding: 1px;
+}
+.user-reactions .reaction {
+  padding: 0;
+}
+.margin-auto
+{
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.margin-unset{
+  margin-left: unset;
+  margin-right: unset;
+
+}
+
+
+/* ----------------- Jitsi Loader ---------------- */
+
+.flexbox {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+
+.flexbox > div {
+  left: 325px;
+  top: 250px;
+  width: 300px;
+  height: 300px;
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 25%;
+  flex:  25%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0;
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+
+
+
+.mesh-loader {
+  overflow: hidden;
+  height: inherit;
+  width: inherit;
+}
+.mesh-loader .circle {
+  width: 30px;
+  height: 30px;
   position: absolute;
-  width: 66px;
-  z-index: 11;
-  top: 3px;
-  left: 5px;
-  opacity: 1;
+  background: #07D8BB;
+  border-radius: 50%;
+  margin: -15px;
+  -webkit-animation: mesh 3s ease-in-out infinite -1.5s;
+  animation: mesh 3s ease-in-out infinite -1.5s;
 }
+
+.mesh-loader > div .circle:last-child {
+  -webkit-animation-delay: 0s;
+  animation-delay: 0s;
+}
+
+.mesh-loader > div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+
+.mesh-loader > div:last-child {
+  -webkit-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+
+
+
+
+
+
+@keyframes mesh {
+  0% {
+    -webkit-transform-origin: 50% -100%;
+    transform-origin: 50% -100%;
+    -webkit-transform: rotate(0);
+    transform: rotate(0);
+  }
+  50% {
+    -webkit-transform-origin: 50% -100%;
+    transform-origin: 50% -100%;
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+  50.1% {
+    -webkit-transform-origin: 50% 200%;
+    transform-origin: 50% 200%;
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform-origin: 50% 200%;
+    transform-origin: 50% 200%;
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+@media only screen and (max-width: 968px) {
+  .flexbox > div {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 33.3333333%;
+    flex: 0 0 33.3333333%;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .flexbox > div {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 50%;
+    flex: 0 0 50%;
+  }
+}
+
+@media only screen and (max-width: 568px) {
+  .flexbox > div {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+  }
+}
+
 
 
 

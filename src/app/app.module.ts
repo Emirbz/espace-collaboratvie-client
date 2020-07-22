@@ -14,6 +14,8 @@ import {UserService} from './services/user.service';
 import { NgSelectModule } from '@ng-select/ng-select';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {TitleService} from './services/title.service';
+import { AngularFontAwesomeModule } from 'angular-font-awesome';
+
 
 
 
@@ -33,7 +35,8 @@ import {TitleService} from './services/title.service';
     AvatarModule,
     NgSelectModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AngularFontAwesomeModule
   ],
   providers: [
     RoomService,

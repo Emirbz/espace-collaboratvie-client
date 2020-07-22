@@ -1188,7 +1188,7 @@
 
 
 <div class="main-header">
-  <div class="content-bg-wrap bg-events"></div>
+  <div class="content-bg-wrap bg-events "></div>
   <div class="container">
     <div class="row">
       <div class="col col-lg-8 m-auto col-md-8 col-sm-12 col-12">
@@ -1205,13 +1205,31 @@
 
   <img class="img-bottom" src="assets/img/event-bottom.png" alt="friends">
 </div>
-<div class="container">
+
+<div [ngClass]="contrainerClass">
   <div class="row">
-    <div class="col col-xl-9 order-xl-2 col-lg-9 order-lg-2 col-md-12 order-md-1 col-sm-12 col-12">
+    <div [hidden]="loaderHidden" [ngClass]="loaderClass">
+      <div>
+        <div class="mesh-loader">
+          <div class="set-one">
+            <div class="circle"></div>
+            <div class="circle"></div>
+          </div>
+          <div class="set-two">
+            <div class="circle"></div>
+            <div class="circle"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div [hidden]="divJitsiHidden" [ngClass]="jitsiClass" id="jitsi"></div>
+    <div [ngClass]="rightBarClass">
       <div class="ui-block">
         <div class="ui-block-title">
           <h6 class="title">Chat / Messages</h6>
-          <a href="#" class="more">
+          <a class="more" [hidden]="videoCallHidden" (click)="openJitsi()">
             <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
                  width="30" height="30"
                  viewBox="0 0 172 172"
@@ -1261,11 +1279,14 @@
                     <div class="notification-event">
                       <span class="chat-message-item">Hi James</span>
                       <div class="user-reactions">
-                        <button class="reaction-like u-reaction "><span class="legend-reaction">Like</span></button>
-                        <button class="u-reaction "><span class="legend-reaction">Love</span></button>
-                        <button class="u-reaction "><span class="legend-reaction">BRAVO</span></button>
-                        <button  class="u-reaction "><span  style="width: 84px;max-width: 177%" class="legend-reaction">INTERESTING</span></button>
-
+                        <ul>
+                          <!-- Reaction buttons container-->
+                          <li class="reaction " data-reaction="Like"><img src="assets/img/like.png"></li>
+                          <li class="reaction " data-reaction="Love"><img src="assets/img/love.png"></li>
+                          <li class="reaction " data-reaction="HaHa"><img src="assets/img/bravo.png"></li>
+                          <li class="reaction " data-reaction="Wow"><img src="assets/img/interesting.png"></li>
+                          <li class="reaction"><span class="count-reaction">5</span></li>
+                        </ul>
                       </div>
                     </div>
 
@@ -1281,11 +1302,22 @@
 																	the client to iron out some details before the presentation? I already finished the first screen but
 																	I need to ask him something before moving on. Anyway, here’s a preview!
 																</span>
+                      <div class="user-reactions">
+                        <ul>
+                          <!-- Reaction buttons container-->
+                          <li class="reaction " data-reaction="Like"><img src="assets/img/like.png"></li>
+                          <li class="reaction " data-reaction="Love"><img src="assets/img/love.png"></li>
+                          <li class="reaction " data-reaction="HaHa"><img src="assets/img/bravo.png"></li>
+                          <li class="reaction " data-reaction="Wow"><img src="assets/img/interesting.png"></li>
+                          <span class="count-reaction">5</span>
+
+                        </ul>
+                      </div>
 
                     </div>
                     <!-- Reaction - Make Reaction -->
                     <div class="box">
-                      <input type="checkbox" id="like" class="field-reactions">
+                      <input type="checkbox" id="likes" class="field-reactions">
                       <a class="label-reactions">
                         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
                              width="25" height="25"
@@ -1293,7 +1325,7 @@
                              style=" fill:#4a90e2;">
                           <g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt"
                              stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0"
-                             font-family="none"  font-size="none"
+                             font-family="none" font-size="none"
                              style="mix-blend-mode: normal">
                             <path d="M0,172v-172h172v172z" fill="none"></path>
                             <g>
@@ -1315,7 +1347,8 @@
                       <button class="reaction-like"><span class="legend-reaction">Like</span></button>
                       <button class="reaction-love"><span class="legend-reaction">Love</span></button>
                       <button class="reaction-haha"><span class="legend-reaction">BRAVO</span></button>
-                      <button  class="reaction-wow"><span  style="width: 84px;max-width: 177%" class="legend-reaction">INTERESTING</span></button>
+                      <button class="reaction-wow"><span style="width: 84px;max-width: 177%" class="legend-reaction">INTERESTING</span>
+                      </button>
 
                     </div>
                     <!-- End Make Reaction -->
@@ -1361,7 +1394,7 @@
                              style=" fill:#4a90e2;">
                           <g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt"
                              stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0"
-                             font-family="none"  font-size="none"
+                             font-family="none" font-size="none"
                              style="mix-blend-mode: normal">
                             <path d="M0,172v-172h172v172z" fill="none"></path>
                             <g>
@@ -1383,7 +1416,8 @@
                       <button class="reaction-like"><span class="legend-reaction">Like</span></button>
                       <button class="reaction-love"><span class="legend-reaction">Love</span></button>
                       <button class="reaction-haha"><span class="legend-reaction">BRAVO</span></button>
-                      <button  class="reaction-wow"><span  style="width: 84px;max-width: 177%" class="legend-reaction">INTERESTING</span></button>
+                      <button class="reaction-wow"><span style="width: 84px;max-width: 177%" class="legend-reaction">INTERESTING</span>
+                      </button>
 
                     </div>
                   </li>
@@ -1402,7 +1436,17 @@
                     </div>
                     <div class="notification-event">
 
-                      <span class="chat-message-item">We’ll have to check that at the office and see if the client is on board with it. I think That looks really good!</span>
+                      <span class="chat-message-item ">We’ll have to check that at the office and see if the client is on board with it. I think That looks really good!</span>
+                      <div class="user-reactions">
+                        <ul>
+                          <!-- Reaction buttons container-->
+                          <li class="reaction " data-reaction="Like"><img src="assets/img/like.png"></li>
+                          <li class="reaction " data-reaction="Love"><img src="assets/img/love.png"></li>
+                          <li class="reaction " data-reaction="HaHa"><img src="assets/img/bravo.png"></li>
+                          <li class="reaction " data-reaction="Wow"><img src="assets/img/interesting.png"></li>
+                          <li class="reaction"><span class="count-reaction">5</span></li>
+                        </ul>
+                      </div>
                     </div>
                   </li>
                   <li class="sender">
@@ -1458,8 +1502,7 @@
 
     </div>
 
-    <div
-      class="col col-xl-3 order-xl-1 col-lg-3 order-lg-1 col-md-12 order-md-2 col-sm-12 col-12 responsive-display-none">
+    <div [ngClass]="leftBarClass">
       <div class="ui-block">
         <div class="ui-block-title">
           <h6 class="title">Collaborateurs (86)</h6>
