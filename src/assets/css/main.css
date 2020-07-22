@@ -1467,8 +1467,8 @@ if the page has a “right panel”, add a class for BODY -- ".page-has-right-pa
     right: 0;
     top: 0;
     text-align: left;
-    -ms-flex-pack: baseline;
-            justify-content: baseline;
+  /*  -ms-flex-pack: baseline;
+            justify-content: baseline;*/
     -webkit-box-align: baseline;
         -ms-flex-align: baseline;
             align-items: baseline;
@@ -1476,9 +1476,9 @@ if the page has a “right panel”, add a class for BODY -- ".page-has-right-pa
     border-left: 1px solid #e6ecf5;
     box-shadow: 0 0 34px 0 rgba(63, 66, 87, 0.1); }
 
-  .header-menu {
+  /*.header-menu {
     -webkit-box-pack: baseline;
-  }
+  }*/
 
   .header-menu a {
       padding: 15px 25px;
@@ -1640,8 +1640,7 @@ if the page has a “right panel”, add a class for BODY -- ".page-has-right-pa
   .footer {
     text-align: center; }
   .footer .w-about .logo {
-    display: -webkit-inline-box;
-    display: -ms-inline-flexbox;
+/*    display: -ms-inline-flexbox;*/
     display: inline-flex;
     margin-bottom: 10px; }
   .sub-footer-copyright {
@@ -1781,7 +1780,6 @@ section {
   clip: auto !important;
   color: #21759b;
   display: block;
-  font-size: 14px;
   font-size: 0.875rem;
   font-weight: bold;
   height: auto;
@@ -2372,7 +2370,7 @@ section {
   margin-left: -5px; }
 
 .cart-main .form-inline {
-  display: -webkit-inline-box;
+ /* display: -webkit-inline-box;*/
   display: -ms-inline-flexbox;
   display: inline-flex; }
   .cart-main .form-inline .btn {
@@ -2661,7 +2659,7 @@ img {
 
 .was-validated .form-control:valid ~ .material-input:after {
   content: '\f00c';
-  font-family: 'Font Awesome 5 Pro';
+ /* font-family: 'Font Awesome 5 Pro';*/
   font-weight: 900;
   position: absolute;
   display: block;
@@ -3147,7 +3145,7 @@ button:hover {
     top: -4px;
     color: inherit;
     font-size: 7px;
-    font-family: 'Font Awesome 5 Pro'; }
+    /*font-family: 'Font Awesome 5 Pro'; */}
   .icon-add.without-text {
     margin-right: 0; }
 
@@ -3163,7 +3161,7 @@ button:hover {
     top: -4px;
     color: inherit;
     font-size: 7px;
-    font-family: 'Font Awesome 5 Pro'; }
+    /*font-family: 'Font Awesome 5 Pro';*/ }
 
 .accept-request {
   display: inline-block;
@@ -3216,7 +3214,7 @@ button:hover {
   display: -ms-flexbox;
   display: flex;
   fill: #fff;
-  stroke: inherit;
+  /*stroke: inherit;*/
   transition: all .3s ease;
   bottom: 10px;
   right: 85px;
@@ -3268,7 +3266,7 @@ input, .form-control {
 
 .label-floating.has-success:after {
   content: '\f00c';
-  font-family: 'Font Awesome 5 Pro';
+  /*font-family: 'Font Awesome 5 Pro';*/
   font-weight: 900;
   position: absolute;
   display: block;
@@ -3303,7 +3301,7 @@ input, .form-control {
 
 .form-group.has-error:after {
   content: '\f00d';
-  font-family: 'Font Awesome 5 Pro';
+ /* font-family: 'Font Awesome 5 Pro'*/;
   font-weight: 900;
   position: absolute;
   display: block;
@@ -3809,7 +3807,7 @@ fieldset[disabled] .form-group.is-focused .checkbox label {
 
 .checkbox input[type=checkbox]:checked + .checkbox-material .check:before {
   color: #FFFFFF;
-  box-shadow: 0 0 0 10px, 10px -10px 0 10px, 32px 0 0 20px, 0px 32px 0 20px, -5px 5px 0 10px, 20px -12px 0 11px;
+  box-shadow: 0 0 0 10px, 10px -10px 0 10px, 32px 0 0 20px, 0 32px 0 20px, -5px 5px 0 10px, 20px -12px 0 11px;
   -webkit-animation: checkbox-on 0.3s forwards;
   animation: checkbox-on 0.3s forwards; }
 
@@ -3852,19 +3850,19 @@ fieldset[disabled] .checkbox, fieldset[disabled] .checkbox input[type=checkbox],
 
 @-webkit-keyframes checkbox-on {
   0% {
-    box-shadow: 0 0 0 10px, 10px -10px 0 10px, 32px 0 0 20px, 0px 32px 0 20px, -5px 5px 0 10px, 15px 2px 0 11px; }
+    box-shadow: 0 0 0 10px, 10px -10px 0 10px, 32px 0 0 20px, 0 32px 0 20px, -5px 5px 0 10px, 15px 2px 0 11px; }
   50% {
-    box-shadow: 0 0 0 10px, 10px -10px 0 10px, 32px 0 0 20px, 0px 32px 0 20px, -5px 5px 0 10px, 20px 2px 0 11px; }
+    box-shadow: 0 0 0 10px, 10px -10px 0 10px, 32px 0 0 20px, 0 32px 0 20px, -5px 5px 0 10px, 20px 2px 0 11px; }
   100% {
-    box-shadow: 0 0 0 10px, 10px -10px 0 10px, 32px 0 0 20px, 0px 32px 0 20px, -5px 5px 0 10px, 20px -12px 0 11px; } }
+    box-shadow: 0 0 0 10px, 10px -10px 0 10px, 32px 0 0 20px, 0 32px 0 20px, -5px 5px 0 10px, 20px -12px 0 11px; } }
 
 @keyframes checkbox-on {
   0% {
-    box-shadow: 0 0 0 10px, 10px -10px 0 10px, 32px 0 0 20px, 0px 32px 0 20px, -5px 5px 0 10px, 15px 2px 0 11px; }
+    box-shadow: 0 0 0 10px, 10px -10px 0 10px, 32px 0 0 20px, 0 32px 0 20px, -5px 5px 0 10px, 15px 2px 0 11px; }
   50% {
-    box-shadow: 0 0 0 10px, 10px -10px 0 10px, 32px 0 0 20px, 0px 32px 0 20px, -5px 5px 0 10px, 20px 2px 0 11px; }
+    box-shadow: 0 0 0 10px, 10px -10px 0 10px, 32px 0 0 20px, 0 32px 0 20px, -5px 5px 0 10px, 20px 2px 0 11px; }
   100% {
-    box-shadow: 0 0 0 10px, 10px -10px 0 10px, 32px 0 0 20px, 0px 32px 0 20px, -5px 5px 0 10px, 20px -12px 0 11px; } }
+    box-shadow: 0 0 0 10px, 10px -10px 0 10px, 32px 0 0 20px, 0 32px 0 20px, -5px 5px 0 10px, 20px -12px 0 11px; } }
 
 @keyframes rippleOn {
   0% {
@@ -3956,7 +3954,7 @@ fieldset[disabled] .checkbox, fieldset[disabled] .checkbox input[type=checkbox],
   .fixed-sidebar.open .fixed-sidebar-left {
     transition: -webkit-transform 0.5s cubic-bezier(0.55, 0, 0.1, 1);
     transition: transform 0.5s cubic-bezier(0.55, 0, 0.1, 1);
-    transition: transform 0.5s cubic-bezier(0.55, 0, 0.1, 1), -webkit-transform 0.5s cubic-bezier(0.55, 0, 0.1, 1); }
+  }
     .fixed-sidebar.open .fixed-sidebar-left.sidebar--small {
       -webkit-transform: translateX(-100%);
               transform: translateX(-100%); }
@@ -3966,7 +3964,6 @@ fieldset[disabled] .checkbox, fieldset[disabled] .checkbox input[type=checkbox],
       transition-delay: .3s; }
   .fixed-sidebar.open .fixed-sidebar-right {
     transition: -webkit-transform 0.5s cubic-bezier(0.55, 0, 0.1, 1);
-    transition: transform 0.5s cubic-bezier(0.55, 0, 0.1, 1);
     transition: transform 0.5s cubic-bezier(0.55, 0, 0.1, 1), -webkit-transform 0.5s cubic-bezier(0.55, 0, 0.1, 1); }
     .fixed-sidebar.open .fixed-sidebar-right.sidebar--small {
       -webkit-transform: translateX(100%);
@@ -4274,11 +4271,9 @@ fieldset[disabled] .checkbox, fieldset[disabled] .checkbox input[type=checkbox],
   will-change: min-height; }
 
 .sidebar__inner {
-  -webkit-transform: translate(0, 0);
-          transform: translate(0, 0);
+  transform: translate(0, 0);
   /* For browsers don't support translate3d. */
-  -webkit-transform: translate3d(0, 0, 0);
-          transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
   will-change: position, transform; }
 
 /*------------- Responsive mode styles --------------*/
@@ -4594,7 +4589,7 @@ fieldset[disabled] .checkbox, fieldset[disabled] .checkbox input[type=checkbox],
   z-index: 10;
   transition: all .2s ease-in;
   fill: #fff;
-  stroke: inherit;
+  /*stroke: inherit;*/
   top: 50%;
   -webkit-transform: translate(0, -50%);
           transform: translate(0, -50%); }
@@ -5249,7 +5244,7 @@ fieldset[disabled] .checkbox, fieldset[disabled] .checkbox input[type=checkbox],
     max-height: 600px; }
 .chat-field .mCustomScrollbarNew {
   overflow-y: scroll;
-  max-height: 589px; }
+  max-height: 657px; }
   .chat-field .ps > .ps__scrollbar-y-rail, .chat-field .ps:hover > .ps__scrollbar-y-rail {
     opacity: 0;
     z-index: -1;
@@ -6845,7 +6840,7 @@ ol ol li {
     left: 0;
     width: 100%;
     height: 100%;
-    box-shadow: inset 0px -120px 55px -30px rgba(0, 0, 0, 0.5);
+    box-shadow: inset 0 -120px 55px -30px rgba(0, 0, 0, 0.5);
     opacity: 0;
     transition: all .3s ease; }
 
@@ -6975,7 +6970,7 @@ ol ol li {
     height: 100%;
     border-right-color: #e6ecf5;
     border-left-color: #e6ecf5;
-    border-top-color: transparent; }
+    /*border-top-color: transparent; */}
     .photo-gallery .nav-link.active {
       fill: #ff5e3a;
       background-color: #fff;
@@ -7620,7 +7615,7 @@ ol ol li {
   .crumina-full-calendar .fc-button.fc-dayGridMonth-button .fc-icon,
   .crumina-full-calendar .fc-button.fc-timeGridWeek-button .fc-icon,
   .crumina-full-calendar .fc-button.fc-timeGridDay-button .fc-icon {
-    font-family: 'Font Awesome 5 Free' !important;
+   /* font-family: 'Font Awesome 5 Free' !important;*/
     font-weight: 900;
     color: #888da8; }
     .crumina-full-calendar .fc-button.fc-next-button .fc-icon:hover,
@@ -10176,7 +10171,7 @@ ol ol li {
 
 .custom-color * {
   color: inherit !important;
-  fill: inherit; }
+ /* fill: inherit;*/ }
 
 .flip-button {
   box-sizing: content-box;
@@ -10187,7 +10182,6 @@ ol ol li {
   -webkit-transform: scale(1) rotate(360deg);
   transform: scale(1) rotate(360deg);
   transition: -webkit-transform 150ms cubic-bezier(0.4, 0, 1, 1);
-  transition: transform 150ms cubic-bezier(0.4, 0, 1, 1);
   transition: transform 150ms cubic-bezier(0.4, 0, 1, 1), -webkit-transform 150ms cubic-bezier(0.4, 0, 1, 1); }
 
 .flip-icon {
@@ -16616,7 +16610,6 @@ Build date: 2018-12-12 00:07:25
 
 .leaflet-zoom-anim .leaflet-zoom-animated {
   transition: -webkit-transform 0.25s cubic-bezier(0, 0, 0.25, 1);
-  transition: transform 0.25s cubic-bezier(0, 0, 0.25, 1);
   transition: transform 0.25s cubic-bezier(0, 0, 0.25, 1), -webkit-transform 0.25s cubic-bezier(0, 0, 0.25, 1); }
 
 .leaflet-zoom-anim .leaflet-tile,
@@ -16631,7 +16624,7 @@ Build date: 2018-12-12 00:07:25
   cursor: pointer; }
 
 .leaflet-grab {
-  cursor: -webkit-grab;
+/*  cursor: -webkit-grab;*/
   cursor: grab; }
 
 .leaflet-crosshair,
@@ -16646,7 +16639,7 @@ Build date: 2018-12-12 00:07:25
 .leaflet-dragging .leaflet-grab .leaflet-interactive,
 .leaflet-dragging .leaflet-marker-draggable {
   cursor: move;
-  cursor: -webkit-grabbing;
+ /* cursor: -webkit-grabbing;*/
   cursor: grabbing; }
 
 /* marker & overlays interactivity */
@@ -16660,7 +16653,6 @@ Build date: 2018-12-12 00:07:25
 .leaflet-marker-icon.leaflet-interactive,
 .leaflet-image-layer.leaflet-interactive,
 .leaflet-pane > svg path.leaflet-interactive {
-  pointer-events: visiblePainted;
   /* IE 9-10 doesn't have auto */
   pointer-events: auto; }
 

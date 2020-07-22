@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import * as JitsiMeetExternalAPI from '../../../../assets/js/Jitsi/external_api';
 import set = Reflect.set;
 
@@ -9,6 +9,7 @@ import set = Reflect.set;
   styleUrls: ['./chat.component.css']
 })
 export class ChatComponent implements OnInit, AfterViewInit {
+  @ViewChild('msgInput',  {static: false}) msgInput: ElementRef;
   leftBarClass = 'col col-xl-3 order-xl-1 col-lg-3 order-lg-1 col-md-12 order-md-2 col-sm-12 col-12 responsive-display-none';
   rightBarClass = 'col col-xl-9 order-xl-2 col-lg-9 order-lg-2 col-md-12 order-md-1 col-sm-12 col-12';
   contrainerClass = 'container';
@@ -42,6 +43,7 @@ export class ChatComponent implements OnInit, AfterViewInit {
     node.src = url;
     node.type = 'text/javascript';
     document.getElementsByTagName('head')[0].appendChild(node);
+
   }
 
   openJitsi() {
