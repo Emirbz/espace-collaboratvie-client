@@ -618,6 +618,20 @@ label .fa {
 }
 
 
+/* ------------- Sondage Modal ---------------- */
+.title-2 {
+  font-size: .875rem;
+  margin-bottom: .5rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: #515365;
+}
+
+.hover-orange:hover {
+  color: #ff5e3a
+}
+
+
 
 
 
