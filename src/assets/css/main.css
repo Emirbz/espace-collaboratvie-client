@@ -9973,23 +9973,38 @@ ol ol li {
       float: left; } }
 
 .text-t-none {
-  text-transform: none; }
+  text-transform: none;
+}
 
 @media (max-width: 480px) {
   .centered-on-mobile {
-    text-align: center; } }
+    text-align: center;
+  }
+}
 
 .no-padding {
-  padding: 0; }
+  padding: 0;
+}
+
+.padding-t-0 {
+  padding-top: 0;
+}
+
+.padding-b-0 {
+  padding-bottom: 0;
+}
 
 .padding-r-0 {
-  padding-right: 0; }
+  padding-right: 0;
+}
 
 .padding-l-0 {
-  padding-left: 0; }
+  padding-left: 0;
+}
 
 .mt50 {
-  margin-top: 50px; }
+  margin-top: 50px;
+}
 
 .no-margin {
   margin: 0; }

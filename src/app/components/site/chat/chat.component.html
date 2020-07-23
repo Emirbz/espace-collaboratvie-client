@@ -1203,7 +1203,7 @@
     </div>
   </div>
 
-  <img class="img-bottom" src="assets/img/event-bottom.png" alt="friends">
+  <img class="assets/img-bottom" src="assets/img/event-bottom.png" alt="friends">
 </div>
 
 <div [ngClass]="contrainerClass">
@@ -1279,12 +1279,10 @@
                     <div class="notification-event">
                       <span class="chat-message-item">Hi James</span>
                       <div class="user-reactions">
-                        <ul>
+                        <ul data-toggle="modal" data-target="#modal-list-reactions">
                           <!-- Reaction buttons container-->
                           <li class="reaction " data-reaction="Like"><img src="assets/img/like.png"></li>
                           <li class="reaction " data-reaction="Love"><img src="assets/img/love.png"></li>
-                          <li class="reaction " data-reaction="HaHa"><img src="assets/img/bravo.png"></li>
-                          <li class="reaction " data-reaction="Wow"><img src="assets/img/interesting.png"></li>
                           <li class="reaction"><span class="count-reaction">5</span></li>
                         </ul>
                       </div>
@@ -1305,11 +1303,8 @@
                       <div class="user-reactions">
                         <ul>
                           <!-- Reaction buttons container-->
-                          <li class="reaction " data-reaction="Like"><img src="assets/img/like.png"></li>
-                          <li class="reaction " data-reaction="Love"><img src="assets/img/love.png"></li>
-                          <li class="reaction " data-reaction="HaHa"><img src="assets/img/bravo.png"></li>
                           <li class="reaction " data-reaction="Wow"><img src="assets/img/interesting.png"></li>
-                          <span class="count-reaction">5</span>
+                          <li class="reaction"><span class="count-reaction">16</span></li>
 
                         </ul>
                       </div>
@@ -1465,14 +1460,14 @@
                 </ul>
               </div>
 
-              <form  class="comment-form inline-items" >
+              <form class="comment-form inline-items">
 
 
-                <div  class="post__author author vcard inline-items">
-                  <img  src="assets/img/author-page.jpg" alt="author">
+                <div class="post__author author vcard inline-items">
+                  <img src="assets/img/author-page.jpg" alt="author">
 
                   <div class="form-group with-icon-right is-empty">
-                    <textarea id="msgInput"  class="form-control" placeholder="Ecrire votre message ...."></textarea>
+                    <textarea id="msgInput" class="form-control" placeholder="Ecrire votre message ...."></textarea>
                     <div class="add-options-message">
                       <a href="#" class="options-message" data-toggle="modal" data-target="#update-header-photo">
                         <svg class="olymp-camera-icon">
@@ -1855,7 +1850,7 @@
               </a>
             </li>
             <li>
-              <a href="assets/img/post-photo5.jpg" >
+              <a href="assets/img/post-photo5.jpg">
                 <img src="assets/img/post-photo5.jpg" alt="photo">
               </a>
             </li>
@@ -1871,12 +1866,533 @@
 <!-- ... end Your Account Personal Information -->
 
 
-<!-- Window-popup-CHAT for responsive min-width: 768px -->
-
-
-<!-- ... end Window-popup-CHAT for responsive min-width: 768px -->
-
-
 <a class="back-to-top" href="#">
   <img src="assets/svg-icons/back-to-top.svg" alt="arrow" class="back-icon">
 </a>
+
+<!-- Window-popup REaction Reactionm -->
+
+<div class="modal fade top-15 " id="modal-list-reactions" tabindex="-1" role="dialog"
+     aria-labelledby="create-friend-group-add-friends" aria-hidden="true">
+  <div class="modal-dialog window-popup create-friend-group create-friend-group-add-friends" role="document">
+    <div class="modal-content">
+      <a href="#" class="close icon-close" data-dismiss="modal" aria-label="Close">
+        <svg class="olymp-close-icon">
+          <use xlink:href="#olymp-close-icon"></use>
+        </svg>
+      </a>
+
+      <div class="modal-header">
+        <h6 class="title">Liste des réactions</h6>
+      </div>
+
+      <div class="modal-body padding-r-0 padding-t-0">
+
+        <div class="tab_container">
+
+          <input id="tab1" type="radio" name="tabs" checked>
+          <label for="tab1" style="padding: 1.1em;font-size: 13.2px;"> Tout</label>
+
+          <input id="tab2" type="radio" name="tabs">
+          <label for="tab2" style="background-image: url('assets/img/like-48.png')">
+
+          </label>
+          <input id="tab3" type="radio" name="tabs">
+          <label for="tab3" style="background-image: url('assets/img/love-48.png')">
+          </label>
+          <input id="tab4" type="radio" name="tabs">
+          <label for="tab4" style="background-image: url('assets/img/bravo-48.png')">
+          </label>
+          <input id="tab5" type="radio" name="tabs">
+          <label for="tab5" style="background-image: url('assets/img/interesting-48.png')">
+          </label>
+          <section id="content1" class="tab-content">
+
+            <ul class="widget w-friend-pages-added notification-list friend-requests">
+              <li class="inline-items padding-reaction width-95">
+                <div class="author-thumb">
+                  <img src="assets/img/avatar38-sm.jpg" alt="author">
+                  <img class="translate" src="assets/img/love.png">
+                </div>
+                <div class="notification-event">
+                  <span class="h6 notification-friend">Francine Smith</span>
+
+                </div>
+
+              </li>
+              <li class="inline-items padding-reaction width-95">
+                <div class="author-thumb">
+                  <img src="assets/img/avatar38-sm.jpg" alt="author">
+                  <img class="translate" src="assets/img/like.png">
+                </div>
+                <div class="notification-event">
+                  <span class="h6 notification-friend">Francine Smith</span>
+
+                </div>
+
+              </li>
+              <li class="inline-items padding-reaction width-95">
+                <div class="author-thumb">
+                  <img src="assets/img/avatar38-sm.jpg" alt="author">
+                  <img class="translate" src="assets/img/interesting.png">
+                </div>
+                <div class="notification-event">
+                  <span class="h6 notification-friend">Francine Smith</span>
+
+                </div>
+
+              </li>
+              <li class="inline-items padding-reaction width-95">
+                <div class="author-thumb">
+                  <img src="assets/img/avatar38-sm.jpg" alt="author">
+                  <img class="translate" src="assets/img/bravo.png">
+                </div>
+                <div class="notification-event">
+                  <span class="h6 notification-friend">Francine Smith</span>
+
+                </div>
+
+              </li>
+              <li class="inline-items padding-reaction width-95">
+                <div class="author-thumb">
+                  <img src="assets/img/avatar38-sm.jpg" alt="author">
+                  <img class="translate" src="assets/img/love.png">
+                </div>
+                <div class="notification-event">
+                  <span class="h6 notification-friend">Francine Smith</span>
+
+                </div>
+
+              </li>
+              <li class="inline-items padding-reaction width-95">
+                <div class="author-thumb">
+                  <img src="assets/img/avatar38-sm.jpg" alt="author">
+                  <img class="translate" src="assets/img/like.png">
+                </div>
+                <div class="notification-event">
+                  <span class="h6 notification-friend">Francine Smith</span>
+
+                </div>
+
+              </li>
+              <li class="inline-items padding-reaction width-95">
+                <div class="author-thumb">
+                  <img src="assets/img/avatar38-sm.jpg" alt="author">
+                  <img class="translate" src="assets/img/interesting.png">
+                </div>
+                <div class="notification-event">
+                  <span class="h6 notification-friend">Francine Smith</span>
+
+                </div>
+
+              </li>
+              <li class="inline-items padding-reaction width-95">
+                <div class="author-thumb">
+                  <img src="assets/img/avatar38-sm.jpg" alt="author">
+                  <img class="translate" src="assets/img/bravo.png">
+                </div>
+                <div class="notification-event">
+                  <span class="h6 notification-friend">Francine Smith</span>
+
+                </div>
+
+              </li>
+
+
+            </ul>
+          </section>
+
+          <section id="content2" class="tab-content">
+            <ul class="widget w-friend-pages-added notification-list friend-requests">
+              <li class="inline-items padding-reaction width-95">
+                <div class="author-thumb">
+                  <img src="assets/img/avatar38-sm.jpg" alt="author">
+                  <img class="translate" src="assets/img/love.png">
+                </div>
+                <div class="notification-event">
+                  <span class="h6 notification-friend">Francine Smith</span>
+
+                </div>
+
+              </li>
+              <li class="inline-items padding-reaction width-95">
+                <div class="author-thumb">
+                  <img src="assets/img/avatar38-sm.jpg" alt="author">
+                  <img class="translate" src="assets/img/like.png">
+                </div>
+                <div class="notification-event">
+                  <span class="h6 notification-friend">Francine Smith</span>
+
+                </div>
+
+              </li>
+              <li class="inline-items padding-reaction width-95">
+                <div class="author-thumb">
+                  <img src="assets/img/avatar38-sm.jpg" alt="author">
+                  <img class="translate" src="assets/img/interesting.png">
+                </div>
+                <div class="notification-event">
+                  <span class="h6 notification-friend">Francine Smith</span>
+
+                </div>
+
+              </li>
+              <li class="inline-items padding-reaction width-95">
+                <div class="author-thumb">
+                  <img src="assets/img/avatar38-sm.jpg" alt="author">
+                  <img class="translate" src="assets/img/bravo.png">
+                </div>
+                <div class="notification-event">
+                  <span class="h6 notification-friend">Francine Smith</span>
+
+                </div>
+
+              </li>
+              <li class="inline-items padding-reaction width-95">
+                <div class="author-thumb">
+                  <img src="assets/img/avatar38-sm.jpg" alt="author">
+                  <img class="translate" src="assets/img/love.png">
+                </div>
+                <div class="notification-event">
+                  <span class="h6 notification-friend">Francine Smith</span>
+
+                </div>
+
+              </li>
+              <li class="inline-items padding-reaction width-95">
+                <div class="author-thumb">
+                  <img src="assets/img/avatar38-sm.jpg" alt="author">
+                  <img class="translate" src="assets/img/like.png">
+                </div>
+                <div class="notification-event">
+                  <span class="h6 notification-friend">Francine Smith</span>
+
+                </div>
+
+              </li>
+              <li class="inline-items padding-reaction width-95">
+                <div class="author-thumb">
+                  <img src="assets/img/avatar38-sm.jpg" alt="author">
+                  <img class="translate" src="assets/img/interesting.png">
+                </div>
+                <div class="notification-event">
+                  <span class="h6 notification-friend">Francine Smith</span>
+
+                </div>
+
+              </li>
+              <li class="inline-items padding-reaction width-95">
+                <div class="author-thumb">
+                  <img src="assets/img/avatar38-sm.jpg" alt="author">
+                  <img class="translate" src="assets/img/bravo.png">
+                </div>
+                <div class="notification-event">
+                  <span class="h6 notification-friend">Francine Smith</span>
+
+                </div>
+
+              </li>
+
+
+            </ul>
+
+
+          </section>
+
+          <section id="content3" class="tab-content">
+            <ul class="widget w-friend-pages-added notification-list friend-requests">
+              <li class="inline-items padding-reaction width-95">
+                <div class="author-thumb">
+                  <img src="assets/img/avatar38-sm.jpg" alt="author">
+                  <img class="translate" src="assets/img/love.png">
+                </div>
+                <div class="notification-event">
+                  <span class="h6 notification-friend">Francine Smith</span>
+
+                </div>
+
+              </li>
+              <li class="inline-items padding-reaction width-95">
+                <div class="author-thumb">
+                  <img src="assets/img/avatar38-sm.jpg" alt="author">
+                  <img class="translate" src="assets/img/like.png">
+                </div>
+                <div class="notification-event">
+                  <span class="h6 notification-friend">Francine Smith</span>
+
+                </div>
+
+              </li>
+              <li class="inline-items padding-reaction width-95">
+                <div class="author-thumb">
+                  <img src="assets/img/avatar38-sm.jpg" alt="author">
+                  <img class="translate" src="assets/img/interesting.png">
+                </div>
+                <div class="notification-event">
+                  <span class="h6 notification-friend">Francine Smith</span>
+
+                </div>
+
+              </li>
+              <li class="inline-items padding-reaction width-95">
+                <div class="author-thumb">
+                  <img src="assets/img/avatar38-sm.jpg" alt="author">
+                  <img class="translate" src="assets/img/bravo.png">
+                </div>
+                <div class="notification-event">
+                  <span class="h6 notification-friend">Francine Smith</span>
+
+                </div>
+
+              </li>
+              <li class="inline-items padding-reaction width-95">
+                <div class="author-thumb">
+                  <img src="assets/img/avatar38-sm.jpg" alt="author">
+                  <img class="translate" src="assets/img/love.png">
+                </div>
+                <div class="notification-event">
+                  <span class="h6 notification-friend">Francine Smith</span>
+
+                </div>
+
+              </li>
+              <li class="inline-items padding-reaction width-95">
+                <div class="author-thumb">
+                  <img src="assets/img/avatar38-sm.jpg" alt="author">
+                  <img class="translate" src="assets/img/like.png">
+                </div>
+                <div class="notification-event">
+                  <span class="h6 notification-friend">Francine Smith</span>
+
+                </div>
+
+              </li>
+              <li class="inline-items padding-reaction width-95">
+                <div class="author-thumb">
+                  <img src="assets/img/avatar38-sm.jpg" alt="author">
+                  <img class="translate" src="assets/img/interesting.png">
+                </div>
+                <div class="notification-event">
+                  <span class="h6 notification-friend">Francine Smith</span>
+
+                </div>
+
+              </li>
+              <li class="inline-items padding-reaction width-95">
+                <div class="author-thumb">
+                  <img src="assets/img/avatar38-sm.jpg" alt="author">
+                  <img class="translate" src="assets/img/bravo.png">
+                </div>
+                <div class="notification-event">
+                  <span class="h6 notification-friend">Francine Smith</span>
+
+                </div>
+
+              </li>
+
+
+            </ul>
+
+          </section>
+
+          <section id="content4" class="tab-content">
+            <ul class="widget w-friend-pages-added notification-list friend-requests">
+              <li class="inline-items padding-reaction width-95">
+                <div class="author-thumb">
+                  <img src="assets/img/avatar38-sm.jpg" alt="author">
+                  <img class="translate" src="assets/img/love.png">
+                </div>
+                <div class="notification-event">
+                  <span class="h6 notification-friend">Francine Smith</span>
+
+                </div>
+
+              </li>
+              <li class="inline-items padding-reaction width-95">
+                <div class="author-thumb">
+                  <img src="assets/img/avatar38-sm.jpg" alt="author">
+                  <img class="translate" src="assets/img/like.png">
+                </div>
+                <div class="notification-event">
+                  <span class="h6 notification-friend">Francine Smith</span>
+
+                </div>
+
+              </li>
+              <li class="inline-items padding-reaction width-95">
+                <div class="author-thumb">
+                  <img src="assets/img/avatar38-sm.jpg" alt="author">
+                  <img class="translate" src="assets/img/interesting.png">
+                </div>
+                <div class="notification-event">
+                  <span class="h6 notification-friend">Francine Smith</span>
+
+                </div>
+
+              </li>
+              <li class="inline-items padding-reaction width-95">
+                <div class="author-thumb">
+                  <img src="assets/img/avatar38-sm.jpg" alt="author">
+                  <img class="translate" src="assets/img/bravo.png">
+                </div>
+                <div class="notification-event">
+                  <span class="h6 notification-friend">Francine Smith</span>
+
+                </div>
+
+              </li>
+              <li class="inline-items padding-reaction width-95">
+                <div class="author-thumb">
+                  <img src="assets/img/avatar38-sm.jpg" alt="author">
+                  <img class="translate" src="assets/img/love.png">
+                </div>
+                <div class="notification-event">
+                  <span class="h6 notification-friend">Francine Smith</span>
+
+                </div>
+
+              </li>
+              <li class="inline-items padding-reaction width-95">
+                <div class="author-thumb">
+                  <img src="assets/img/avatar38-sm.jpg" alt="author">
+                  <img class="translate" src="assets/img/like.png">
+                </div>
+                <div class="notification-event">
+                  <span class="h6 notification-friend">Francine Smith</span>
+
+                </div>
+
+              </li>
+              <li class="inline-items padding-reaction width-95">
+                <div class="author-thumb">
+                  <img src="assets/img/avatar38-sm.jpg" alt="author">
+                  <img class="translate" src="assets/img/interesting.png">
+                </div>
+                <div class="notification-event">
+                  <span class="h6 notification-friend">Francine Smith</span>
+
+                </div>
+
+              </li>
+              <li class="inline-items padding-reaction width-95">
+                <div class="author-thumb">
+                  <img src="assets/img/avatar38-sm.jpg" alt="author">
+                  <img class="translate" src="assets/img/bravo.png">
+                </div>
+                <div class="notification-event">
+                  <span class="h6 notification-friend">Francine Smith</span>
+
+                </div>
+
+              </li>
+
+
+            </ul>
+
+          </section>
+
+          <section id="content5" class="tab-content">
+            <ul class="widget w-friend-pages-added notification-list friend-requests">
+              <li class="inline-items padding-reaction width-95">
+                <div class="author-thumb">
+                  <img src="assets/img/avatar38-sm.jpg" alt="author">
+                  <img class="translate" src="assets/img/love.png">
+                </div>
+                <div class="notification-event">
+                  <span class="h6 notification-friend">Francine Smith</span>
+
+                </div>
+
+              </li>
+              <li class="inline-items padding-reaction width-95">
+                <div class="author-thumb">
+                  <img src="assets/img/avatar38-sm.jpg" alt="author">
+                  <img class="translate" src="assets/img/like.png">
+                </div>
+                <div class="notification-event">
+                  <span class="h6 notification-friend">Francine Smith</span>
+
+                </div>
+
+              </li>
+              <li class="inline-items padding-reaction width-95">
+                <div class="author-thumb">
+                  <img src="assets/img/avatar38-sm.jpg" alt="author">
+                  <img class="translate" src="assets/img/interesting.png">
+                </div>
+                <div class="notification-event">
+                  <span class="h6 notification-friend">Francine Smith</span>
+
+                </div>
+
+              </li>
+              <li class="inline-items padding-reaction width-95">
+                <div class="author-thumb">
+                  <img src="assets/img/avatar38-sm.jpg" alt="author">
+                  <img class="translate" src="assets/img/bravo.png">
+                </div>
+                <div class="notification-event">
+                  <span class="h6 notification-friend">Francine Smith</span>
+
+                </div>
+
+              </li>
+              <li class="inline-items padding-reaction width-95">
+                <div class="author-thumb">
+                  <img src="assets/img/avatar38-sm.jpg" alt="author">
+                  <img class="translate" src="assets/img/love.png">
+                </div>
+                <div class="notification-event">
+                  <span class="h6 notification-friend">Francine Smith</span>
+
+                </div>
+
+              </li>
+              <li class="inline-items padding-reaction width-95">
+                <div class="author-thumb">
+                  <img src="assets/img/avatar38-sm.jpg" alt="author">
+                  <img class="translate" src="assets/img/like.png">
+                </div>
+                <div class="notification-event">
+                  <span class="h6 notification-friend">Francine Smith</span>
+
+                </div>
+
+              </li>
+              <li class="inline-items padding-reaction width-95">
+                <div class="author-thumb">
+                  <img src="assets/img/avatar38-sm.jpg" alt="author">
+                  <img class="translate" src="assets/img/interesting.png">
+                </div>
+                <div class="notification-event">
+                  <span class="h6 notification-friend">Francine Smith</span>
+
+                </div>
+
+              </li>
+              <li class="inline-items padding-reaction width-95">
+                <div class="author-thumb">
+                  <img src="assets/img/avatar38-sm.jpg" alt="author">
+                  <img class="translate" src="assets/img/bravo.png">
+                </div>
+                <div class="notification-event">
+                  <span class="h6 notification-friend">Francine Smith</span>
+
+                </div>
+
+              </li>
+
+
+            </ul>
+          </section>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ... end Window-popup reaction -->
+
+
