@@ -414,12 +414,104 @@
   }
 }
 
-/* --------- Sondages récents DIV ------------- */
-.sondage
-{
-  overflow-y: scroll;
-  max-height: 277px;
+/* common */
+.loading {
+  font-size: 22px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  text-align: center;
+  bottom: 0;
 }
+
+.loading span {
+  display: inline-block;
+  margin: 0 -0.05em;
+}
+
+/* code #7 */
+.loading07 span {
+  position: relative;
+  color: rgba(94, 94, 94, 0.2);
+}
+
+.loading07 span::after {
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  content: attr(data-text);
+  color: #07D8BB;
+  opacity: 0;
+  transform: scale(1.5);
+  animation: loading07 3s infinite;
+}
+
+.loading07 span:nth-child(2)::after {
+  animation-delay: 0.1s;
+}
+
+.loading07 span:nth-child(3)::after {
+  animation-delay: 0.2s;
+}
+
+.loading07 span:nth-child(4)::after {
+  animation-delay: 0.3s;
+}
+
+.loading07 span:nth-child(5)::after {
+  animation-delay: 0.4s;
+}
+
+.loading07 span:nth-child(6)::after {
+  animation-delay: 0.5s;
+}
+
+.loading07 span:nth-child(7)::after {
+  animation-delay: 0.6s;
+}
+
+.loading07 span:nth-child(8)::after {
+  animation-delay: 0.7s;
+}
+
+.loading07 span:nth-child(9)::after {
+  animation-delay: 0.8s;
+}
+
+.loading07 span:nth-child(10)::after {
+  animation-delay: 0.9s;
+}
+
+.loading07 span:nth-child(11)::after {
+  animation-delay: 1s;
+}
+
+.loading07 span:nth-child(12)::after {
+  animation-delay: 1.1s;
+}
+
+.loading07 span:nth-child(13)::after {
+  animation-delay: 1.2s;
+}
+
+@keyframes loading07 {
+  0%, 75%, 100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+  25%, 50% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+
+/* --------- Sondages récents DIV ------------- */
+.sondage {
+  overflow-y: scroll;
+  max-height: 318px;
+}
+
 ::-webkit-scrollbar {
   width: 7px;
 }
@@ -457,18 +549,15 @@
   clear: both;
 }
 
-body {
-  font-family: sans-serif;
-  background: #f6f9fa;
-}
+
 
 h1 {
-  color: #ccc;
+
   text-align: center;
 }
 
 a {
-  color: #ccc;
+  /* color: #ccc;*/
   text-decoration: none;
   outline: none;
 }
@@ -480,7 +569,7 @@ a {
   position: relative;
 }
 
-input, section {
+.tab_container input, section {
   clear: both;
   padding-top: 10px;
   display: none;
@@ -630,6 +719,139 @@ label .fa {
 .hover-orange:hover {
   color: #ff5e3a
 }
+
+
+/* --------- Parametres Jitsi ------------- */
+
+* {
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+*:focus {
+  outline: none;
+}
+
+
+.button-cover, .knobs, .layer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.button {
+  position: relative;
+  top: 50%;
+  width: 73px;
+  height: 33px;
+  margin: -20px auto 0 auto;
+  overflow: hidden;
+}
+
+.button.r, .button.r .layer {
+  border-radius: 100px;
+}
+
+.button.b2 {
+  border-radius: 2px;
+}
+
+.checkbox {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 3;
+}
+
+.knobs {
+  z-index: 2;
+}
+
+.layer {
+  width: 100%;
+  background-color: #ebf7fc;
+  transition: 0.3s ease all;
+  z-index: 1;
+}
+
+.margin-top-50 {
+  margin-top: 50px;
+}
+
+.margin-left-100 {
+  margin-left: 100px;
+}
+
+.margin-top-20 {
+  margin-top: 19px;
+}
+
+
+/* Button 3 */
+.button-3 .knobs:before {
+  content: 'Non';
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 26px;
+  height: 25px;
+  color: #fff;
+  font-size: 10px;
+  font-weight: bold;
+  text-align: center;
+  line-height: 1;
+  padding: 9px 4px;
+  background-color: #F44336;
+  border-radius: 50%;
+  transition: 0.3s ease all, left 0.3s;
+}
+
+.button-3 .checkbox:active + .knobs:before {
+  width: 46px;
+  border-radius: 100px;
+}
+
+.button-3 .checkbox:checked:active + .knobs:before {
+  margin-left: -26px;
+}
+
+.button-3 .checkbox:checked + .knobs:before {
+  content: 'Oui';
+  left: 42px;
+  background-color: #03A9F4;
+
+}
+
+.button-3 .checkbox ~ .layer {
+  background-color: #fcebeb;
+}
+
+.button-3 .checkbox:checked ~ .layer {
+  background-color: #c9ebff;
+}
+
+/* ------------- Modal Sondages ---------------- */
+.margin-b-0 {
+  margin-bottom: 0;
+}
+
+.padding-sondage-title {
+  padding-left: 42px;
+  padding-bottom: 11px;
+}
+
+.img-sondage {
+  height: 32px;
+  width: 32px;
+}
+
+
 
 
 

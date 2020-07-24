@@ -1,6 +1,10 @@
 import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import * as JitsiMeetExternalAPI from '../../../../assets/js/Jitsi/external_api';
-import set = Reflect.set;
+import {FormBuilder, FormGroup} from '@angular/forms';
+import Room from '../../../models/Room';
+import {ActivatedRoute} from '@angular/router';
+import {RoomService} from '../../../services/room.service';
+import {ChatService} from '../../../services/chat.service';
 
 
 @Component({
@@ -9,7 +13,7 @@ import set = Reflect.set;
   styleUrls: ['./chat.component.css']
 })
 export class ChatComponent implements OnInit, AfterViewInit {
-  @ViewChild('msgInput',  {static: false}) msgInput: ElementRef;
+  @ViewChild('msgInput', {static: false}) msgInput: ElementRef;
   leftBarClass = 'col col-xl-3 order-xl-1 col-lg-3 order-lg-1 col-md-12 order-md-2 col-sm-12 col-12 responsive-display-none';
   rightBarClass = 'col col-xl-9 order-xl-2 col-lg-9 order-lg-2 col-md-12 order-md-1 col-sm-12 col-12';
   contrainerClass = 'container';
@@ -22,20 +26,27 @@ export class ChatComponent implements OnInit, AfterViewInit {
   loaderClass = 'flexbox col col-xl-3 order-xl-3 col-lg-9 order-lg-2 col-md-12 order-md-1 col-sm-12 col-12';
   loaderHidden = true;
   videoCallHidden = false;
+  jitsiFormGroup: FormGroup;
+  room: Room;
 
 
   ngAfterViewInit() {
-
-
   }
 
-  constructor() {
+  constructor(private formBuilder: FormBuilder,
+              private route: ActivatedRoute,
+              private roomService: RoomService,
+              private chatService: ChatService
+  ) {
 
   }
 
   ngOnInit() {
+    this.loadRoom();
+
     this.loadScript('assets/js/main.js');
     this.loadScript('assets/js/libs-init/libs-init.js');
+    this.jitsiFormValidate();
   }
 
   public loadScript(url) {
@@ -44,17 +55,34 @@ export class ChatComponent implements OnInit, AfterViewInit {
     node.type = 'text/javascript';
     document.getElementsByTagName('head')[0].appendChild(node);
 
+
+  }
+
+  jitsiFormValidate() {
+    this.jitsiFormGroup = this.formBuilder.group({
+      video: [false],
+      micro: [false]
+    });
+
   }
 
   openJitsi() {
-    this.changeClassesJitsi('JOIN');
     this.options = {
       roomName: 'JitsiMeetAPIExampleX',
       width: 1050,
       height: 770,
       parentNode: document.querySelector('#jitsi')
     };
+    // @ts-ignore
+    $('#modal-jitsi').modal('toggle');
     this.apiJitsi = new JitsiMeetExternalAPI(this.domain, this.options);
+
+    if (!this.jitsiFormGroup.value.video) {
+      this.apiJitsi.executeCommand('toggleVideo');
+    }
+    if (!this.jitsiFormGroup.value.micro) {
+      this.apiJitsi.executeCommand('toggleAudio');
+    }
     this.apiJitsi.addEventListener('videoConferenceJoined', () => {
       this.loaderClass = 'flexbox col col-xl-3 order-xl-3 col-lg-9 order-lg-2 col-md-12 order-md-1 col-sm-12 col-12 animated bounceOutUp';
       setTimeout(() => {
@@ -69,6 +97,9 @@ export class ChatComponent implements OnInit, AfterViewInit {
       document.querySelector('#jitsi').innerHTML = '';
 
     });
+    setTimeout(() => {
+      this.changeClassesJitsi('JOIN');
+    }, 300);
 
 
   }
@@ -98,5 +129,13 @@ export class ChatComponent implements OnInit, AfterViewInit {
     }
 
 
+  }
+
+
+  loadRoom() {
+    const id = this.route.snapshot.paramMap.get('id');
+    this.roomService.getRoom(id).subscribe(room => {
+      this.room = room;
+    });
   }
 }
