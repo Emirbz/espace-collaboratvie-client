@@ -70,16 +70,23 @@
   opacity: 1;
 }
 
-.box {
-  top: 0.35em;
+.notification-event:hover ~ .box {
   display: inline-block;
+  /* @TODO Display icon reaction */
+}
+
+.box {
+  display: none;
+  top: 0.35em;
+
   position: relative;
-  margin-left: 10px;
+  margin-left: 3px;
 
 }
 .sender .box {
   float: right;
   margin-left: 0;
+  margin-right: -9px;
 }
 
 .overlay {
@@ -116,11 +123,17 @@
   width: 14em;
   border-radius: 40px;
   top: 7%;
-  right: 91%;
+  right: unset;
+  left: 100%;
   position: absolute;
   visibility: hidden;
   opacity: 1;
   transition: opacity .15s;
+}
+
+.sender .toolbox {
+  left: unset;
+  right: 91%;
 }
 
 
@@ -217,29 +230,53 @@
 }
 
 
+.sender .reaction-like {
+  left: -182px;
+  top: 27px;
+  background-position: 0 -144px;
+}
 
 .reaction-like {
-  left: -182px;
-  top:27px;
+  left: 26px;
+  top: 26px;
   background-position: 0 -144px;
+}
+
+
+.sender .reaction-love {
+  background-position: -48px 0;
+  left: -136px;
+  top: 27px;
 }
 
 .reaction-love {
   background-position: -48px 0;
-  left: -136px;
-  top:27px;
+  left: 72px;
+  top: 26px;
+}
+
+.sender .reaction-haha {
+  background-position: -96px 0;
+  left: -91px;
+  top: 27px;
 }
 
 .reaction-haha {
   background-position: -96px 0;
-  left: -91px;
-  top:27px;
+  left: 118px;
+  top: 26px;
+}
+
+.sender .reaction-wow {
+  background-position: -144px 0;
+  left: -43px;
+  top: 27px;
 }
 
 .reaction-wow {
   background-position: -144px 0;
-  left: -46px;
-  top:27px;
+  left: 166px;
+  top: 26px;
 }
 
 .user-reactions {
@@ -247,7 +284,7 @@
   background: #fff;
   height: 2em;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08), 0 2px 2px rgba(0, 0, 0, 0.15);
-  width:auto;
+  width: auto;
   border-radius: 40px;
   position: absolute;
   opacity: 1;
@@ -849,6 +886,22 @@ label .fa {
 .img-sondage {
   height: 32px;
   width: 32px;
+}
+
+/*  ------------ Messages ------------ */
+.img-user {
+  height: 32px;
+  width: 32px;
+}
+
+.author-thumb .img-user {
+  height: 36px;
+  width: 36px;
+}
+
+.min-width-7 {
+  min-width: 7%;
+
 }
 
 

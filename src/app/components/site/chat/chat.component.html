@@ -1245,7 +1245,7 @@
     <div [ngClass]="rightBarClass">
       <div class="ui-block">
         <div class="ui-block-title">
-          <h6 class="title">{{room?.name | titlecase}}</h6>
+          <h6 class="title">{{loadedRoom?.name | titlecase}}</h6>
           <a class="more" [hidden]="videoCallHidden" href="#" data-toggle="modal" data-target="#modal-jitsi">
 
             <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
@@ -1290,39 +1290,29 @@
             <div class="chat-field">
               <div class="mCustomScrollbarNew popup-chat" style="overflow-y: scroll" data-mcs-theme="dark">
                 <ul class="notification-list chat-message chat-message-field">
-                  <li class="sender">
+
+
+                  <li *ngFor="let m of loadedMessages"
+                      [ngClass]="staticUserId == m?.user?.id ? 'sender user-msg': 'user-msg'">
                     <div class="author-thumb">
-                      <img src="assets/img/avatar10-sm.jpg" alt="author">
+                      <img class="img-user" [src]="m?.user?.image" alt="author">
                     </div>
-                    <div class="notification-event">
-                      <span class="chat-message-item">Hi James</span>
-                      <div class="user-reactions">
-                        <ul data-toggle="modal" data-target="#modal-list-reactions">
-                          <!-- Reaction buttons container-->
-                          <li class="reaction " data-reaction="Like"><img src="assets/img/like.png"></li>
-                          <li class="reaction " data-reaction="Love"><img src="assets/img/love.png"></li>
-                          <li class="reaction"><span class="count-reaction">5</span></li>
-                        </ul>
-                      </div>
-                    </div>
+                    <div class="notification-event min-width-7 ">
 
-                  </li>
-
-                  <li class="sender">
-                    <div class="author-thumb">
-                      <img src="assets/img/author-page.jpg" alt="author">
-                    </div>
-                    <div class="notification-event">
-
-                      <span class="chat-message-item">Hi Elaine! I have a question, do you think that tomorrow we could talk to
-																	the client to iron out some details before the presentation? I already finished the first screen but
-																	I need to ask him something before moving on. Anyway, here’s a preview!
+                      <span class="chat-message-item">{{m?.body}}
 																</span>
-                      <div class="user-reactions">
-                        <ul>
+                      <div *ngIf="m?.reactions?.length>0 " class="user-reactions">
+                        <ul data-toggle="modal" data-target="#modal-list-reactions" (click)="openModalReaction(m)">
                           <!-- Reaction buttons container-->
-                          <li class="reaction " data-reaction="Wow"><img src="assets/img/interesting.png"></li>
-                          <li class="reaction"><span class="count-reaction">16</span></li>
+                          <li *ngIf="checkReactionsExists(m,'LIKE')" class="reaction"><img src="assets/img/like.png">
+                          </li>
+                          <li *ngIf="checkReactionsExists(m,'LOVE')" class="reaction"><img src="assets/img/love.png">
+                          </li>
+                          <li *ngIf="checkReactionsExists(m,'INTERESTING')" class="reaction"><img
+                            src="assets/img/interesting.png"></li>
+                          <li *ngIf="checkReactionsExists(m,'BRAVO')" class="reaction"><img src="assets/img/bravo.png">
+                          </li>
+                          <li class="reaction"><span class="count-reaction">{{m?.reactions?.length}}</span></li>
 
                         </ul>
                       </div>
@@ -1366,115 +1356,10 @@
                     </div>
                     <!-- End Make Reaction -->
                   </li>
-                  <li class="sender">
-                    <div class="author-thumb">
-                      <img src="assets/img/author-page.jpg" alt="author">
-                    </div>
 
-                    <div class="notification-event">
 
-                      <span class="chat-message-item">Hi Elaine! I have a question, do you think that tomorrow we could talk to
-																	the client to iron out some details before the presentation? I already finished the first screen but
-																	I need to ask him something before moving on. Anyway, here’s a preview!
-																</span>
 
-                    </div>
-                  </li>
 
-                  <li>
-                    <div class="author-thumb">
-                      <img src="assets/img/avatar10-sm.jpg" alt="author">
-                    </div>
-                    <div class="notification-event">
-
-                      <span class="chat-message-item">We’ll have to check that at the office and see if the client is on board with it. I think That looks really good!</span>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="author-thumb">
-                      <img src="assets/img/avatar10-sm.jpg" alt="author">
-                    </div>
-                    <div class="notification-event">
-
-                      <span class="chat-message-item">We’ll have to check that at the office and see if the client is on board with it. I think That looks really good!</span>
-                    </div>
-                    <div class="box">
-                      <input type="checkbox" id="like" class="field-reactions">
-                      <a class="label-reactions">
-                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
-                             width="25" height="25"
-                             viewBox="0 0 172 172"
-                             style=" fill:#4a90e2;">
-                          <g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt"
-                             stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0"
-                             font-family="none" font-size="none"
-                             style="mix-blend-mode: normal">
-                            <path d="M0,172v-172h172v172z" fill="none"></path>
-                            <g>
-                              <path
-                                d="M157.66667,86c0,39.41667 -32.25,71.66667 -71.66667,71.66667c-39.41667,0 -71.66667,-32.25 -71.66667,-71.66667c0,-39.41667 32.25,-71.66667 71.66667,-71.66667c39.41667,0 71.66667,32.25 71.66667,71.66667z"
-                                fill="#c8c8c8"></path>
-                              <path
-                                d="M103.91667,114.66667c0,10.03333 -7.88333,17.91667 -17.91667,17.91667c-10.03333,0 -17.91667,-7.88333 -17.91667,-17.91667z"
-                                fill="#ffffff"></path>
-                              <path
-                                d="M49.45,88.15l-5.73333,-4.3c0.35833,-0.35833 6.45,-8.6 17.2,-8.6c10.75,0 16.84167,8.24167 17.2,8.6l-5.73333,4.3c0,0 -4.65833,-5.73333 -11.46667,-5.73333c-6.80833,0 -11.46667,5.73333 -11.46667,5.73333zM99.61667,88.15l-5.73333,-4.3c0.35833,-0.35833 6.45,-8.6 17.2,-8.6c10.75,0 16.84167,8.24167 17.2,8.6l-5.73333,4.3c0,0 -4.65833,-5.73333 -11.46667,-5.73333c-6.80833,0 -11.46667,5.73333 -11.46667,5.73333z"
-                                fill="#ffffff"></path>
-                            </g>
-                          </g>
-                        </svg>
-                      </a>
-                      <div class="toolbox"></div>
-                      <label class="overlay" for="like"></label>
-                      <button class="reaction-like"><span class="legend-reaction">Like</span></button>
-                      <button class="reaction-love"><span class="legend-reaction">Love</span></button>
-                      <button class="reaction-haha"><span class="legend-reaction">BRAVO</span></button>
-                      <button class="reaction-wow"><span style="width: 84px;max-width: 177%" class="legend-reaction">INTERESTING</span>
-                      </button>
-
-                    </div>
-                  </li>
-                  <li>
-                    <div class="author-thumb">
-                      <img src="assets/img/avatar10-sm.jpg" alt="author">
-                    </div>
-                    <div class="notification-event">
-
-                      <span class="chat-message-item">We’ll have to check that at the office and see if the client is on board with it. I think That looks really good!</span>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="author-thumb">
-                      <img src="assets/img/avatar10-sm.jpg" alt="author">
-                    </div>
-                    <div class="notification-event">
-
-                      <span class="chat-message-item ">We’ll have to check that at the office and see if the client is on board with it. I think That looks really good!</span>
-                      <div class="user-reactions">
-                        <ul>
-                          <!-- Reaction buttons container-->
-                          <li class="reaction " data-reaction="Like"><img src="assets/img/like.png"></li>
-                          <li class="reaction " data-reaction="Love"><img src="assets/img/love.png"></li>
-                          <li class="reaction " data-reaction="HaHa"><img src="assets/img/bravo.png"></li>
-                          <li class="reaction " data-reaction="Wow"><img src="assets/img/interesting.png"></li>
-                          <li class="reaction"><span class="count-reaction">5</span></li>
-                        </ul>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="sender">
-                    <div class="author-thumb">
-                      <img src="assets/img/author-page.jpg" alt="author">
-                    </div>
-                    <div class="notification-event">
-
-                      <span class="chat-message-item">Hi Elaine! I have a question, do you think that tomorrow we could talk to
-																	the client to iron out some details before the presentation? I already finished the first screen but
-																	I need to ask him something before moving on. Anyway, here’s a preview!
-																</span>
-
-                    </div>
-                  </li>
                 </ul>
               </div>
 
@@ -1519,7 +1404,7 @@
     <div [ngClass]="leftBarClass">
       <div class="ui-block">
         <div class="ui-block-title">
-          <h6 class="title">Collaborateurs ({{room?.users.length}})</h6>
+          <h6 class="title">Collaborateurs ({{loadedRoom?.users.length}})</h6>
           <a href="#" class="more">
             <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
                  width="22" height="22"
@@ -1542,15 +1427,15 @@
           <!-- W-Faved-Page -->
 
           <ul class="widget w-faved-page js-zoom-gallery">
-            <li *ngFor="let u of room?.users  | slice:0:5">
+            <li *ngFor="let u of loadedRoom?.users  | slice:0:5">
               <a href="#">
                 <img [src]="u?.image" alt="author">
               </a>
             </li>
 
 
-            <li *ngIf="room?.users?.length>6" class="all-users">
-              <a class="c-white" href="#">+{{room?.users?.length - 5}}</a>
+            <li *ngIf="loadedRoom?.users?.length>6" class="all-users">
+              <a class="c-white" href="#">+{{loadedRoom?.users?.length - 5}}</a>
             </li>
           </ul>
 
@@ -1596,16 +1481,16 @@
 
           <ul class="widget w-pool">
             <li>
-              <p>If you had to choose, which actor do you prefer to be the next Darkman? </p>
+              <p>{{loadedSondages[0]?.body}}</p>
             </li>
-            <li>
+            <li *ngFor="let c of loadedSondages[0]?.choix">
               <div class="skills-item">
                 <div class="skills-item-info">
 									<span class="skills-item-title">
 										<span class="radio">
 											<label>
 												<input type="radio" name="optionsRadios"><span class="circle"></span><span class="check"></span>
-												Thomas Bale
+                        {{c?.body}}
 											</label>
 										</span>
 									</span>
@@ -1620,54 +1505,20 @@
                         style="width: 62%; opacity: 1;"></span>
                 </div>
 
-                <div class="counter-friends">12 friends voted for this</div>
+                <div *ngIf="c?.users.length==1"
+                     class="counter-friends">{{c?.users[0]?.firstName}} {{c?.users[0]?.lastName}} a voté pour cela
+                </div>
+                <div *ngIf="c?.users.length>1" class="counter-friends">{{c?.users?.length}} Collaborateurs ont voté pour
+                  cela
+                </div>
 
                 <ul class="friends-harmonic">
-                  <li>
+                  <li *ngFor="let u of c?.users">
                     <a href="#">
-                      <img src="assets/img/friend-harmonic1.jpg" alt="friend">
+                      <img [src]="u?.image" alt="friend">
                     </a>
                   </li>
-                  <li>
-                    <a href="#">
-                      <img src="assets/img/friend-harmonic2.jpg" alt="friend">
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <img src="assets/img/friend-harmonic3.jpg" alt="friend">
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <img src="assets/img/friend-harmonic4.jpg" alt="friend">
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <img src="assets/img/friend-harmonic5.jpg" alt="friend">
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <img src="assets/img/friend-harmonic6.jpg" alt="friend">
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <img src="assets/img/friend-harmonic7.jpg" alt="friend">
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <img src="assets/img/friend-harmonic8.jpg" alt="friend">
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <img src="assets/img/friend-harmonic9.jpg" alt="friend">
-                    </a>
-                  </li>
+
                   <li>
                     <a href="#" class="all-users">+3</a>
                   </li>
@@ -1675,107 +1526,6 @@
               </div>
             </li>
 
-            <li>
-              <div class="skills-item">
-                <div class="skills-item-info">
-									<span class="skills-item-title">
-										<span class="radio">
-											<label>
-												<input type="radio" name="optionsRadios"><span class="circle"></span><span class="check"></span>
-												Ben Robertson
-											</label>
-										</span>
-									</span>
-                  <span class="skills-item-count">
-										<span class="count-animate" data-speed="1000" data-refresh-interval="50" data-to="27"
-                          data-from="0"></span>
-										<span class="units">27%</span>
-									</span>
-                </div>
-                <div class="skills-item-meter">
-                  <span class="skills-item-meter-active bg-primary skills-animate"
-                        style="width: 27%; opacity: 1;"></span>
-                </div>
-                <div class="counter-friends">7 friends voted for this</div>
-
-                <ul class="friends-harmonic">
-                  <li>
-                    <a href="#">
-                      <img src="assets/img/friend-harmonic7.jpg" alt="friend">
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <img src="assets/img/friend-harmonic8.jpg" alt="friend">
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <img src="assets/img/friend-harmonic9.jpg" alt="friend">
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <img src="assets/img/friend-harmonic10.jpg" alt="friend">
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <img src="assets/img/friend-harmonic11.jpg" alt="friend">
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <img src="assets/img/friend-harmonic12.jpg" alt="friend">
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <img src="assets/img/friend-harmonic13.jpg" alt="friend">
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </li>
-
-            <li>
-              <div class="skills-item">
-                <div class="skills-item-info">
-									<span class="skills-item-title">
-										<span class="radio">
-											<label>
-												<input type="radio" name="optionsRadios"><span class="circle"></span><span class="check"></span>
-												Michael Streiton
-											</label>
-										</span>
-									</span>
-                  <span class="skills-item-count">
-										<span class="count-animate" data-speed="1000" data-refresh-interval="50" data-to="11"
-                          data-from="0"></span>
-										<span class="units">11%</span>
-									</span>
-                </div>
-                <div class="skills-item-meter">
-                  <span class="skills-item-meter-active bg-primary skills-animate"
-                        style="width: 11%; opacity: 1;"></span>
-                </div>
-
-                <div class="counter-friends">2 people voted for this</div>
-
-                <ul class="friends-harmonic">
-                  <li>
-                    <a href="#">
-                      <img src="assets/img/friend-harmonic14.jpg" alt="friend">
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <img src="assets/img/friend-harmonic15.jpg" alt="friend">
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </li>
           </ul>
 
           <!-- .. end W-Pool -->
@@ -1878,94 +1628,18 @@
           <section id="content1" class="tab-content">
 
             <ul class="widget w-friend-pages-added notification-list friend-requests">
-              <li class="inline-items padding-reaction width-95">
+              <li *ngFor="let r of selectedMessage?.reactions" class="inline-items padding-reaction width-95">
                 <div class="author-thumb">
-                  <img src="assets/img/avatar38-sm.jpg" alt="author">
-                  <img class="translate" src="assets/img/love.png">
+                  <img class="img-user" [src]="r?.user?.image" alt="author">
+                  <img class="translate" [src]="'assets/img/'+(r.type.toLowerCase())+'.png'">
                 </div>
                 <div class="notification-event">
-                  <span class="h6 notification-friend">Francine Smith</span>
+                  <span class="h6 notification-friend">{{r?.user?.firstName}} {{r?.user?.lastName}}</span>
 
                 </div>
 
               </li>
-              <li class="inline-items padding-reaction width-95">
-                <div class="author-thumb">
-                  <img src="assets/img/avatar38-sm.jpg" alt="author">
-                  <img class="translate" src="assets/img/like.png">
-                </div>
-                <div class="notification-event">
-                  <span class="h6 notification-friend">Francine Smith</span>
 
-                </div>
-
-              </li>
-              <li class="inline-items padding-reaction width-95">
-                <div class="author-thumb">
-                  <img src="assets/img/avatar38-sm.jpg" alt="author">
-                  <img class="translate" src="assets/img/interesting.png">
-                </div>
-                <div class="notification-event">
-                  <span class="h6 notification-friend">Francine Smith</span>
-
-                </div>
-
-              </li>
-              <li class="inline-items padding-reaction width-95">
-                <div class="author-thumb">
-                  <img src="assets/img/avatar38-sm.jpg" alt="author">
-                  <img class="translate" src="assets/img/bravo.png">
-                </div>
-                <div class="notification-event">
-                  <span class="h6 notification-friend">Francine Smith</span>
-
-                </div>
-
-              </li>
-              <li class="inline-items padding-reaction width-95">
-                <div class="author-thumb">
-                  <img src="assets/img/avatar38-sm.jpg" alt="author">
-                  <img class="translate" src="assets/img/love.png">
-                </div>
-                <div class="notification-event">
-                  <span class="h6 notification-friend">Francine Smith</span>
-
-                </div>
-
-              </li>
-              <li class="inline-items padding-reaction width-95">
-                <div class="author-thumb">
-                  <img src="assets/img/avatar38-sm.jpg" alt="author">
-                  <img class="translate" src="assets/img/like.png">
-                </div>
-                <div class="notification-event">
-                  <span class="h6 notification-friend">Francine Smith</span>
-
-                </div>
-
-              </li>
-              <li class="inline-items padding-reaction width-95">
-                <div class="author-thumb">
-                  <img src="assets/img/avatar38-sm.jpg" alt="author">
-                  <img class="translate" src="assets/img/interesting.png">
-                </div>
-                <div class="notification-event">
-                  <span class="h6 notification-friend">Francine Smith</span>
-
-                </div>
-
-              </li>
-              <li class="inline-items padding-reaction width-95">
-                <div class="author-thumb">
-                  <img src="assets/img/avatar38-sm.jpg" alt="author">
-                  <img class="translate" src="assets/img/bravo.png">
-                </div>
-                <div class="notification-event">
-                  <span class="h6 notification-friend">Francine Smith</span>
-
-                </div>
-
-              </li>
 
 
             </ul>

@@ -1,23 +1,21 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { HeaderComponent } from './components/layout/header/header.component';
-import { SidemenuComponent } from './components/layout/sidemenu/sidemenu.component';
-import { RoomsComponent } from './components/site/rooms/rooms.component';
-import { ChatComponent } from './components/site/chat/chat.component';
+import {AppRoutingModule} from './app-routing.module';
+import {AppComponent} from './app.component';
+import {HeaderComponent} from './components/layout/header/header.component';
+import {SidemenuComponent} from './components/layout/sidemenu/sidemenu.component';
+import {RoomsComponent} from './components/site/rooms/rooms.component';
+import {ChatComponent} from './components/site/chat/chat.component';
 import {RoomService} from './services/room.service';
-import { HttpClientModule } from '@angular/common/http';
+import {HttpClientModule} from '@angular/common/http';
 import {AvatarModule} from 'ngx-avatar';
 import {UserService} from './services/user.service';
-import { NgSelectModule } from '@ng-select/ng-select';
+import {NgSelectModule} from '@ng-select/ng-select';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {TitleService} from './services/title.service';
-import { AngularFontAwesomeModule } from 'angular-font-awesome';
-
-
-
+import {AngularFontAwesomeModule} from 'angular-font-awesome';
+import {ChatService} from './services/chat.service';
 
 
 @NgModule({
@@ -41,7 +39,8 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
   providers: [
     RoomService,
     UserService,
-    TitleService
+    TitleService,
+    ChatService
   ],
   bootstrap: [AppComponent]
 })

@@ -2,6 +2,7 @@ import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/
 import * as JitsiMeetExternalAPI from '../../../../assets/js/Jitsi/external_api';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import Room from '../../../models/Room';
+import Message from '../../../models/Message';
 import {ActivatedRoute} from '@angular/router';
 import {RoomService} from '../../../services/room.service';
 import {ChatService} from '../../../services/chat.service';
@@ -27,7 +28,11 @@ export class ChatComponent implements OnInit, AfterViewInit {
   loaderHidden = true;
   videoCallHidden = false;
   jitsiFormGroup: FormGroup;
-  room: Room;
+  loadedRoom: Room;
+  loadedMessages: Message[];
+  loadedSondages: Message[];
+  staticUserId = '760aa2ed-f45a-4696-bb9a-f23989a9b0a0';
+  selectedMessage: Message;
 
 
   ngAfterViewInit() {
@@ -47,6 +52,8 @@ export class ChatComponent implements OnInit, AfterViewInit {
     this.loadScript('assets/js/main.js');
     this.loadScript('assets/js/libs-init/libs-init.js');
     this.jitsiFormValidate();
+    this.loadRoomMessages();
+    this.loadRoomSondages();
   }
 
   public loadScript(url) {
@@ -135,7 +142,34 @@ export class ChatComponent implements OnInit, AfterViewInit {
   loadRoom() {
     const id = this.route.snapshot.paramMap.get('id');
     this.roomService.getRoom(id).subscribe(room => {
-      this.room = room;
+      this.loadedRoom = room;
     });
   }
+
+  loadRoomMessages() {
+    const id = this.route.snapshot.paramMap.get('id');
+    this.chatService.getMessageByRoom(id).subscribe(msg => {
+      this.loadedMessages = msg;
+
+    });
+  }
+
+  loadRoomSondages() {
+    const id = this.route.snapshot.paramMap.get('id');
+    this.chatService.getSondagesByRoom(id).subscribe(msg => {
+      this.loadedSondages = msg;
+
+    });
+  }
+
+  checkReactionsExists(m: Message, type: string): boolean {
+    return m.reactions.some(item => item.type.includes(type));
+  }
+
+  openModalReaction(m: Message) {
+    this.selectedMessage = m;
+
+  }
+
+
 }
