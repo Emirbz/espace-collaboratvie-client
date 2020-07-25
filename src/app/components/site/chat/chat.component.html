@@ -1208,6 +1208,7 @@
 
 <div [ngClass]="contrainerClass">
   <div class="row">
+
     <div [hidden]="loaderHidden" [ngClass]="loaderClass">
       <div>
         <div class="mesh-loader">
@@ -1289,7 +1290,8 @@
 
             <div class="chat-field">
               <div class="mCustomScrollbarNew popup-chat" style="overflow-y: scroll" data-mcs-theme="dark">
-                <ul class="notification-list chat-message chat-message-field">
+                <!-- @TODO loader -->
+                <ul *ngIf="messagesHasbeenLoaded" class="notification-list chat-message chat-message-field ">
 
 
                   <li *ngFor="let m of loadedMessages"
@@ -1299,9 +1301,9 @@
                     </div>
                     <div class="notification-event min-width-7 ">
 
-                      <span class="chat-message-item">{{m?.body}}
+                      <span class="chat-message-item">{{m?.body | titlecase}}
 																</span>
-                      <div *ngIf="m?.reactions?.length>0 " class="user-reactions">
+                      <div *ngIf="m?.reactions?.length>0 && loadedMessages " class="user-reactions">
                         <ul data-toggle="modal" data-target="#modal-list-reactions" (click)="openModalReaction(m)">
                           <!-- Reaction buttons container-->
                           <li *ngIf="checkReactionsExists(m,'LIKE')" class="reaction"><img src="assets/img/like.png">
@@ -1346,7 +1348,7 @@
                         </svg>
                       </a>
                       <div class="toolbox"></div>
-                      <label class="overlay" for="like"></label>
+                      <label class="overlay"></label>
                       <button class="reaction-like"><span class="legend-reaction">Like</span></button>
                       <button class="reaction-love"><span class="legend-reaction">Love</span></button>
                       <button class="reaction-haha"><span class="legend-reaction">BRAVO</span></button>
@@ -1426,16 +1428,17 @@
 
           <!-- W-Faved-Page -->
 
-          <ul class="widget w-faved-page js-zoom-gallery">
+          <ul class="widget w-faved-page ">
             <li *ngFor="let u of loadedRoom?.users  | slice:0:5">
-              <a href="#">
-                <img [src]="u?.image" alt="author">
-              </a>
+
+              <img [src]="u?.image" alt="author">
+
             </li>
 
 
             <li *ngIf="loadedRoom?.users?.length>6" class="all-users">
-              <a class="c-white" href="#">+{{loadedRoom?.users?.length - 5}}</a>
+              <a (click)="openModalAllUsers(loadedRoom?.users)" data-toggle="modal" data-target="#modal-list-users"
+                 class="c-white" href="#">+{{loadedRoom?.users?.length - 5}}</a>
             </li>
           </ul>
 
@@ -1444,7 +1447,8 @@
       </div>
       <div class="ui-block ">
         <div class="ui-block-title">
-          <a data-toggle="modal" href="#" data-target="#modal-sondage" class="title-2 hover-orange">Sondages récents</a>
+          <a data-toggle="modal" href="#" data-target="#modal-list-users" class="title-2 hover-orange">Sondages
+            récents</a>
           <a href="#" class="more">
             <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
                  width="25" height="25"
@@ -1478,10 +1482,10 @@
         </div>
         <div class="ui-block-content sondage">
           <!-- W-Pool -->
-
-          <ul class="widget w-pool">
+          <span *ngIf="loadedSondages?.length==0">Aucun sondage récent</span>
+          <ul *ngIf="loadedSondages?.length>0" class="widget w-pool">
             <li>
-              <p>{{loadedSondages[0]?.body}}</p>
+              <p>{{loadedSondages[0]?.body | titlecase}}</p>
             </li>
             <li *ngFor="let c of loadedSondages[0]?.choix">
               <div class="skills-item">
@@ -1490,19 +1494,20 @@
 										<span class="radio">
 											<label>
 												<input type="radio" name="optionsRadios"><span class="circle"></span><span class="check"></span>
-                        {{c?.body}}
+                        {{c?.body | titlecase}}
 											</label>
 										</span>
 									</span>
                   <span class="skills-item-count">
-										<span class="count-animate" data-speed="1000" data-refresh-interval="50" data-to="62"
+										<span class="count-animate" data-speed="1000" data-refresh-interval="50"
+                          [attr.data-to]="calculateUsersVote(c,loadedSondages[0])"
                           data-from="0"></span>
-										<span class="units">62%</span>
+										<span class="units">{{calculateUsersVote(c, loadedSondages[0])|number}}% </span>
 									</span>
                 </div>
                 <div class="skills-item-meter">
-                  <span class="skills-item-meter-active bg-primary skills-animate"
-                        style="width: 62%; opacity: 1;"></span>
+                  <span class="skills-item-meter-active bg-primary skills-animate" style="opacity:1"
+                        [ngStyle]="{'width':calculateUsersVote(c,loadedSondages[0])+'%'}"></span>
                 </div>
 
                 <div *ngIf="c?.users.length==1"
@@ -1519,8 +1524,8 @@
                     </a>
                   </li>
 
-                  <li>
-                    <a href="#" class="all-users">+3</a>
+                  <li *ngIf="c?.users?.length>5">
+                    <a href="#" class="all-users">+{{c?.users?.length - 5}}</a>
                   </li>
                 </ul>
               </div>
@@ -1529,20 +1534,20 @@
           </ul>
 
           <!-- .. end W-Pool -->
-          <a data-toggle="modal" href="#" data-target="#modal-sondage"
+          <a *ngIf="loadedSondages?.length>0" data-toggle="modal" href="#" data-target="#modal-sondage"
              class="btn btn-md-2 btn-border-think custom-color c-grey full-width hover-orange">Tous les sondages</a>
         </div>
       </div>
       <div class="ui-block">
         <div class="ui-block-title">
-          <h6 class="title">Last Photos</h6>
+          <h6 class="title">Photos récents</h6>
         </div>
         <div class="ui-block-content ">
 
 
           <!-- W-Latest-Photo -->
-
-          <ul class="widget w-last-photo js-zoom-gallery">
+          <span *ngIf="loadedImages?.length==0">Aucune photo récente</span>
+          <ul *ngIf="loadedImages?.length>0" class="widget w-last-photo js-zoom-gallery">
             <li>
               <a href="assets/img/last-photo1-large.jpg">
                 <img src="assets/img/last-photo1-large.jpg" alt="photo">
@@ -1607,23 +1612,31 @@
 
       <div class="modal-body padding-r-0 padding-t-0 ">
 
-        <div class="tab_container">
-
-          <input id="tab1" type="radio" name="tabs" checked>
+        <div class="tab_container" *ngIf="selectedMessage">
+          <!-- @TODO checked -->
+          <input id="tab1" type="radio" name="tabs" [name]="selectedMessage.id" checked>
           <label for="tab1" style="padding: 1.1em;font-size: 13.2px;"> Tout</label>
 
-          <input id="tab2" type="radio" name="tabs">
-          <label for="tab2" style="background-image: url('assets/img/like-48.png')">
+          <input *ngIf="checkReactionsExists(selectedMessage,'LIKE')" id="tab2" type="radio"
+                 [name]="selectedMessage.id">
+          <label *ngIf="checkReactionsExists(selectedMessage,'LIKE')" for="tab2"
+                 style="background-image: url('assets/img/like-48.png')">
 
           </label>
-          <input id="tab3" type="radio" name="tabs">
-          <label for="tab3" style="background-image: url('assets/img/love-48.png')">
+          <input *ngIf="checkReactionsExists(selectedMessage,'LOVE')" id="tab3" type="radio"
+                 [name]="selectedMessage.id">
+          <label *ngIf="checkReactionsExists(selectedMessage,'LOVE')" for="tab3"
+                 style="background-image: url('assets/img/love-48.png')">
           </label>
-          <input id="tab4" type="radio" name="tabs">
-          <label for="tab4" style="background-image: url('assets/img/bravo-48.png')">
+          <input *ngIf="checkReactionsExists(selectedMessage,'BRAVO')" id="tab4" type="radio"
+                 [name]="selectedMessage.id">
+          <label *ngIf="checkReactionsExists(selectedMessage,'BRAVO')" for="tab4"
+                 style="background-image: url('assets/img/bravo-48.png')">
           </label>
-          <input id="tab5" type="radio" name="tabs">
-          <label for="tab5" style="background-image: url('assets/img/interesting-48.png')">
+          <input *ngIf="checkReactionsExists(selectedMessage,'INTERESTING')" id="tab5" type="radio"
+                 [name]="selectedMessage.id">
+          <label *ngIf="checkReactionsExists(selectedMessage,'INTERESTING')" for="tab5"
+                 style="background-image: url('assets/img/interesting-48.png')">
           </label>
           <section id="content1" class="tab-content">
 
@@ -1647,94 +1660,18 @@
 
           <section id="content2" class="tab-content">
             <ul class="widget w-friend-pages-added notification-list friend-requests">
-              <li class="inline-items padding-reaction width-95">
+              <li *ngFor="let r of loadReactionsByType('LIKE')" class="inline-items padding-reaction width-95">
                 <div class="author-thumb">
-                  <img src="assets/img/avatar38-sm.jpg" alt="author">
-                  <img class="translate" src="assets/img/love.png">
+                  <img class="img-user" [src]="r?.user?.image" alt="author">
+                  <img class="translate" [src]="'assets/img/'+(r.type.toLowerCase())+'.png'">
                 </div>
                 <div class="notification-event">
-                  <span class="h6 notification-friend">Francine Smith</span>
+                  <span class="h6 notification-friend">{{r?.user?.firstName}} {{r?.user?.lastName}}</span>
 
                 </div>
 
               </li>
-              <li class="inline-items padding-reaction width-95">
-                <div class="author-thumb">
-                  <img src="assets/img/avatar38-sm.jpg" alt="author">
-                  <img class="translate" src="assets/img/like.png">
-                </div>
-                <div class="notification-event">
-                  <span class="h6 notification-friend">Francine Smith</span>
 
-                </div>
-
-              </li>
-              <li class="inline-items padding-reaction width-95">
-                <div class="author-thumb">
-                  <img src="assets/img/avatar38-sm.jpg" alt="author">
-                  <img class="translate" src="assets/img/interesting.png">
-                </div>
-                <div class="notification-event">
-                  <span class="h6 notification-friend">Francine Smith</span>
-
-                </div>
-
-              </li>
-              <li class="inline-items padding-reaction width-95">
-                <div class="author-thumb">
-                  <img src="assets/img/avatar38-sm.jpg" alt="author">
-                  <img class="translate" src="assets/img/bravo.png">
-                </div>
-                <div class="notification-event">
-                  <span class="h6 notification-friend">Francine Smith</span>
-
-                </div>
-
-              </li>
-              <li class="inline-items padding-reaction width-95">
-                <div class="author-thumb">
-                  <img src="assets/img/avatar38-sm.jpg" alt="author">
-                  <img class="translate" src="assets/img/love.png">
-                </div>
-                <div class="notification-event">
-                  <span class="h6 notification-friend">Francine Smith</span>
-
-                </div>
-
-              </li>
-              <li class="inline-items padding-reaction width-95">
-                <div class="author-thumb">
-                  <img src="assets/img/avatar38-sm.jpg" alt="author">
-                  <img class="translate" src="assets/img/like.png">
-                </div>
-                <div class="notification-event">
-                  <span class="h6 notification-friend">Francine Smith</span>
-
-                </div>
-
-              </li>
-              <li class="inline-items padding-reaction width-95">
-                <div class="author-thumb">
-                  <img src="assets/img/avatar38-sm.jpg" alt="author">
-                  <img class="translate" src="assets/img/interesting.png">
-                </div>
-                <div class="notification-event">
-                  <span class="h6 notification-friend">Francine Smith</span>
-
-                </div>
-
-              </li>
-              <li class="inline-items padding-reaction width-95">
-                <div class="author-thumb">
-                  <img src="assets/img/avatar38-sm.jpg" alt="author">
-                  <img class="translate" src="assets/img/bravo.png">
-                </div>
-                <div class="notification-event">
-                  <span class="h6 notification-friend">Francine Smith</span>
-
-                </div>
-
-              </li>
 
 
             </ul>
@@ -1744,94 +1681,18 @@
 
           <section id="content3" class="tab-content">
             <ul class="widget w-friend-pages-added notification-list friend-requests">
-              <li class="inline-items padding-reaction width-95">
+              <li *ngFor="let r of loadReactionsByType('LOVE')" class="inline-items padding-reaction width-95">
                 <div class="author-thumb">
-                  <img src="assets/img/avatar38-sm.jpg" alt="author">
-                  <img class="translate" src="assets/img/love.png">
+                  <img class="img-user" [src]="r?.user?.image" alt="author">
+                  <img class="translate" [src]="'assets/img/'+(r.type.toLowerCase())+'.png'">
                 </div>
                 <div class="notification-event">
-                  <span class="h6 notification-friend">Francine Smith</span>
+                  <span class="h6 notification-friend">{{r?.user?.firstName}} {{r?.user?.lastName}}</span>
 
                 </div>
 
               </li>
-              <li class="inline-items padding-reaction width-95">
-                <div class="author-thumb">
-                  <img src="assets/img/avatar38-sm.jpg" alt="author">
-                  <img class="translate" src="assets/img/like.png">
-                </div>
-                <div class="notification-event">
-                  <span class="h6 notification-friend">Francine Smith</span>
 
-                </div>
-
-              </li>
-              <li class="inline-items padding-reaction width-95">
-                <div class="author-thumb">
-                  <img src="assets/img/avatar38-sm.jpg" alt="author">
-                  <img class="translate" src="assets/img/interesting.png">
-                </div>
-                <div class="notification-event">
-                  <span class="h6 notification-friend">Francine Smith</span>
-
-                </div>
-
-              </li>
-              <li class="inline-items padding-reaction width-95">
-                <div class="author-thumb">
-                  <img src="assets/img/avatar38-sm.jpg" alt="author">
-                  <img class="translate" src="assets/img/bravo.png">
-                </div>
-                <div class="notification-event">
-                  <span class="h6 notification-friend">Francine Smith</span>
-
-                </div>
-
-              </li>
-              <li class="inline-items padding-reaction width-95">
-                <div class="author-thumb">
-                  <img src="assets/img/avatar38-sm.jpg" alt="author">
-                  <img class="translate" src="assets/img/love.png">
-                </div>
-                <div class="notification-event">
-                  <span class="h6 notification-friend">Francine Smith</span>
-
-                </div>
-
-              </li>
-              <li class="inline-items padding-reaction width-95">
-                <div class="author-thumb">
-                  <img src="assets/img/avatar38-sm.jpg" alt="author">
-                  <img class="translate" src="assets/img/like.png">
-                </div>
-                <div class="notification-event">
-                  <span class="h6 notification-friend">Francine Smith</span>
-
-                </div>
-
-              </li>
-              <li class="inline-items padding-reaction width-95">
-                <div class="author-thumb">
-                  <img src="assets/img/avatar38-sm.jpg" alt="author">
-                  <img class="translate" src="assets/img/interesting.png">
-                </div>
-                <div class="notification-event">
-                  <span class="h6 notification-friend">Francine Smith</span>
-
-                </div>
-
-              </li>
-              <li class="inline-items padding-reaction width-95">
-                <div class="author-thumb">
-                  <img src="assets/img/avatar38-sm.jpg" alt="author">
-                  <img class="translate" src="assets/img/bravo.png">
-                </div>
-                <div class="notification-event">
-                  <span class="h6 notification-friend">Francine Smith</span>
-
-                </div>
-
-              </li>
 
 
             </ul>
@@ -1840,94 +1701,18 @@
 
           <section id="content4" class="tab-content">
             <ul class="widget w-friend-pages-added notification-list friend-requests">
-              <li class="inline-items padding-reaction width-95">
+              <li *ngFor="let r of loadReactionsByType('BRAVO')" class="inline-items padding-reaction width-95">
                 <div class="author-thumb">
-                  <img src="assets/img/avatar38-sm.jpg" alt="author">
-                  <img class="translate" src="assets/img/love.png">
+                  <img class="img-user" [src]="r?.user?.image" alt="author">
+                  <img class="translate" [src]="'assets/img/'+(r.type.toLowerCase())+'.png'">
                 </div>
                 <div class="notification-event">
-                  <span class="h6 notification-friend">Francine Smith</span>
+                  <span class="h6 notification-friend">{{r?.user?.firstName}} {{r?.user?.lastName}}</span>
 
                 </div>
 
               </li>
-              <li class="inline-items padding-reaction width-95">
-                <div class="author-thumb">
-                  <img src="assets/img/avatar38-sm.jpg" alt="author">
-                  <img class="translate" src="assets/img/like.png">
-                </div>
-                <div class="notification-event">
-                  <span class="h6 notification-friend">Francine Smith</span>
 
-                </div>
-
-              </li>
-              <li class="inline-items padding-reaction width-95">
-                <div class="author-thumb">
-                  <img src="assets/img/avatar38-sm.jpg" alt="author">
-                  <img class="translate" src="assets/img/interesting.png">
-                </div>
-                <div class="notification-event">
-                  <span class="h6 notification-friend">Francine Smith</span>
-
-                </div>
-
-              </li>
-              <li class="inline-items padding-reaction width-95">
-                <div class="author-thumb">
-                  <img src="assets/img/avatar38-sm.jpg" alt="author">
-                  <img class="translate" src="assets/img/bravo.png">
-                </div>
-                <div class="notification-event">
-                  <span class="h6 notification-friend">Francine Smith</span>
-
-                </div>
-
-              </li>
-              <li class="inline-items padding-reaction width-95">
-                <div class="author-thumb">
-                  <img src="assets/img/avatar38-sm.jpg" alt="author">
-                  <img class="translate" src="assets/img/love.png">
-                </div>
-                <div class="notification-event">
-                  <span class="h6 notification-friend">Francine Smith</span>
-
-                </div>
-
-              </li>
-              <li class="inline-items padding-reaction width-95">
-                <div class="author-thumb">
-                  <img src="assets/img/avatar38-sm.jpg" alt="author">
-                  <img class="translate" src="assets/img/like.png">
-                </div>
-                <div class="notification-event">
-                  <span class="h6 notification-friend">Francine Smith</span>
-
-                </div>
-
-              </li>
-              <li class="inline-items padding-reaction width-95">
-                <div class="author-thumb">
-                  <img src="assets/img/avatar38-sm.jpg" alt="author">
-                  <img class="translate" src="assets/img/interesting.png">
-                </div>
-                <div class="notification-event">
-                  <span class="h6 notification-friend">Francine Smith</span>
-
-                </div>
-
-              </li>
-              <li class="inline-items padding-reaction width-95">
-                <div class="author-thumb">
-                  <img src="assets/img/avatar38-sm.jpg" alt="author">
-                  <img class="translate" src="assets/img/bravo.png">
-                </div>
-                <div class="notification-event">
-                  <span class="h6 notification-friend">Francine Smith</span>
-
-                </div>
-
-              </li>
 
 
             </ul>
@@ -1936,90 +1721,13 @@
 
           <section id="content5" class="tab-content">
             <ul class="widget w-friend-pages-added notification-list friend-requests">
-              <li class="inline-items padding-reaction width-95">
+              <li *ngFor="let r of loadReactionsByType('INTERESTING')" class="inline-items padding-reaction width-95">
                 <div class="author-thumb">
-                  <img src="assets/img/avatar38-sm.jpg" alt="author">
-                  <img class="translate" src="assets/img/love.png">
+                  <img class="img-user" [src]="r?.user?.image" alt="author">
+                  <img class="translate" [src]="'assets/img/'+(r.type.toLowerCase())+'.png'">
                 </div>
                 <div class="notification-event">
-                  <span class="h6 notification-friend">Francine Smith</span>
-
-                </div>
-
-              </li>
-              <li class="inline-items padding-reaction width-95">
-                <div class="author-thumb">
-                  <img src="assets/img/avatar38-sm.jpg" alt="author">
-                  <img class="translate" src="assets/img/like.png">
-                </div>
-                <div class="notification-event">
-                  <span class="h6 notification-friend">Francine Smith</span>
-
-                </div>
-
-              </li>
-              <li class="inline-items padding-reaction width-95">
-                <div class="author-thumb">
-                  <img src="assets/img/avatar38-sm.jpg" alt="author">
-                  <img class="translate" src="assets/img/interesting.png">
-                </div>
-                <div class="notification-event">
-                  <span class="h6 notification-friend">Francine Smith</span>
-
-                </div>
-
-              </li>
-              <li class="inline-items padding-reaction width-95">
-                <div class="author-thumb">
-                  <img src="assets/img/avatar38-sm.jpg" alt="author">
-                  <img class="translate" src="assets/img/bravo.png">
-                </div>
-                <div class="notification-event">
-                  <span class="h6 notification-friend">Francine Smith</span>
-
-                </div>
-
-              </li>
-              <li class="inline-items padding-reaction width-95">
-                <div class="author-thumb">
-                  <img src="assets/img/avatar38-sm.jpg" alt="author">
-                  <img class="translate" src="assets/img/love.png">
-                </div>
-                <div class="notification-event">
-                  <span class="h6 notification-friend">Francine Smith</span>
-
-                </div>
-
-              </li>
-              <li class="inline-items padding-reaction width-95">
-                <div class="author-thumb">
-                  <img src="assets/img/avatar38-sm.jpg" alt="author">
-                  <img class="translate" src="assets/img/like.png">
-                </div>
-                <div class="notification-event">
-                  <span class="h6 notification-friend">Francine Smith</span>
-
-                </div>
-
-              </li>
-              <li class="inline-items padding-reaction width-95">
-                <div class="author-thumb">
-                  <img src="assets/img/avatar38-sm.jpg" alt="author">
-                  <img class="translate" src="assets/img/interesting.png">
-                </div>
-                <div class="notification-event">
-                  <span class="h6 notification-friend">Francine Smith</span>
-
-                </div>
-
-              </li>
-              <li class="inline-items padding-reaction width-95">
-                <div class="author-thumb">
-                  <img src="assets/img/avatar38-sm.jpg" alt="author">
-                  <img class="translate" src="assets/img/bravo.png">
-                </div>
-                <div class="notification-event">
-                  <span class="h6 notification-friend">Francine Smith</span>
+                  <span class="h6 notification-friend">{{r?.user?.firstName}} {{r?.user?.lastName}}</span>
 
                 </div>
 
@@ -2056,988 +1764,78 @@
 
       <div class="modal-body" style="overflow-y: scroll;max-height: 600px">
         <div id="accordion" role="tablist" aria-multiselectable="true">
-          <div class="card">
+          <div class="card" *ngFor="let s of loadedSondages; let  i=index">
             <div class="card-header" role="tab" id="headingOne">
-              <img class="rounded-circle position-absolute img-sondage" src="assets/img/author-page.jpg">
+              <img class="rounded-circle position-absolute img-sondage" [src]="s?.user.image">
               <h6 class="mb-0 padding-sondage-title">
 
-                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true"
+                <a data-toggle="collapse" data-parent="#accordion" [href]="'#collapse'+s.id" aria-expanded="true"
                    aria-controls="collapseOne">
-                  If you had to choose, which actor do you prefer to be the next Darkman?
+                  {{s?.body | titlecase}}
                   <i class="fa fa-angle-down" aria-hidden="true"></i>
                 </a>
 
               </h6>
 
-              <time class="entry-date updated" style="padding-left:3px" datetime="2017-06-24T18:18">2 hours, 16 minutes
+              <time class="entry-date updated time-sondage" datetime="2017-06-24T18:18">2 hours, 16 minutes
                 ago
               </time>
             </div>
 
-            <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne">
-              <ul class="widget w-pool margin-b-0">
+            <div [id]="'collapse'+s.id" [ngClass]="i == 0 ? 'collapse show': 'collapse'" class="collapse "
+                 role="tabpanel" aria-labelledby="headingOne">
+              <ul style="padding-top:20px" class="widget w-pool">
 
-                <li>
+                <li *ngFor="let c of s.choix">
                   <div class="skills-item">
                     <div class="skills-item-info">
 									<span class="skills-item-title">
 										<span class="radio">
 											<label>
 												<input type="radio" name="optionsRadios"><span class="circle"></span><span class="check"></span>
-												Thomas Bale
+                        {{c?.body | titlecase}}
 											</label>
 										</span>
 									</span>
                       <span class="skills-item-count">
-										<span class="count-animate" data-speed="1000" data-refresh-interval="50" data-to="62"
+										<span class="count-animate" data-speed="1000" data-refresh-interval="50"
+                          [attr.data-to]="calculateUsersVote(c,s)"
                           data-from="0"></span>
-										<span class="units">62%</span>
+										<span class="units">{{calculateUsersVote(c, s)|number}}% </span>
 									</span>
                     </div>
                     <div class="skills-item-meter">
-                  <span class="skills-item-meter-active bg-primary skills-animate"
-                        style="width: 62%; opacity: 1;"></span>
+                      <span class="skills-item-meter-active bg-primary skills-animate" style="opacity:1"
+                            [ngStyle]="{'width':calculateUsersVote(c,s)+'%'}"></span>
                     </div>
 
-                    <div class="counter-friends">12 friends voted for this</div>
+                    <div *ngIf="c?.users.length==1"
+                         class="counter-friends">{{c?.users[0]?.firstName}} {{c?.users[0]?.lastName}} a voté pour cela
+                    </div>
+                    <div *ngIf="c?.users.length>1"
+                         class="counter-friends">{{c?.users[0]?.firstName}} {{c?.users[0]?.lastName}}
+                      et {{c?.users?.length - 1}} Collaborateurs ont voté pour
+                      cela
+                    </div>
 
                     <ul class="friends-harmonic">
-                      <li>
+                      <li *ngFor="let u of c?.users">
                         <a href="#">
-                          <img src="assets/img/friend-harmonic1.jpg" alt="friend">
+                          <img [src]="u?.image" alt="friend">
                         </a>
                       </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic2.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic3.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic4.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic5.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic6.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic7.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic8.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic9.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#" class="all-users">+3</a>
+
+                      <li *ngIf="c?.users?.length>5">
+                        <a href="#" class="all-users">+{{c?.users?.length - 5}}</a>
                       </li>
                     </ul>
                   </div>
                 </li>
 
-                <li>
-                  <div class="skills-item">
-                    <div class="skills-item-info">
-									<span class="skills-item-title">
-										<span class="radio">
-											<label>
-												<input type="radio" name="optionsRadios"><span class="circle"></span><span class="check"></span>
-												Ben Robertson
-											</label>
-										</span>
-									</span>
-                      <span class="skills-item-count">
-										<span class="count-animate" data-speed="1000" data-refresh-interval="50" data-to="27"
-                          data-from="0"></span>
-										<span class="units">27%</span>
-									</span>
-                    </div>
-                    <div class="skills-item-meter">
-                  <span class="skills-item-meter-active bg-primary skills-animate"
-                        style="width: 27%; opacity: 1;"></span>
-                    </div>
-                    <div class="counter-friends">7 friends voted for this</div>
-
-                    <ul class="friends-harmonic">
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic7.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic8.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic9.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic10.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic11.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic12.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic13.jpg" alt="friend">
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-
-                <li>
-                  <div class="skills-item">
-                    <div class="skills-item-info">
-									<span class="skills-item-title">
-										<span class="radio">
-											<label>
-												<input type="radio" name="optionsRadios"><span class="circle"></span><span class="check"></span>
-												Michael Streiton
-											</label>
-										</span>
-									</span>
-                      <span class="skills-item-count">
-										<span class="count-animate" data-speed="1000" data-refresh-interval="50" data-to="11"
-                          data-from="0"></span>
-										<span class="units">11%</span>
-									</span>
-                    </div>
-                    <div class="skills-item-meter">
-                  <span class="skills-item-meter-active bg-primary skills-animate"
-                        style="width: 11%; opacity: 1;"></span>
-                    </div>
-
-                    <div class="counter-friends">2 people voted for this</div>
-
-                    <ul class="friends-harmonic">
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic14.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic15.jpg" alt="friend">
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
               </ul>
             </div>
           </div>
-          <div class="card">
-            <div class="card-header" role="tab" id="headingTwo">
-              <h6 class="mb-0">
-                <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true"
-                   aria-controls="collapseTwo">
-                  Choosing your Olympus Playlist
-                  <i class="fa fa-angle-down" aria-hidden="true"></i>
-                </a>
-              </h6>
-            </div>
 
-            <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingOne">
-              <ul class="widget w-pool margin-b-0">
-
-                <li>
-                  <div class="skills-item">
-                    <div class="skills-item-info">
-									<span class="skills-item-title">
-										<span class="radio">
-											<label>
-												<input type="radio" name="optionsRadios"><span class="circle"></span><span class="check"></span>
-												Thomas Bale
-											</label>
-										</span>
-									</span>
-                      <span class="skills-item-count">
-										<span class="count-animate" data-speed="1000" data-refresh-interval="50" data-to="62"
-                          data-from="0"></span>
-										<span class="units">62%</span>
-									</span>
-                    </div>
-                    <div class="skills-item-meter">
-                  <span class="skills-item-meter-active bg-primary skills-animate"
-                        style="width: 62%; opacity: 1;"></span>
-                    </div>
-
-                    <div class="counter-friends">12 friends voted for this</div>
-
-                    <ul class="friends-harmonic">
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic1.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic2.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic3.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic4.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic5.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic6.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic7.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic8.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic9.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#" class="all-users">+3</a>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-
-                <li>
-                  <div class="skills-item">
-                    <div class="skills-item-info">
-									<span class="skills-item-title">
-										<span class="radio">
-											<label>
-												<input type="radio" name="optionsRadios"><span class="circle"></span><span class="check"></span>
-												Ben Robertson
-											</label>
-										</span>
-									</span>
-                      <span class="skills-item-count">
-										<span class="count-animate" data-speed="1000" data-refresh-interval="50" data-to="27"
-                          data-from="0"></span>
-										<span class="units">27%</span>
-									</span>
-                    </div>
-                    <div class="skills-item-meter">
-                  <span class="skills-item-meter-active bg-primary skills-animate"
-                        style="width: 27%; opacity: 1;"></span>
-                    </div>
-                    <div class="counter-friends">7 friends voted for this</div>
-
-                    <ul class="friends-harmonic">
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic7.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic8.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic9.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic10.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic11.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic12.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic13.jpg" alt="friend">
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-
-                <li>
-                  <div class="skills-item">
-                    <div class="skills-item-info">
-									<span class="skills-item-title">
-										<span class="radio">
-											<label>
-												<input type="radio" name="optionsRadios"><span class="circle"></span><span class="check"></span>
-												Michael Streiton
-											</label>
-										</span>
-									</span>
-                      <span class="skills-item-count">
-										<span class="count-animate" data-speed="1000" data-refresh-interval="50" data-to="11"
-                          data-from="0"></span>
-										<span class="units">11%</span>
-									</span>
-                    </div>
-                    <div class="skills-item-meter">
-                  <span class="skills-item-meter-active bg-primary skills-animate"
-                        style="width: 11%; opacity: 1;"></span>
-                    </div>
-
-                    <div class="counter-friends">2 people voted for this</div>
-
-                    <ul class="friends-harmonic">
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic14.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic15.jpg" alt="friend">
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-header" role="tab" id="headingThree">
-              <h6 class="mb-0">
-                <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true"
-                   aria-controls="collapseThree">
-                  Choosing your Olympus Playlist
-                  <i class="fa fa-angle-down" aria-hidden="true"></i>
-                </a>
-              </h6>
-            </div>
-
-            <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree">
-              <ul class="widget w-pool margin-b-0">
-
-                <li>
-                  <div class="skills-item">
-                    <div class="skills-item-info">
-									<span class="skills-item-title">
-										<span class="radio">
-											<label>
-												<input type="radio" name="optionsRadios"><span class="circle"></span><span class="check"></span>
-												Thomas Bale
-											</label>
-										</span>
-									</span>
-                      <span class="skills-item-count">
-										<span class="count-animate" data-speed="1000" data-refresh-interval="50" data-to="62"
-                          data-from="0"></span>
-										<span class="units">62%</span>
-									</span>
-                    </div>
-                    <div class="skills-item-meter">
-                  <span class="skills-item-meter-active bg-primary skills-animate"
-                        style="width: 62%; opacity: 1;"></span>
-                    </div>
-
-                    <div class="counter-friends">12 friends voted for this</div>
-
-                    <ul class="friends-harmonic">
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic1.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic2.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic3.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic4.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic5.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic6.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic7.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic8.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic9.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#" class="all-users">+3</a>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-
-                <li>
-                  <div class="skills-item">
-                    <div class="skills-item-info">
-									<span class="skills-item-title">
-										<span class="radio">
-											<label>
-												<input type="radio" name="optionsRadios"><span class="circle"></span><span class="check"></span>
-												Ben Robertson
-											</label>
-										</span>
-									</span>
-                      <span class="skills-item-count">
-										<span class="count-animate" data-speed="1000" data-refresh-interval="50" data-to="27"
-                          data-from="0"></span>
-										<span class="units">27%</span>
-									</span>
-                    </div>
-                    <div class="skills-item-meter">
-                  <span class="skills-item-meter-active bg-primary skills-animate"
-                        style="width: 27%; opacity: 1;"></span>
-                    </div>
-                    <div class="counter-friends">7 friends voted for this</div>
-
-                    <ul class="friends-harmonic">
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic7.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic8.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic9.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic10.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic11.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic12.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic13.jpg" alt="friend">
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-
-                <li>
-                  <div class="skills-item">
-                    <div class="skills-item-info">
-									<span class="skills-item-title">
-										<span class="radio">
-											<label>
-												<input type="radio" name="optionsRadios"><span class="circle"></span><span class="check"></span>
-												Michael Streiton
-											</label>
-										</span>
-									</span>
-                      <span class="skills-item-count">
-										<span class="count-animate" data-speed="1000" data-refresh-interval="50" data-to="11"
-                          data-from="0"></span>
-										<span class="units">11%</span>
-									</span>
-                    </div>
-                    <div class="skills-item-meter">
-                  <span class="skills-item-meter-active bg-primary skills-animate"
-                        style="width: 11%; opacity: 1;"></span>
-                    </div>
-
-                    <div class="counter-friends">2 people voted for this</div>
-
-                    <ul class="friends-harmonic">
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic14.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic15.jpg" alt="friend">
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-header" role="tab" id="headingFour">
-              <h6 class="mb-0">
-                <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="true"
-                   aria-controls="collapseFour">
-                  Choosing your Olympus Playlist
-                  <i class="fa fa-angle-down" aria-hidden="true"></i>
-                </a>
-              </h6>
-            </div>
-
-            <div id="collapseFour" class="collapse" role="tabpanel" aria-labelledby="headingFour">
-              <ul class="widget w-pool margin-b-0">
-
-                <li>
-                  <div class="skills-item">
-                    <div class="skills-item-info">
-									<span class="skills-item-title">
-										<span class="radio">
-											<label>
-												<input type="radio" name="optionsRadios"><span class="circle"></span><span class="check"></span>
-												Thomas Bale
-											</label>
-										</span>
-									</span>
-                      <span class="skills-item-count">
-										<span class="count-animate" data-speed="1000" data-refresh-interval="50" data-to="62"
-                          data-from="0"></span>
-										<span class="units">62%</span>
-									</span>
-                    </div>
-                    <div class="skills-item-meter">
-                  <span class="skills-item-meter-active bg-primary skills-animate"
-                        style="width: 62%; opacity: 1;"></span>
-                    </div>
-
-                    <div class="counter-friends">12 friends voted for this</div>
-
-                    <ul class="friends-harmonic">
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic1.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic2.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic3.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic4.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic5.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic6.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic7.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic8.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic9.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#" class="all-users">+3</a>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-
-                <li>
-                  <div class="skills-item">
-                    <div class="skills-item-info">
-									<span class="skills-item-title">
-										<span class="radio">
-											<label>
-												<input type="radio" name="optionsRadios"><span class="circle"></span><span class="check"></span>
-												Ben Robertson
-											</label>
-										</span>
-									</span>
-                      <span class="skills-item-count">
-										<span class="count-animate" data-speed="1000" data-refresh-interval="50" data-to="27"
-                          data-from="0"></span>
-										<span class="units">27%</span>
-									</span>
-                    </div>
-                    <div class="skills-item-meter">
-                  <span class="skills-item-meter-active bg-primary skills-animate"
-                        style="width: 27%; opacity: 1;"></span>
-                    </div>
-                    <div class="counter-friends">7 friends voted for this</div>
-
-                    <ul class="friends-harmonic">
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic7.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic8.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic9.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic10.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic11.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic12.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic13.jpg" alt="friend">
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-
-                <li>
-                  <div class="skills-item">
-                    <div class="skills-item-info">
-									<span class="skills-item-title">
-										<span class="radio">
-											<label>
-												<input type="radio" name="optionsRadios"><span class="circle"></span><span class="check"></span>
-												Michael Streiton
-											</label>
-										</span>
-									</span>
-                      <span class="skills-item-count">
-										<span class="count-animate" data-speed="1000" data-refresh-interval="50" data-to="11"
-                          data-from="0"></span>
-										<span class="units">11%</span>
-									</span>
-                    </div>
-                    <div class="skills-item-meter">
-                  <span class="skills-item-meter-active bg-primary skills-animate"
-                        style="width: 11%; opacity: 1;"></span>
-                    </div>
-
-                    <div class="counter-friends">2 people voted for this</div>
-
-                    <ul class="friends-harmonic">
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic14.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic15.jpg" alt="friend">
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-header" role="tab" id="headingFive">
-              <h6 class="mb-0">
-                <a data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="true"
-                   aria-controls="collapseFive">
-                  Choosing your Olympus Playlist
-                  <i class="fa fa-angle-down" aria-hidden="true"></i>
-                </a>
-              </h6>
-            </div>
-
-            <div id="collapseFive" class="collapse" role="tabpanel" aria-labelledby="headingFive">
-              <ul class="widget w-pool margin-b-0">
-
-                <li>
-                  <div class="skills-item">
-                    <div class="skills-item-info">
-									<span class="skills-item-title">
-										<span class="radio">
-											<label>
-												<input type="radio" name="optionsRadios"><span class="circle"></span><span class="check"></span>
-												Thomas Bale
-											</label>
-										</span>
-									</span>
-                      <span class="skills-item-count">
-										<span class="count-animate" data-speed="1000" data-refresh-interval="50" data-to="62"
-                          data-from="0"></span>
-										<span class="units">62%</span>
-									</span>
-                    </div>
-                    <div class="skills-item-meter">
-                  <span class="skills-item-meter-active bg-primary skills-animate"
-                        style="width: 62%; opacity: 1;"></span>
-                    </div>
-
-                    <div class="counter-friends">12 friends voted for this</div>
-
-                    <ul class="friends-harmonic">
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic1.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic2.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic3.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic4.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic5.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic6.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic7.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic8.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic9.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#" class="all-users">+3</a>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-
-                <li>
-                  <div class="skills-item">
-                    <div class="skills-item-info">
-									<span class="skills-item-title">
-										<span class="radio">
-											<label>
-												<input type="radio" name="optionsRadios"><span class="circle"></span><span class="check"></span>
-												Ben Robertson
-											</label>
-										</span>
-									</span>
-                      <span class="skills-item-count">
-										<span class="count-animate" data-speed="1000" data-refresh-interval="50" data-to="27"
-                          data-from="0"></span>
-										<span class="units">27%</span>
-									</span>
-                    </div>
-                    <div class="skills-item-meter">
-                  <span class="skills-item-meter-active bg-primary skills-animate"
-                        style="width: 27%; opacity: 1;"></span>
-                    </div>
-                    <div class="counter-friends">7 friends voted for this</div>
-
-                    <ul class="friends-harmonic">
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic7.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic8.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic9.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic10.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic11.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic12.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic13.jpg" alt="friend">
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-
-                <li>
-                  <div class="skills-item">
-                    <div class="skills-item-info">
-									<span class="skills-item-title">
-										<span class="radio">
-											<label>
-												<input type="radio" name="optionsRadios"><span class="circle"></span><span class="check"></span>
-												Michael Streiton
-											</label>
-										</span>
-									</span>
-                      <span class="skills-item-count">
-										<span class="count-animate" data-speed="1000" data-refresh-interval="50" data-to="11"
-                          data-from="0"></span>
-										<span class="units">11%</span>
-									</span>
-                    </div>
-                    <div class="skills-item-meter">
-                  <span class="skills-item-meter-active bg-primary skills-animate"
-                        style="width: 11%; opacity: 1;"></span>
-                    </div>
-
-                    <div class="counter-friends">2 people voted for this</div>
-
-                    <ul class="friends-harmonic">
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic14.jpg" alt="friend">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <img src="assets/img/friend-harmonic15.jpg" alt="friend">
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -3093,4 +1891,44 @@
 </div>
 
 <!-- ... end Jitsi modal -->
+
+
+<!-- Modal users usersm -->
+<div class="modal fade" id="modal-list-users" tabindex="-1" role="dialog"
+     aria-labelledby="create-friend-group-add-friends" aria-hidden="true">
+  <div class="modal-dialog window-popup create-friend-group create-friend-group-add-friends" role="document">
+    <div class="modal-content">
+      <a href="#" class="close icon-close" data-dismiss="modal" aria-label="Close">
+        <svg class="olymp-close-icon">
+          <use xlink:href="#olymp-close-icon"></use>
+        </svg>
+      </a>
+
+      <div class="modal-header">
+        <h6 class="title">Liste des utilisateurs</h6>
+      </div>
+
+      <div class="modal-body padding-t-0">
+        <ul class="widget w-friend-pages-added notification-list friend-requests animated bounceInDown">
+          <li *ngFor="let r of selectedUsers" class="inline-items padding-reaction width-95">
+            <div class="author-thumb">
+              <img class="img-user" [src]="r?.image" alt="author">
+
+            </div>
+            <div class="notification-event">
+              <span class="h6 notification-friend">{{r?.firstName}} {{r?.lastName}}</span>
+
+            </div>
+
+          </li>
+
+
+        </ul>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ... end Window-popup users -->
 

@@ -6,6 +6,10 @@ import Message from '../../../models/Message';
 import {ActivatedRoute} from '@angular/router';
 import {RoomService} from '../../../services/room.service';
 import {ChatService} from '../../../services/chat.service';
+import Reaction from '../../../models/Reaction';
+import Choix from '../../../models/Choix';
+import {TitleService} from '../../../services/title.service';
+import User from '../../../models/User';
 
 
 @Component({
@@ -15,6 +19,7 @@ import {ChatService} from '../../../services/chat.service';
 })
 export class ChatComponent implements OnInit, AfterViewInit {
   @ViewChild('msgInput', {static: false}) msgInput: ElementRef;
+  loaderHidden = true;
   leftBarClass = 'col col-xl-3 order-xl-1 col-lg-3 order-lg-1 col-md-12 order-md-2 col-sm-12 col-12 responsive-display-none';
   rightBarClass = 'col col-xl-9 order-xl-2 col-lg-9 order-lg-2 col-md-12 order-md-1 col-sm-12 col-12';
   contrainerClass = 'container';
@@ -24,15 +29,19 @@ export class ChatComponent implements OnInit, AfterViewInit {
   apiJitsi: any;
   divJitsiHidden = true;
   jitsiClass = 'col col-xl-6 order-xl-3 col-lg-9 order-lg-2 col-md-12 order-md-1 col-sm-12 col-12';
-  loaderClass = 'flexbox col col-xl-3 order-xl-3 col-lg-9 order-lg-2 col-md-12 order-md-1 col-sm-12 col-12';
-  loaderHidden = true;
+  loaderClass = 'flexbox col col-xl-3 order-xl-3 col-lg-9 order-lg-2 col-md-12 order-md-1 col-sm-12 col-12 d-none';
+
   videoCallHidden = false;
   jitsiFormGroup: FormGroup;
   loadedRoom: Room;
-  loadedMessages: Message[];
-  loadedSondages: Message[];
+  loadedMessages: Message[] = [];
+  loadedSondages: Message[] = [];
+  loadedImages: Message[] = [];
   staticUserId = '760aa2ed-f45a-4696-bb9a-f23989a9b0a0';
   selectedMessage: Message;
+  selectedUsers: User[] = [];
+  messagesHasbeenLoaded = false;
+  allReactioxnsChecked: true;
 
 
   ngAfterViewInit() {
@@ -41,7 +50,8 @@ export class ChatComponent implements OnInit, AfterViewInit {
   constructor(private formBuilder: FormBuilder,
               private route: ActivatedRoute,
               private roomService: RoomService,
-              private chatService: ChatService
+              private chatService: ChatService,
+              private titleService: TitleService
   ) {
 
   }
@@ -54,6 +64,7 @@ export class ChatComponent implements OnInit, AfterViewInit {
     this.jitsiFormValidate();
     this.loadRoomMessages();
     this.loadRoomSondages();
+
   }
 
   public loadScript(url) {
@@ -63,6 +74,12 @@ export class ChatComponent implements OnInit, AfterViewInit {
     document.getElementsByTagName('head')[0].appendChild(node);
 
 
+  }
+
+  setTitle() {
+    if (this.loadedRoom) {
+      this.titleService.setTitle(this.loadedRoom.name);
+    }
   }
 
   jitsiFormValidate() {
@@ -94,7 +111,7 @@ export class ChatComponent implements OnInit, AfterViewInit {
       this.loaderClass = 'flexbox col col-xl-3 order-xl-3 col-lg-9 order-lg-2 col-md-12 order-md-1 col-sm-12 col-12 animated bounceOutUp';
       setTimeout(() => {
         this.divJitsiHidden = false;
-        this.loaderHidden = true;
+        // this.loaderHidden = true;
       }, 500);
     });
     this.apiJitsi.addEventListener('videoConferenceLeft', () => {
@@ -121,7 +138,7 @@ export class ChatComponent implements OnInit, AfterViewInit {
         setTimeout(() => {
           // tslint:disable-next-line:max-line-length
             this.loaderClass += 'flexbox col col-xl-3 order-xl-3 col-lg-9 order-lg-2 col-md-12 order-md-1 col-sm-12 col-12 animated bounceInDown';
-            this.loaderHidden = false;
+          //  this.loaderHidden = false;
           }, 600
         );
       }, 300);
@@ -143,6 +160,7 @@ export class ChatComponent implements OnInit, AfterViewInit {
     const id = this.route.snapshot.paramMap.get('id');
     this.roomService.getRoom(id).subscribe(room => {
       this.loadedRoom = room;
+      this.setTitle();
     });
   }
 
@@ -150,6 +168,7 @@ export class ChatComponent implements OnInit, AfterViewInit {
     const id = this.route.snapshot.paramMap.get('id');
     this.chatService.getMessageByRoom(id).subscribe(msg => {
       this.loadedMessages = msg;
+      this.messagesHasbeenLoaded = true;
 
     });
   }
@@ -158,6 +177,7 @@ export class ChatComponent implements OnInit, AfterViewInit {
     const id = this.route.snapshot.paramMap.get('id');
     this.chatService.getSondagesByRoom(id).subscribe(msg => {
       this.loadedSondages = msg;
+
 
     });
   }
@@ -171,5 +191,35 @@ export class ChatComponent implements OnInit, AfterViewInit {
 
   }
 
+  loadReactionsByType(type: string): Reaction[] {
 
+    if (this.selectedMessage) {
+      return this.selectedMessage.reactions.filter(r => r.type === type);
+    }
+    return [];
+  }
+
+  loadRoomImages() {
+    const id = this.route.snapshot.paramMap.get('id');
+    this.chatService.getImagesByRoom(id).subscribe(images => {
+      this.loadedImages = images;
+    });
+  }
+
+
+  calculateUsersVote(c: Choix, message: Message): number {
+    let totalUsers = 0;
+    const choiceUsers = c.users.length;
+    message.choix.forEach(choice => {
+      totalUsers += choice.users.length;
+    });
+    if (totalUsers > 0) {
+      return (choiceUsers / totalUsers) * 100;
+    }
+    return 0;
+  }
+
+  openModalAllUsers(users: User[]) {
+    this.selectedUsers = users;
+  }
 }

@@ -495,7 +495,8 @@ if the page has a “right panel”, add a class for BODY -- ".page-has-right-pa
     left: 0;
     width: 100%;
     height: 100%;
-    box-shadow: inset 0px -120px 55px -30px rgba(0, 0, 0, 0.5); }
+    box-shadow: inset 0 -120px 55px -30px rgba(0, 0, 0, 0.5);
+  }
 
 .profile-menu {
   margin-bottom: 0;
@@ -1023,21 +1024,36 @@ if the page has a “right panel”, add a class for BODY -- ".page-has-right-pa
   font-weight: 800;
   margin-left: 12px;
   top: -3px;
-  position: relative; }
+  position: relative;
+}
+
 
 /*================= Styles for sticky-Header =========*/
+.animated-fast {
+  -webkit-animation-duration: .3s;
+  animation-duration: .3s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  will-change: transform, opacity;
+}
+
 .animated {
   -webkit-animation-duration: .5s;
   animation-duration: .5s;
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
-  will-change: transform,opacity; }
+  will-change: transform, opacity;
+}
+
 
 @-webkit-keyframes swingInX {
   0% {
-    -webkit-transform: perspective(400px) rotateX(-90deg); }
+    -webkit-transform: perspective(400px) rotateX(-90deg);
+  }
   100% {
-    -webkit-transform: perspective(400px) rotateX(0deg); } }
+    -webkit-transform: perspective(400px) rotateX(0deg);
+  }
+}
 
 @keyframes swingInX {
   0% {
@@ -11529,9 +11545,10 @@ ol ol li {
       left: 0;
       width: 100%;
       height: 100%;
-      box-shadow: inset 0px -120px 55px -30px rgba(0, 0, 0, 0.5);
+      box-shadow: inset 0 -120px 55px -30px rgba(0, 0, 0, 0.5);
       opacity: 0;
-      transition: all .3s ease; }
+      transition: all .3s ease;
+    }
   .w-last-video time {
     font-size: 10px; }
   .w-last-video .video-content {
@@ -13238,6 +13255,7 @@ Lots taken from Flatly (MIT): https://bootswatch.com/4/flatly/bootstrap.css
 --------------------------------------------------------------------------------------------------*/
 .fc-button-group {
   position: relative;
+  /*noinspection CssInvalidPropertyValue*/
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
   display: inline-flex;
@@ -13676,7 +13694,8 @@ be a descendant of the grid when it is being dragged.
   margin-bottom: 1px; }
 
 .fc-time-grid-event-inset {
-  box-shadow: 0px 0px 0px 1px #fff; }
+  box-shadow: 0 0 0 1px #fff;
+}
 
 .fc-time-grid-event.fc-not-start {
   /* events that are continuing from another day */
@@ -13836,9 +13855,10 @@ be a descendant of the grid when it is being dragged.
   /* please don't change 'position' */
   opacity: 0;
   transition: background-color .2s linear, opacity .2s linear;
-  bottom: 0px;
+  bottom: 0;
   /* there must be 'bottom' for ps__scrollbar-x-rail */
-  height: 15px; }
+  height: 15px;
+}
 
 .ps > .ps__scrollbar-x-rail > .ps__scrollbar-x {
   position: absolute;
@@ -14496,13 +14516,14 @@ img.mfp-img {
   border: none;
   background-color: transparent;
   background-image: url(../img/bigplay.png);
-  background-position: right 10px top 0px;
+  background-position: right 10px top 0;
   top: 50%;
   left: 50%;
   width: 100px;
   height: 100px;
   margin: -50px 0 0 -50px;
-  opacity: 1; }
+  opacity: 1;
+}
 
 .mejs-container.mep-slider .mejs-playlist ul li:hover:before {
   background-position: right 10px top -100px; }
@@ -14527,7 +14548,7 @@ img.mfp-img {
   width: 100px;
   opacity: 0.9;
   cursor: pointer;
-  background: transparent url(../bigplay.html) left -400px no-repeat;
+  /*background: transparent url(../bigplay.html) left -400px no-repeat;*/
   margin-top: -75px; }
 
 .mejs-container.mep-slider .mejs-playlist > a.mep-prev {
@@ -16474,6 +16495,7 @@ Build date: 2018-12-12 00:07:25
 
 /* Safari renders non-retina tile on retina better with this, but Chrome is worse */
 .leaflet-safari .leaflet-tile {
+  /*noinspection CssInvalidPropertyValue*/
   image-rendering: -webkit-optimize-contrast; }
 
 /* hack that prevents hw layers "stretching" when loading new tiles */

@@ -70,9 +70,8 @@
   opacity: 1;
 }
 
-.notification-event:hover ~ .box {
+.user-msg:hover .box {
   display: inline-block;
-  /* @TODO Display icon reaction */
 }
 
 .box {
@@ -880,12 +879,16 @@ label .fa {
 
 .padding-sondage-title {
   padding-left: 42px;
-  padding-bottom: 11px;
 }
 
 .img-sondage {
   height: 32px;
   width: 32px;
+}
+
+.time-sondage {
+  padding-left: 41px;
+  position: relative;
 }
 
 /*  ------------ Messages ------------ */
