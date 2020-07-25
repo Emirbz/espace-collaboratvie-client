@@ -1,14 +1,16 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
 import {RoomsComponent} from './components/site/rooms/rooms.component';
 import {ChatComponent} from './components/site/chat/chat.component';
+import {AppAuthGuard} from './config/AppAuthGuard';
 
 
 const routes: Routes = [
 
-  {path: 'rooms', component: RoomsComponent,  },
-  {path: 'rooms/:id', component: ChatComponent,  },
-  { path: '',
+  {path: 'rooms', component: RoomsComponent, canActivate: [AppAuthGuard]},
+  {path: 'rooms/:id', component: ChatComponent, canActivate: [AppAuthGuard]},
+  {
+    path: '',
     redirectTo: '/rooms',
     pathMatch: 'full'
   },
@@ -17,6 +19,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [AppAuthGuard]
 })
 export class AppRoutingModule { }

@@ -49,7 +49,7 @@ export class RoomsComponent implements OnInit, AfterViewInit {
     const node = document.createElement('script');
     node.src = url;
     node.type = 'text/javascript';
-    document.getElementsByTagName('head')[0].appendChild(node);
+    document.getElementsByTagName('body')[0].appendChild(node);
   }
 
   roomFormValidate() {

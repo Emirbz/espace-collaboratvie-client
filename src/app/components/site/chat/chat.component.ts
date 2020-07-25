@@ -10,6 +10,7 @@ import Reaction from '../../../models/Reaction';
 import Choix from '../../../models/Choix';
 import {TitleService} from '../../../services/title.service';
 import User from '../../../models/User';
+import {UserService} from '../../../services/user.service';
 
 
 @Component({
@@ -42,29 +43,37 @@ export class ChatComponent implements OnInit, AfterViewInit {
   selectedUsers: User[] = [];
   messagesHasbeenLoaded = false;
   allReactioxnsChecked: true;
-
+  loggedUser: User;
 
   ngAfterViewInit() {
+
+    this.loadScript('assets/js/main.js');
+    this.loadScript('assets/js/libs-init/libs-init.js');
   }
 
   constructor(private formBuilder: FormBuilder,
               private route: ActivatedRoute,
               private roomService: RoomService,
               private chatService: ChatService,
-              private titleService: TitleService
+              private titleService: TitleService,
+              private userService: UserService
   ) {
 
   }
 
   ngOnInit() {
     this.loadRoom();
-
-    this.loadScript('assets/js/main.js');
-    this.loadScript('assets/js/libs-init/libs-init.js');
+    this.getLoggedUser();
     this.jitsiFormValidate();
     this.loadRoomMessages();
     this.loadRoomSondages();
 
+  }
+
+  getLoggedUser() {
+    this.userService.getUser().subscribe(user => {
+      this.loggedUser = user;
+    });
   }
 
   public loadScript(url) {
@@ -222,4 +231,6 @@ export class ChatComponent implements OnInit, AfterViewInit {
   openModalAllUsers(users: User[]) {
     this.selectedUsers = users;
   }
+
+
 }

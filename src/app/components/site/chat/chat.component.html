@@ -1295,7 +1295,7 @@
 
 
                   <li *ngFor="let m of loadedMessages"
-                      [ngClass]="staticUserId == m?.user?.id ? 'sender user-msg': 'user-msg'">
+                      [ngClass]="loggedUser?.id == m?.user?.id ? 'sender user-msg': 'user-msg'">
                     <div class="author-thumb">
                       <img class="img-user" [src]="m?.user?.image" alt="author">
                     </div>
@@ -1369,7 +1369,7 @@
 
 
                 <div class="post__author author vcard inline-items">
-                  <img src="assets/img/author-page.jpg" alt="author">
+                  <img [src]="loggedUser.image" style="width: 30px;height: 30px" alt="author">
 
                   <div class="form-group with-icon-right is-empty">
                     <textarea id="msgInput" class="form-control" placeholder="Ecrire votre message ...."></textarea>

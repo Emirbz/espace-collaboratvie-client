@@ -26,9 +26,47 @@
             ],
             "styles": [
               "src/styles.css"
-
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/js/jQuery/jquery-3.4.1.js",
+              "src/assets/js/libs/jquery.appear.js",
+              "src/assets/js/libs/jquery.mousewheel.js",
+              "src/assets/js/libs/perfect-scrollbar.js",
+              "src/assets/js/libs/jquery.matchHeight.js",
+              "src/assets/js/libs/svgxuse.js",
+              "src/assets/js/libs/imagesloaded.pkgd.js",
+              "src/assets/js/libs/Headroom.js",
+              "src/assets/js/libs/velocity.js",
+              "src/assets/js/libs/ScrollMagic.js",
+              "src/assets/js/libs/jquery.waypoints.js",
+              "src/assets/js/libs/jquery.countTo.js",
+              "src/assets/js/libs/popper.min.js",
+              "src/assets/js/libs/material.min.js",
+              "src/assets/js/libs/bootstrap-select.js",
+              "src/assets/js/libs/smooth-scroll.js",
+              "src/assets/js/libs/selectize.js",
+              "src/assets/js/libs/swiper.jquery.js",
+              "src/assets/js/libs/moment.js",
+              "src/assets/js/libs/daterangepicker.js",
+              "src/assets/js/libs/fullcalendar.js",
+              "src/assets/js/libs/isotope.pkgd.js",
+              "src/assets/js/libs/ajax-pagination.js",
+              "src/assets/js/libs/Chart.js",
+              "src/assets/js/libs/chartjs-plugin-deferred.js",
+              "src/assets/js/libs/circle-progress.js",
+              "src/assets/js/libs/loader.js",
+              "src/assets/js/libs/run-chart.js",
+              "src/assets/js/libs/jquery.magnific-popup.js",
+              "src/assets/js/libs/jquery.gifplayer.js",
+              "src/assets/js/libs/mediaelement-and-player.js",
+              "src/assets/js/libs/mediaelement-playlist-plugin.min.js",
+              "src/assets/js/libs/ion.rangeSlider.js",
+              "src/assets/js/libs/leaflet.js",
+              "src/assets/js/libs/MarkerClusterGroup.js",
+              "src/assets/fonts/fontawesome-all.js",
+              "src/assets/Bootstrap/dist/js/bootstrap.bundle.js",
+              "src/assets/js/svg-loader.js"
+            ]
           },
           "configurations": {
             "production": {

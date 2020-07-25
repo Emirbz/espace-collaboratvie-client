@@ -1,5 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import {DoBootstrap, NgModule} from '@angular/core';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -8,7 +8,7 @@ import {SidemenuComponent} from './components/layout/sidemenu/sidemenu.component
 import {RoomsComponent} from './components/site/rooms/rooms.component';
 import {ChatComponent} from './components/site/chat/chat.component';
 import {RoomService} from './services/room.service';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {AvatarModule} from 'ngx-avatar';
 import {UserService} from './services/user.service';
 import {NgSelectModule} from '@ng-select/ng-select';
@@ -16,6 +16,11 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {TitleService} from './services/title.service';
 import {AngularFontAwesomeModule} from 'angular-font-awesome';
 import {ChatService} from './services/chat.service';
+import {KeycloakAngularModule, KeycloakService} from 'keycloak-angular';
+import {environment} from '../environments/environment';
+import {AuthInterceptor} from './config/AuthInterceptor';
+
+const keycloakService: KeycloakService = new KeycloakService();
 
 
 @NgModule({
@@ -34,14 +39,35 @@ import {ChatService} from './services/chat.service';
     NgSelectModule,
     FormsModule,
     ReactiveFormsModule,
-    AngularFontAwesomeModule
+    AngularFontAwesomeModule,
+    KeycloakAngularModule
   ],
   providers: [
     RoomService,
     UserService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
     TitleService,
-    ChatService
+    ChatService,
+    {
+      provide: KeycloakService,
+      useValue: keycloakService
+    }
   ],
-  bootstrap: [AppComponent]
+  entryComponents: [AppComponent]
 })
-export class AppModule { }
+export class AppModule implements DoBootstrap {
+  async ngDoBootstrap(app) {
+    const {keycloak} = environment.apis;
+
+    try {
+      await keycloakService.init({config: keycloak});
+      app.bootstrap(AppComponent);
+    } catch (error) {
+      console.error('Keycloak init failed', error);
+    }
+  }
+}

@@ -2,8 +2,16 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-const backURL = 'http://localhost:8089';
+import {KeycloakConfig} from 'keycloak-angular';
 
+const backURL = 'http://localhost:8089';
+const keycloakurl = 'http://localhost:8080/auth';
+const keycloakConfig: KeycloakConfig = {
+  url: keycloakurl,
+  realm: 'espace_collaborative',
+  clientId: 'angular-app',
+
+};
 
 
 export const environment = {
@@ -14,6 +22,7 @@ export const environment = {
     reaction: backURL + '/reaction',
     sondage: backURL + '/sondage',
     user: backURL + '/user',
+    keycloak: keycloakConfig
   },
 };
 
