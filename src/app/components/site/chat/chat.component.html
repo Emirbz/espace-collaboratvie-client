@@ -1,3 +1,4 @@
+
 <!-- Fixed Sidebar Right -->
 
 <div class="fixed-sidebar right">
@@ -1199,11 +1200,11 @@
             (for you and friends only) and Public (open to everyone). Create your events, invite friends and have
             fun!</p>
         </div>
+
       </div>
     </div>
   </div>
 
-  <img class="assets/img-bottom" src="assets/img/event-bottom.png" alt="friends">
 </div>
 
 <div [ngClass]="contrainerClass">
@@ -1289,7 +1290,8 @@
             <!-- Chat Field -->
 
             <div class="chat-field">
-              <div class="mCustomScrollbarNew popup-chat" style="overflow-y: scroll" data-mcs-theme="dark">
+              <div #scrollMe [scrollTop]="scrollMe.scrollHeight" class="mCustomScrollbarNew popup-chat"
+                   style="overflow-y: scroll" data-mcs-theme="dark">
                 <!-- @TODO loader -->
                 <ul *ngIf="messagesHasbeenLoaded" class="notification-list chat-message chat-message-field ">
 
@@ -1297,9 +1299,11 @@
                   <li *ngFor="let m of loadedMessages"
                       [ngClass]="loggedUser?.id == m?.user?.id ? 'sender user-msg': 'user-msg'">
                     <div class="author-thumb">
-                      <img class="img-user" [src]="m?.user?.image" alt="author">
+                      <img class="img-user" [src]="m.user.image" alt="author" [attr.data-toggle]="'tooltip'"
+                           [attr.data-placement]="'top'" [attr.title]="m.timestamp | date: 'yyyy-MM-dd HH:MM'">
                     </div>
-                    <div class="notification-event min-width-7 ">
+                    <!-- Text MEssage -->
+                    <div *ngIf="m?.type==='TEXT'" class="notification-event min-width-7 ">
 
                       <span class="chat-message-item">{{m?.body | titlecase}}
 																</span>
@@ -1320,8 +1324,9 @@
                       </div>
 
                     </div>
+                    <!-- End Text message -->
                     <!-- Reaction - Make Reaction -->
-                    <div class="box">
+                    <div *ngIf="m?.type==='TEXT'" class="box">
                       <input type="checkbox" id="likes" class="field-reactions">
                       <a class="label-reactions">
                         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
@@ -1349,17 +1354,88 @@
                       </a>
                       <div class="toolbox"></div>
                       <label class="overlay"></label>
-                      <button class="reaction-like"><span class="legend-reaction">Like</span></button>
-                      <button class="reaction-love"><span class="legend-reaction">Love</span></button>
-                      <button class="reaction-haha"><span class="legend-reaction">BRAVO</span></button>
-                      <button class="reaction-wow"><span style="width: 84px;max-width: 177%" class="legend-reaction">INTERESTING</span>
+                      <button (click)="react(m,'LIKE')" class="reaction-like"><span class="legend-reaction">Like</span>
+                      </button>
+                      <button (click)="react(m,'LOVE')" class="reaction-love"><span class="legend-reaction">Love</span>
+                      </button>
+                      <button (click)="react(m,'BRAVO')" class="reaction-haha"><span
+                        class="legend-reaction">BRAVO</span></button>
+                      <button (click)="react(m,'INTERESTING')" class="reaction-wow"><span
+                        style="width: 84px;max-width: 177%" class="legend-reaction">INTERESTING</span>
                       </button>
 
                     </div>
                     <!-- End Make Reaction -->
+                    <!--Sondages -->
+                    <div *ngIf="m?.type==='SONDAGE'" class="ui-block">
+                      <div class="ui-block-title">
+                        <h6 class="title">{{m?.body}}</h6>
+                      </div>
+                      <div class="ui-block-content padding-10">
+
+                        <!-- W-Pool -->
+
+                        <ul class="widget w-pool margin-b-0">
+                          <li *ngFor="let c of m?.choix">
+                            <div class="skills-item full-width">
+                              <div class="skills-item-info">
+									<span class="skills-item-title">
+										<span class="radio">
+											<label>
+												<input [checked]="checkUserHasVoted(c)" (change)="vote(c.id)" type="radio"
+                               name="optionsRadios2"><span class="circle"></span><span class="check"></span>
+                        {{c?.body}}
+											</label>
+										</span>
+									</span>
+                                <span class="skills-item-count">
+										<span class="count-animate" data-speed="1000" data-refresh-interval="50"
+                          [attr.data-to]="calculateUsersVote(c,m) | number"
+                          data-from="0"></span>
+										<span class="units">{{calculateUsersVote(c, m) | number}}%</span>
+									</span>
+                              </div>
+                              <div class="skills-item-meter">
+                                <span class="skills-item-meter-active bg-primary skills-animate"
+                                      style="opacity:1" [ngStyle]="{'width':calculateUsersVote(c,m)+'%'}"></span>
+                              </div>
+
+                              <div *ngIf="c?.users.length===0" class="counter-friends">Personne n'a voté pour cela.
+                              </div>
+                              <div *ngIf="c?.users.length===1  "
+                                   class="counter-friends">{{c.users[0].firstName}} {{c.users[0].lastName}} a voté pour
+                                cela.
+                              </div>
+                              <div *ngIf="c?.users.length>1 "
+                                   class="counter-friends">{{c.users[0].firstName}} {{c.users[0].lastName}}
+                                et {{c?.users?.length - 1}}  autres collaborateurs ont voté pour cela
+                              </div>
+
+
+                              <ul class="friends-harmonic cursor-pointer" data-toggle="modal"
+                                  (click)="openModalAllUsers(c.users)" data-target="#modal-list-users">
+                                <li style="padding: 0;overflow: unset" *ngFor="let u of c?.users | slice: 0:2">
+                                  <a>
+                                    <img [src]="u.image" alt="friend">
+                                  </a>
+                                </li>
+
+                                <li style="padding: 0;overflow: unset" *ngIf="c?.users?.length>2">
+                                  <a class="all-users c-white" style="color: white">+{{c.users.length - 2}}</a>
+                                </li>
+                              </ul>
+                            </div>
+                          </li>
+
+                        </ul>
+
+                        <!-- .. end W-Pool -->
+
+                      </div>
+                    </div>
+
+                    <!-- End Sondage -->
                   </li>
-
-
 
 
                 </ul>
@@ -1372,7 +1448,8 @@
                   <img [src]="loggedUser.image" style="width: 30px;height: 30px" alt="author">
 
                   <div class="form-group with-icon-right is-empty">
-                    <textarea id="msgInput" class="form-control" placeholder="Ecrire votre message ...."></textarea>
+                    <textarea #msgInput (keyup.enter)="sendMessage(msgInput.value)" class="form-control"
+                              placeholder="Ecrire votre message ...."></textarea>
                     <div class="add-options-message">
                       <a href="#" class="options-message" data-toggle="modal" data-target="#update-header-photo">
                         <svg class="olymp-camera-icon">
@@ -1431,7 +1508,8 @@
           <ul class="widget w-faved-page ">
             <li *ngFor="let u of loadedRoom?.users  | slice:0:5">
 
-              <img [src]="u?.image" alt="author">
+              <img [src]="u.image" alt="author" class="cursor-pointer" [attr.data-toggle]="'tooltip'"
+                   [attr.data-placement]="'top'" [attr.title]="u?.firstName +' '+  u?.lastName">
 
             </li>
 
@@ -1447,9 +1525,10 @@
       </div>
       <div class="ui-block ">
         <div class="ui-block-title">
-          <a data-toggle="modal" href="#" data-target="#modal-list-users" class="title-2 hover-orange">Sondages
-            récents</a>
-          <a href="#" class="more">
+          <a *ngIf="loadedSondages.length>0" data-toggle="modal" href="#" data-target="#modal-sondage"
+             class="title-2 hover-orange">Sondages récents</a>
+          <span *ngIf="loadedSondages.length==0" class="title-2">Sondages récents</span>
+          <a href="#" class="more" data-toggle="modal" data-target="#modal-add-sondage">
             <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
                  width="25" height="25"
                  viewBox="0 0 172 172"
@@ -1493,7 +1572,8 @@
 									<span class="skills-item-title">
 										<span class="radio">
 											<label>
-												<input type="radio" name="optionsRadios"><span class="circle"></span><span class="check"></span>
+												<input [checked]="checkUserHasVoted(c)" (change)="vote(c.id)" type="radio" name="optionsRadios"><span
+                        class="circle"></span><span class="check"></span>
                         {{c?.body | titlecase}}
 											</label>
 										</span>
@@ -1520,7 +1600,7 @@
                 <ul class="friends-harmonic">
                   <li *ngFor="let u of c?.users">
                     <a href="#">
-                      <img [src]="u?.image" alt="friend">
+                      <img [src]="u.image" alt="friend">
                     </a>
                   </li>
 
@@ -1643,8 +1723,8 @@
             <ul class="widget w-friend-pages-added notification-list friend-requests">
               <li *ngFor="let r of selectedMessage?.reactions" class="inline-items padding-reaction width-95">
                 <div class="author-thumb">
-                  <img class="img-user" [src]="r?.user?.image" alt="author">
-                  <img class="translate" [src]="'assets/img/'+(r.type.toLowerCase())+'.png'">
+                  <img class="img-user" [src]="r.user.image" alt="author">
+                  <img class="translate" [src]="'assets/img/'+(r.type.toLowerCase())+'.png'" alt="author">
                 </div>
                 <div class="notification-event">
                   <span class="h6 notification-friend">{{r?.user?.firstName}} {{r?.user?.lastName}}</span>
@@ -1652,7 +1732,6 @@
                 </div>
 
               </li>
-
 
 
             </ul>
@@ -1662,8 +1741,8 @@
             <ul class="widget w-friend-pages-added notification-list friend-requests">
               <li *ngFor="let r of loadReactionsByType('LIKE')" class="inline-items padding-reaction width-95">
                 <div class="author-thumb">
-                  <img class="img-user" [src]="r?.user?.image" alt="author">
-                  <img class="translate" [src]="'assets/img/'+(r.type.toLowerCase())+'.png'">
+                  <img class="img-user" [src]="r.user.image" alt="author">
+                  <img class="translate" [src]="'assets/img/'+(r.type.toLowerCase())+'.png'" alt="author">
                 </div>
                 <div class="notification-event">
                   <span class="h6 notification-friend">{{r?.user?.firstName}} {{r?.user?.lastName}}</span>
@@ -1671,7 +1750,6 @@
                 </div>
 
               </li>
-
 
 
             </ul>
@@ -1683,8 +1761,8 @@
             <ul class="widget w-friend-pages-added notification-list friend-requests">
               <li *ngFor="let r of loadReactionsByType('LOVE')" class="inline-items padding-reaction width-95">
                 <div class="author-thumb">
-                  <img class="img-user" [src]="r?.user?.image" alt="author">
-                  <img class="translate" [src]="'assets/img/'+(r.type.toLowerCase())+'.png'">
+                  <img class="img-user" [src]="r.user.image" alt="author">
+                  <img class="translate" [src]="'assets/img/'+(r.type.toLowerCase())+'.png'" alt="author">
                 </div>
                 <div class="notification-event">
                   <span class="h6 notification-friend">{{r?.user?.firstName}} {{r?.user?.lastName}}</span>
@@ -1692,7 +1770,6 @@
                 </div>
 
               </li>
-
 
 
             </ul>
@@ -1703,8 +1780,8 @@
             <ul class="widget w-friend-pages-added notification-list friend-requests">
               <li *ngFor="let r of loadReactionsByType('BRAVO')" class="inline-items padding-reaction width-95">
                 <div class="author-thumb">
-                  <img class="img-user" [src]="r?.user?.image" alt="author">
-                  <img class="translate" [src]="'assets/img/'+(r.type.toLowerCase())+'.png'">
+                  <img class="img-user" [src]="r.user.image" alt="author">
+                  <img class="translate" [src]="'assets/img/'+(r.type.toLowerCase())+'.png'" alt="author">
                 </div>
                 <div class="notification-event">
                   <span class="h6 notification-friend">{{r?.user?.firstName}} {{r?.user?.lastName}}</span>
@@ -1712,7 +1789,6 @@
                 </div>
 
               </li>
-
 
 
             </ul>
@@ -1723,8 +1799,8 @@
             <ul class="widget w-friend-pages-added notification-list friend-requests">
               <li *ngFor="let r of loadReactionsByType('INTERESTING')" class="inline-items padding-reaction width-95">
                 <div class="author-thumb">
-                  <img class="img-user" [src]="r?.user?.image" alt="author">
-                  <img class="translate" [src]="'assets/img/'+(r.type.toLowerCase())+'.png'">
+                  <img class="img-user" [src]="r.user.image" alt="author">
+                  <img class="translate" [src]="'assets/img/'+(r.type.toLowerCase())+'.png'" alt="author">
                 </div>
                 <div class="notification-event">
                   <span class="h6 notification-friend">{{r?.user?.firstName}} {{r?.user?.lastName}}</span>
@@ -1766,7 +1842,7 @@
         <div id="accordion" role="tablist" aria-multiselectable="true">
           <div class="card" *ngFor="let s of loadedSondages; let  i=index">
             <div class="card-header" role="tab" id="headingOne">
-              <img class="rounded-circle position-absolute img-sondage" [src]="s?.user.image">
+              <img class="rounded-circle position-absolute img-sondage" [src]="s.user.image" alt="author">
               <h6 class="mb-0 padding-sondage-title">
 
                 <a data-toggle="collapse" data-parent="#accordion" [href]="'#collapse'+s.id" aria-expanded="true"
@@ -1777,8 +1853,7 @@
 
               </h6>
 
-              <time class="entry-date updated time-sondage" datetime="2017-06-24T18:18">2 hours, 16 minutes
-                ago
+              <time class="entry-date updated time-sondage" datetime="2017-06-24T18:18">{{s.timestamp | timeAgo}}
               </time>
             </div>
 
@@ -1792,7 +1867,8 @@
 									<span class="skills-item-title">
 										<span class="radio">
 											<label>
-												<input type="radio" name="optionsRadios"><span class="circle"></span><span class="check"></span>
+												<input [checked]="checkUserHasVoted(c)" (change)="vote(c.id)" type="radio"
+                               name="optionsRadios1"><span class="circle"></span><span class="check"></span>
                         {{c?.body | titlecase}}
 											</label>
 										</span>
@@ -1821,7 +1897,7 @@
                     <ul class="friends-harmonic">
                       <li *ngFor="let u of c?.users">
                         <a href="#">
-                          <img [src]="u?.image" alt="friend">
+                          <img [src]="u.image" alt="friend">
                         </a>
                       </li>
 
@@ -1912,7 +1988,7 @@
         <ul class="widget w-friend-pages-added notification-list friend-requests animated bounceInDown">
           <li *ngFor="let r of selectedUsers" class="inline-items padding-reaction width-95">
             <div class="author-thumb">
-              <img class="img-user" [src]="r?.image" alt="author">
+              <img class="img-user" [src]="r.image" alt="author">
 
             </div>
             <div class="notification-event">
@@ -1931,4 +2007,81 @@
 </div>
 
 <!-- ... end Window-popup users -->
+
+<!-- Window-popup add Sondage sondagem -->
+<div class="modal fade" id="modal-add-sondage" tabindex="-1" role="dialog" aria-labelledby="edit-widget-pool"
+     aria-hidden="true">
+  <div class="modal-dialog window-popup edit-widget edit-widget-pool" role="document">
+    <div class="modal-content">
+      <a href="#" class="close icon-close" data-dismiss="modal" aria-label="Close">
+        <svg class="olymp-close-icon">
+          <use xlink:href="#olymp-close-icon"></use>
+        </svg>
+      </a>
+
+      <div class="modal-header">
+        <h6 class="title">Ajouter un Sondage</h6>
+      </div>
+
+      <div class="modal-body">
+        <form [formGroup]="sondageFormGroup">
+          <div class="form-group label-floating">
+
+
+            <label class="control-label">Question du sondage</label>
+            <input formControlName="question" class="form-control" placeholder="" type="text">
+          </div>
+          <div formArrayName="choix">
+            <div *ngFor="let option of sondageOptions().controls; let i=index">
+              <div [formGroupName]="i"
+                   [ngClass]="i>0 ?'form-group label-floating animated bounceInDown' : 'form-group label-floating animated '">
+                <label class="control-label">Option {{i + 1}}</label>
+                <input class="form-control" formControlName="body" type="text">
+                <a *ngIf="sondageOptions().length>2" style="top: -44px;right: 10px;"
+                   class="more float-right cursor-pointer" (click)="removeOption(i)">
+                  <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+                       width="25" height="25"
+                       viewBox="0 0 172 172"
+                       style=" fill:#000000;">
+                    <g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt"
+                       stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0"
+                       font-family="none" font-size="none"
+                       style="mix-blend-mode: normal">
+                      <path d="M0,172v-172h172v172z" fill="none"></path>
+                      <g fill="#666666">
+                        <path
+                          d="M75.25,8.6c-3.53574,0 -6.45,2.91426 -6.45,6.45v4.3h-38.7c-3.53574,0 -6.45,2.91426 -6.45,6.45v2.15h0.89863c0.94902,2.37676 2.84707,4.3 5.55137,4.3h2.32637l9.88496,110.60742c0.49551,5.52617 5.15664,9.79258 10.69961,9.79258h65.97812c5.54297,0 10.2041,-4.26641 10.69961,-9.79258l9.88496,-110.60742h2.32637c2.7043,0 4.60234,-1.92324 5.55137,-4.3h0.89863v-2.15c0,-3.53574 -2.91426,-6.45 -6.45,-6.45h-38.7v-4.3c0,-3.53574 -2.91426,-6.45 -6.45,-6.45zM75.25,12.9h21.5c1.21777,0 2.15,0.93223 2.15,2.15v4.3h-25.8v-4.3c0,-1.21777 0.93223,-2.15 2.15,-2.15zM30.1,23.65h111.8c1.21777,0 2.15,0.93223 2.15,2.15c0,1.21777 -0.93223,2.15 -2.15,2.15h-111.8c-1.21777,0 -2.15,-0.93223 -2.15,-2.15c0,-1.21777 0.93223,-2.15 2.15,-2.15zM36.75156,32.25h98.49687l-9.84297,110.22109c-0.30234,3.35098 -3.05703,5.87891 -6.41641,5.87891h-65.97812c-3.35098,0 -6.11406,-2.52793 -6.41641,-5.87891zM124.7084,47.2916c-1.12539,-0.0084 -2.06601,0.85664 -2.1584,1.98203c-0.09238,1.18418 0.78945,2.21719 1.97363,2.31797c1.18418,0.09238 2.21719,-0.79785 2.31797,-1.97363c0.09238,-1.18418 -0.79785,-2.22559 -1.97363,-2.31797c-0.05039,-0.0084 -0.10078,-0.0084 -0.15957,-0.0084zM47.34199,47.3c-0.07559,0 -0.14277,0 -0.20996,0.0084c-1.18418,0.09238 -2.07441,1.13379 -1.98203,2.30957c0.10078,1.18418 1.13379,2.06602 2.31797,1.97363c1.18418,-0.09238 2.06602,-1.12539 1.97363,-2.30957c-0.08399,-1.1002 -0.99102,-1.95684 -2.09961,-1.98203zM70.89121,47.3c-1.18418,0.03359 -2.1248,1.02461 -2.09121,2.20879c0.03359,1.18418 1.02461,2.1248 2.20879,2.09121c1.18418,-0.03359 2.1248,-1.01621 2.09121,-2.20879c-0.03359,-1.18418 -1.02461,-2.11641 -2.20879,-2.09121zM100.94922,47.3c-1.12539,0.05039 -2.01562,0.96582 -2.04922,2.09121c-0.03359,1.19258 0.90703,2.1752 2.09121,2.20879c1.18418,0.03359 2.1752,-0.90703 2.20879,-2.09121c0.0252,-1.18418 -0.90703,-2.1752 -2.09121,-2.20879c-0.05039,0 -0.10918,0 -0.15957,0zM124.02812,55.86641c-1.12539,-0.0084 -2.06601,0.85664 -2.1584,1.98203c-0.09238,1.17578 0.78945,2.21719 1.97363,2.30957c1.18418,0.09238 2.21719,-0.78945 2.30957,-1.97363c0.10078,-1.18418 -0.78945,-2.21719 -1.96523,-2.31797c-0.05039,0 -0.10078,0 -0.15957,0zM48.03066,55.8748c-0.07559,0 -0.15117,0 -0.21836,0.0084c-1.18418,0.09238 -2.06601,1.12539 -1.97363,2.30957c0.09238,1.18418 1.13379,2.06602 2.30957,1.97363c1.18418,-0.09238 2.07441,-1.13379 1.97363,-2.31797c-0.08398,-1.1002 -0.99101,-1.94844 -2.09121,-1.97363zM71.11797,55.9c-1.18418,0.03359 -2.11641,1.02461 -2.08281,2.20879c0.0252,1.18418 1.01621,2.1248 2.20879,2.09121c1.18418,-0.03359 2.11641,-1.02461 2.09121,-2.20879c-0.03359,-1.18418 -1.02461,-2.1248 -2.21719,-2.09121zM100.72246,55.9c-1.12539,0.05039 -2.02402,0.96582 -2.05762,2.09121c-0.0252,1.19258 0.90703,2.1752 2.09121,2.20879c1.19258,0.03359 2.18359,-0.90703 2.20879,-2.09121c0.03359,-1.18418 -0.89863,-2.1752 -2.08281,-2.20879c-0.05879,0 -0.10918,0 -0.15957,0zM123.35625,64.44121c-1.13379,-0.0084 -2.07441,0.85664 -2.1584,1.97363c-0.10078,1.18418 0.78105,2.22559 1.96523,2.31797c1.18418,0.09238 2.21719,-0.78945 2.30957,-1.97363c0.10078,-1.18418 -0.78105,-2.21719 -1.96523,-2.31797c-0.05039,0 -0.10078,0 -0.15117,0zM48.71094,64.44121c-0.07559,0 -0.15117,0.0084 -0.21836,0.0168c-1.18418,0.09238 -2.06602,1.12539 -1.97363,2.30957c0.09238,1.18418 1.13379,2.06601 2.31797,1.97363c1.17578,-0.09238 2.06601,-1.13379 1.96523,-2.31797c-0.08398,-1.10019 -0.99101,-1.95684 -2.09121,-1.98203zM71.35312,64.5c-1.18418,0.0252 -2.1248,1.01621 -2.09121,2.20879c0.03359,1.18418 1.02461,2.11641 2.20879,2.09121c1.18418,-0.03359 2.1248,-1.02461 2.09121,-2.21719c-0.03359,-1.18418 -1.02461,-2.11641 -2.20879,-2.08281zM100.4873,64.5c-1.12539,0.05039 -2.02402,0.96582 -2.05762,2.09121c-0.0252,1.18418 0.90703,2.1752 2.09121,2.20879c1.19258,0.03359 2.18359,-0.90703 2.20879,-2.09121c0.03359,-1.18418 -0.89863,-2.1752 -2.08281,-2.20879c-0.05879,0 -0.10918,0 -0.15957,0zM122.67598,73.00762c-1.13379,-0.0084 -2.07441,0.85664 -2.1668,1.98203c-0.08398,1.18418 0.79785,2.21719 1.97363,2.30957c1.18418,0.10078 2.22559,-0.78105 2.31797,-1.96523c0.09238,-1.18418 -0.78945,-2.21719 -1.97363,-2.30957c-0.05039,-0.0084 -0.10078,-0.0084 -0.15117,-0.0168zM49.38281,73.02441c-0.06719,-0.0084 -0.14277,0 -0.20996,0.0084c-1.18418,0.09238 -2.06602,1.12539 -1.97363,2.30957c0.09238,1.18418 1.13379,2.06601 2.31797,1.97363c1.17578,-0.09238 2.06602,-1.13379 1.97363,-2.30957c-0.09238,-1.10859 -0.99941,-1.96524 -2.10801,-1.98203zM71.58828,73.1c-1.18418,0.0252 -2.1248,1.01621 -2.09121,2.20039c0.03359,1.18418 1.01621,2.1248 2.20039,2.09121c1.19258,-0.03359 2.12481,-1.01621 2.09961,-2.20879c-0.03359,-1.18418 -1.02461,-2.11641 -2.20879,-2.08281zM100.25215,73.1c-1.12539,0.04199 -2.01562,0.95742 -2.04922,2.08281c-0.03359,1.19258 0.90703,2.1752 2.09121,2.20879c1.18418,0.03359 2.17519,-0.90703 2.20039,-2.09121c0.03359,-1.18418 -0.89863,-2.1752 -2.08281,-2.20039c-0.05039,-0.0084 -0.10918,-0.0084 -0.15957,0zM121.9873,81.58242c-1.12539,-0.0084 -2.06601,0.85664 -2.1584,1.97363c-0.09238,1.18418 0.78945,2.22559 1.97363,2.31797c1.18418,0.09238 2.21719,-0.78945 2.31797,-1.97363c0.08398,-1.18418 -0.79785,-2.21719 -1.97363,-2.30957c-0.05039,-0.0084 -0.10078,-0.0084 -0.15957,-0.0084zM50.06309,81.59922c-0.06719,-0.0084 -0.14277,-0.0084 -0.20996,0c-1.18418,0.09238 -2.06601,1.13379 -1.97363,2.31797c0.09238,1.17578 1.13379,2.06602 2.30957,1.97363c1.18418,-0.10078 2.07441,-1.13379 1.98203,-2.31797c-0.09238,-1.1002 -0.99941,-1.95684 -2.10801,-1.97363zM71.82344,81.6916c-1.19258,0.03359 -2.1248,1.01621 -2.09121,2.20039c0.0252,1.19258 1.01621,2.12481 2.20039,2.09961c1.19258,-0.03359 2.12481,-1.02461 2.09961,-2.20879c-0.03359,-1.18418 -1.02461,-2.1248 -2.20879,-2.09121zM100.01699,81.6916c-1.12539,0.05039 -2.01562,0.96582 -2.04922,2.09121c-0.03359,1.18418 0.90703,2.1752 2.09121,2.20879c1.18418,0.03359 2.17519,-0.90703 2.20879,-2.09121c0.03359,-1.18418 -0.90703,-2.1752 -2.09121,-2.20879c-0.05039,0 -0.10078,0 -0.15957,0zM121.30703,90.15723c-1.12539,-0.0084 -2.06601,0.85664 -2.1584,1.98203c-0.09238,1.17578 0.78945,2.21719 1.97363,2.30957c1.18418,0.09238 2.21719,-0.78945 2.30957,-1.97363c0.09238,-1.18418 -0.78945,-2.21719 -1.96523,-2.30957c-0.05879,-0.0084 -0.10918,-0.0084 -0.15957,-0.0084zM50.75176,90.16563c-0.07559,0 -0.14277,0 -0.21836,0c-1.18418,0.10078 -2.06601,1.13379 -1.97363,2.31797c0.09238,1.18418 1.13379,2.06602 2.30957,1.97363c1.18418,-0.09238 2.07441,-1.13379 1.97363,-2.30957c-0.08398,-1.1002 -0.99101,-1.95684 -2.09121,-1.98203zM72.0502,90.2916c-1.18418,0.0252 -2.1248,1.01621 -2.09121,2.20039c0.03359,1.19258 1.02461,2.12481 2.20879,2.09961c1.18418,-0.03359 2.12481,-1.02461 2.09121,-2.20879c-0.03359,-1.19258 -1.02461,-2.1248 -2.20879,-2.09121zM99.79863,90.2916c-1.13379,0.04199 -2.03242,0.95742 -2.06602,2.09121c-0.02519,1.18418 0.90703,2.1752 2.09961,2.20879c1.18418,0.0252 2.1752,-0.90703 2.20039,-2.09961c0.03359,-1.18418 -0.89863,-2.17519 -2.09121,-2.20039c-0.04199,-0.0084 -0.10078,-0.0084 -0.14277,0zM120.63516,98.73203c-1.13379,-0.0168 -2.07441,0.84824 -2.1668,1.98203c-0.09238,1.17578 0.78945,2.21719 1.97363,2.30957c1.18418,0.09238 2.21719,-0.78945 2.30957,-1.97363c0.10078,-1.18418 -0.78945,-2.21719 -1.97363,-2.31797c-0.04199,0 -0.09238,0 -0.14277,0zM51.43203,98.74043c-0.07559,0 -0.14277,0 -0.20996,0c-1.18418,0.10078 -2.07441,1.13379 -1.97363,2.31797c0.09238,1.18418 1.12539,2.06602 2.30957,1.97363c1.18418,-0.09238 2.06601,-1.13379 1.97363,-2.31797c-0.09238,-1.1002 -0.99941,-1.94844 -2.09961,-1.97363zM72.28535,98.8832c-1.18418,0.03359 -2.1248,1.02461 -2.09121,2.20879c0.03359,1.18418 1.02461,2.12481 2.20879,2.09121c1.18418,-0.03359 2.12481,-1.02461 2.09121,-2.20879c-0.03359,-1.18418 -1.02461,-2.1248 -2.20879,-2.09121zM99.56348,98.8916c-1.13379,0.04199 -2.03242,0.95742 -2.06602,2.09121c-0.02519,1.18418 0.90703,2.1752 2.09961,2.20879c1.18418,0.0252 2.1752,-0.90703 2.20039,-2.09961c0.03359,-1.18418 -0.89863,-2.17519 -2.09121,-2.20039c-0.04199,-0.0084 -0.10078,-0.0084 -0.14277,0zM119.95488,107.29844c-1.13379,-0.0084 -2.07441,0.85664 -2.1668,1.98203c-0.09238,1.18418 0.78945,2.21719 1.97363,2.31797c1.18418,0.09238 2.21719,-0.78945 2.31797,-1.97363c0.09238,-1.18418 -0.79785,-2.21719 -1.98203,-2.31797c-0.04199,0 -0.09238,0 -0.14277,-0.0084zM52.1123,107.30684c-0.07559,0 -0.14277,0.0084 -0.20996,0.0168c-1.18418,0.09238 -2.07441,1.12539 -1.98203,2.30957c0.10078,1.18418 1.13379,2.06601 2.31797,1.96523c1.18418,-0.09238 2.06602,-1.12539 1.97363,-2.30957c-0.09238,-1.10019 -0.99941,-1.95684 -2.09961,-1.98203zM72.52051,107.4748c-1.19258,0.03359 -2.1248,1.02461 -2.09961,2.20879c0.03359,1.19258 1.02461,2.1248 2.20879,2.09121c1.19258,-0.02519 2.1248,-1.01621 2.09121,-2.20039c-0.02519,-1.19258 -1.01621,-2.1248 -2.20039,-2.09961zM99.32832,107.4916c-1.13379,0.04199 -2.02402,0.95742 -2.05762,2.09121c-0.03359,1.18418 0.90703,2.1668 2.09121,2.20039c1.18418,0.03359 2.1752,-0.90703 2.20879,-2.09121c0.03359,-1.18418 -0.90703,-2.17519 -2.09121,-2.20039c-0.05039,-0.0084 -0.10078,-0.0084 -0.15117,0zM119.26621,115.87324c-1.12539,-0.0084 -2.06601,0.85664 -2.1584,1.98203c-0.09238,1.18418 0.78945,2.21719 1.97363,2.30957c1.18418,0.10078 2.21719,-0.78945 2.31797,-1.97363c0.09238,-1.17578 -0.79785,-2.21719 -1.97363,-2.30957c-0.05039,-0.0084 -0.10078,-0.0084 -0.15957,-0.0084zM52.79258,115.89004c-0.07559,-0.0084 -0.14278,-0.0084 -0.21836,0c-1.17578,0.09238 -2.06601,1.13379 -1.97363,2.31797c0.10078,1.17578 1.13379,2.06601 2.31797,1.96523c1.18418,-0.09238 2.06602,-1.12539 1.97363,-2.30957c-0.09238,-1.1002 -0.99941,-1.95684 -2.09961,-1.97363zM72.74727,116.0748c-1.18418,0.03359 -2.12481,1.02461 -2.09121,2.20879c0.03359,1.19258 1.02461,2.1248 2.20879,2.09121c1.18418,-0.02519 2.1248,-1.01621 2.09121,-2.20039c-0.03359,-1.19258 -1.02461,-2.1248 -2.20879,-2.09961zM99.10156,116.0832c-1.13379,0.05039 -2.03242,0.96582 -2.05762,2.09121c-0.03359,1.18418 0.89863,2.1752 2.09121,2.20039c1.18418,0.03359 2.1752,-0.89863 2.20879,-2.09121c0.0252,-1.18418 -0.90703,-2.1668 -2.09961,-2.20039c-0.04199,0 -0.10078,0 -0.14277,0zM118.58594,124.44805c-1.12539,-0.0084 -2.06601,0.85664 -2.1584,1.97363c-0.09238,1.18418 0.78945,2.22559 1.96523,2.31797c1.18418,0.09238 2.22559,-0.78945 2.31797,-1.97363c0.09238,-1.18418 -0.78945,-2.21719 -1.97363,-2.30957c-0.05039,-0.0084 -0.10078,-0.0084 -0.15117,-0.0084zM53.47285,124.45645c-0.07559,0 -0.14277,0 -0.21836,0.0084c-1.17578,0.09238 -2.06601,1.13379 -1.96523,2.31797c0.09238,1.17578 1.12539,2.06602 2.30957,1.97363c1.18418,-0.10078 2.06601,-1.13379 1.97363,-2.31797c-0.08398,-1.1002 -0.99101,-1.95684 -2.09961,-1.98203zM72.98242,124.6748c-1.18418,0.03359 -2.12481,1.02461 -2.09121,2.20879c0.03359,1.18418 1.01621,2.1248 2.20879,2.09121c1.18418,-0.03359 2.11641,-1.02461 2.08281,-2.20879c-0.0252,-1.18418 -1.01621,-2.12481 -2.20039,-2.09121zM98.85801,124.6832c-1.12539,0.05039 -2.02402,0.96582 -2.04922,2.09121c-0.03359,1.18418 0.89863,2.1752 2.09121,2.20039c1.18418,0.03359 2.1752,-0.89863 2.20879,-2.09121c0.0252,-1.18418 -0.90703,-2.1668 -2.09961,-2.20039c-0.05039,0 -0.10078,0 -0.15117,0zM117.90566,133.02285c-1.12539,-0.0084 -2.07441,0.85664 -2.1584,1.98203c-0.09238,1.17578 0.78945,2.20879 1.97363,2.30117c1.18418,0.09238 2.21719,-0.78105 2.30957,-1.96523c0.09238,-1.18418 -0.78945,-2.21719 -1.97363,-2.30957c-0.05039,-0.0084 -0.10078,-0.0084 -0.15117,-0.0084zM54.15313,133.03125c-0.07559,0 -0.14277,0 -0.20996,0.0084c-1.18418,0.09238 -2.07441,1.13379 -1.97363,2.30957c0.09238,1.18418 1.12539,2.06602 2.30957,1.97363c1.18418,-0.09238 2.06601,-1.12539 1.97363,-2.30957c-0.08399,-1.1002 -0.99102,-1.95684 -2.09961,-1.98203zM73.20918,133.26641c-1.18418,0.03359 -2.11641,1.02461 -2.09121,2.21719c0.03359,1.18418 1.02461,2.11641 2.21719,2.08281c1.18418,-0.0252 2.11641,-1.01621 2.08281,-2.20879c-0.0252,-1.18418 -1.01621,-2.11641 -2.20879,-2.09121zM98.63125,133.2748c-1.12539,0.05039 -2.02402,0.96582 -2.05762,2.09961c-0.03359,1.18418 0.90703,2.1668 2.09121,2.20039c1.18418,0.03359 2.1752,-0.90703 2.20879,-2.09121c0.03359,-1.18418 -0.90703,-2.1752 -2.09121,-2.20879c-0.05039,0 -0.10078,0 -0.15117,0z"></path>
+                      </g>
+                    </g>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </form>
+
+        <a class="inline-items add-option cursor-pointer" (click)="addOption()">
+          <!-- @TODO animate fade bootsreap -->
+          <svg class="olymp-plus-icon">
+            <use xlink:href="#olymp-plus-icon"></use>
+          </svg>
+          <span>Ajouter une option</span>
+        </a>
+
+
+        <div class="full-width">
+          <button [disabled]="!(sondageFormGroup.valid && sondageOptions().length>1)" (click)="postSondage()"
+                  class="btn btn-primary btn-md full-width blue-button c-white" style="color: white">Lancer le Sondage
+          </button>
+        </div>
+        <div [ngClass]="toastSucces" role="alert">
+          Le Sondage a été créer avec <b>succès</b>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ... end Window-popup add sondage -->
+
 

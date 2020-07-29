@@ -23,6 +23,7 @@ export class RoomsComponent implements OnInit, AfterViewInit {
   toastSucces = 'alert alert-success d-none';
   roomFormGroup: FormGroup;
   formError: 'form-group label-floating';
+  selectedUsersModal: User[];
 
 
   constructor(
@@ -111,6 +112,7 @@ export class RoomsComponent implements OnInit, AfterViewInit {
         users: usertoPersist
       };
       this.roomService.addRoom(dataRoom).subscribe(room => {
+        this.loadedRooms.push(room);
 
         this.showSucces();
         this.loadRooms();
@@ -124,6 +126,10 @@ export class RoomsComponent implements OnInit, AfterViewInit {
     this.router.navigate(['rooms', id]);
 
 
+  }
+
+  openModalAllUsers(users: User[]) {
+    this.selectedUsersModal = users;
   }
 
 

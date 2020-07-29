@@ -80,13 +80,14 @@
               </li>
 
               <li>
-                <a href="#" class="all-users bg-blue">+15</a>
+                <a data-toggle="modal" data-target="#modal-list-users" (click)="openModalAllUsers(r?.users)"
+                   *ngIf="r?.users?.length>6" href="#" class="all-users bg-blue">+{{r?.users.length - 6}}</a>
               </li>
             </ul>
 
             <div class="control-block-button">
-              <a (click)="joinRoom(r.id)" class="  btn btn-control bg-blue hover-color" data-toggle="modal"
-                 data-target="#create-friend-group-add-friends">
+              <a (click)="joinRoom(r.id)"
+                 class="  btn btn-control bg-blue hover-color">
                 <svg class="olymp-happy-faces-icon">
                   <use xlink:href="#olymp-happy-faces-icon"></use>
                 </svg>
@@ -125,12 +126,15 @@
 
       <div class="modal-body">
         <form [formGroup]="roomFormGroup" class="form-group label-floating">
-          <div [ngClass]=" roomFormGroup.get('name').invalid? 'form-group label-floating has-error ' : 'form-group label-floating' ">
+          <div
+            [ngClass]=" roomFormGroup.get('name').valid? 'form-group label-floating has-error ' : 'form-group label-floating' ">
             <label class="control-label">Nom du groupe</label>
-            <input id="name" formControlName="name" class="form-control" placeholder="" value="Highschool Friends" type="text">
+            <input id="name" formControlName="name" class="form-control" placeholder="" value="Highschool Friends"
+                   type="text">
           </div>
 
-          <div [ngClass]=" roomFormGroup.get('subject').invalid? 'form-group label-floating has-error ' : 'form-group label-floating' ">
+          <div
+            [ngClass]=" roomFormGroup.get('subject').invalid? 'form-group label-floating has-error ' : 'form-group label-floating' ">
             <label class="control-label">Sujet</label>
             <input formControlName="subject" class="form-control" placeholder="" value="Highschool Friends" type="text">
           </div>
@@ -141,8 +145,8 @@
               formControlName="users"
               [items]="loadedUsers"
               [multiple]="true"
-
               bindValue="id"
+              bindLabel="firstName"
               placeholder="Inviter des collaborateurs"
               [(ngModel)]="selectedUsers">
               <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
@@ -167,7 +171,8 @@
         </form>
 
 
-        <button [hidden]="roomCreated" [disabled]="roomFormGroup.invalid" class="btn btn-blue btn-lg full-width" (click)="addRoom()">
+        <button [hidden]="roomCreated" [disabled]="roomFormGroup.invalid" class="btn btn-blue btn-lg full-width"
+                (click)="addRoom()">
           <span *ngIf="roomCreated" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
           Créer le groupe
         </button>
@@ -479,3 +484,41 @@
 </div>
 
 <!-- ... end Window-popup-CHAT for responsive min-width: 768px -->
+<!-- Modal users usersm -->
+<div class="modal fade" id="modal-list-users" tabindex="-1" role="dialog"
+     aria-labelledby="create-friend-group-add-friends" aria-hidden="true">
+  <div class="modal-dialog window-popup create-friend-group create-friend-group-add-friends" role="document">
+    <div class="modal-content">
+      <a href="#" class="close icon-close" data-dismiss="modal" aria-label="Close">
+        <svg class="olymp-close-icon">
+          <use xlink:href="#olymp-close-icon"></use>
+        </svg>
+      </a>
+
+      <div class="modal-header">
+        <h6 class="title">Liste des utilisateurs</h6>
+      </div>
+
+      <div class="modal-body padding-t-0">
+        <ul class=" margin-t-10 widget w-friend-pages-added notification-list friend-requests animated bounceInDown">
+          <li style="padding: 10px" *ngFor="let r of selectedUsersModal" class="inline-items padding-reaction width-95">
+            <div class="author-thumb">
+              <img class="img-user" [src]="r.image" alt="author">
+
+            </div>
+            <div class="notification-event">
+              <span class="h6 notification-friend">{{r?.firstName}} {{r?.lastName}}</span>
+
+            </div>
+
+          </li>
+
+
+        </ul>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ... end Window-popup users -->

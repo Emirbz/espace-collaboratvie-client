@@ -907,6 +907,59 @@ label .fa {
 
 }
 
+.padding-10 {
+  padding: 10px;
+}
+
+.padding-0 {
+  padding: 0;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.sender .ui-block {
+  float: right;
+  margin-right: 15px;
+  margin-left: 0;
+
+
+}
+
+.user-msg .ui-block {
+  margin-left: 20px;
+  background-color: #fafafafa;
+  width: 43%;
+}
+
+/*----- Modal Sondage ----*/
+.blue-button {
+  background-color: #08ddc1;
+  border-color: #08ddc1;
+  color: white;
+}
+
+.blue-button:hover {
+  background-color: #4effe5;
+  border-color: #4effe5;
+}
+
+.blue-button:disabled {
+  background-color: #9a9fbf;
+  border-color: #9a9fbf;
+}
+
+.blue-button:disabled:hover {
+  background-color: #9a9fbf;
+  border-color: #9a9fbf;
+  cursor: not-allowed;
+}
+
+
+/*-------- Tooltip ------------- */
+
+
 
 
 

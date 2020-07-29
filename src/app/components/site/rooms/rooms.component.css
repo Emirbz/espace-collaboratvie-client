@@ -1,5 +1,14 @@
 @import "~@ng-select/ng-select/themes/default.theme.css";
-.hover-color:hover{
+.hover-color:hover {
   background-color: #005a99;
   cursor: pointer;
+}
+
+.img-user {
+  height: 32px;
+  width: 32px;
+}
+
+.margin-t-10 {
+  margin-top: 10px;
 }

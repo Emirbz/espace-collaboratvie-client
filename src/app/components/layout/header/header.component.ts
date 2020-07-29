@@ -1,5 +1,7 @@
 import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit} from '@angular/core';
 import {TitleService} from '../../../services/title.service';
+import User from '../../../models/User';
+import {UserService} from '../../../services/user.service';
 
 @Component({
   selector: 'app-header',
@@ -8,10 +10,12 @@ import {TitleService} from '../../../services/title.service';
 })
 export class HeaderComponent implements OnInit, AfterViewInit {
   title: string;
+  loggedUser: User;
 
   constructor(private elementRef: ElementRef,
               private titleService: TitleService,
-              private cdr: ChangeDetectorRef) {
+              private cdr: ChangeDetectorRef,
+              private  userService: UserService) {
   }
 
   ngAfterViewInit() {
@@ -24,6 +28,14 @@ export class HeaderComponent implements OnInit, AfterViewInit {
       this.cdr.detectChanges();
 
 
+    });
+    this.getLoggedUser();
+
+  }
+
+  getLoggedUser() {
+    this.userService.getUser().subscribe(user => {
+      this.loggedUser = user;
     });
   }
 }

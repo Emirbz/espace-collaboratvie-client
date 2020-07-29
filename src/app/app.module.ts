@@ -19,6 +19,8 @@ import {ChatService} from './services/chat.service';
 import {KeycloakAngularModule, KeycloakService} from 'keycloak-angular';
 import {environment} from '../environments/environment';
 import {AuthInterceptor} from './config/AuthInterceptor';
+import {TimeAgoPipe} from 'time-ago-pipe';
+
 
 const keycloakService: KeycloakService = new KeycloakService();
 
@@ -30,6 +32,7 @@ const keycloakService: KeycloakService = new KeycloakService();
     SidemenuComponent,
     RoomsComponent,
     ChatComponent,
+    TimeAgoPipe
   ],
   imports: [
     BrowserModule,
@@ -55,7 +58,7 @@ const keycloakService: KeycloakService = new KeycloakService();
     {
       provide: KeycloakService,
       useValue: keycloakService
-    }
+    },
   ],
   entryComponents: [AppComponent]
 })

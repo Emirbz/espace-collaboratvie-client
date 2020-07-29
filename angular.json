@@ -25,7 +25,10 @@
               "src/assets/svg-icons/*"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "src/assets/Bootstrap/dist/css/bootstrap.css",
+              "src/assets/css/main.css",
+              "src/assets/css/fonts.min.css"
             ],
             "scripts": [
               "src/assets/js/jQuery/jquery-3.4.1.js",

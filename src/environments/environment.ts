@@ -17,11 +17,13 @@ const keycloakConfig: KeycloakConfig = {
 export const environment = {
   production: false,
   apis: {
+    eventBus: backURL + '/ws/chat?user=',
     rooms: backURL + '/room',
     message: backURL + '/msg',
     reaction: backURL + '/reaction',
     sondage: backURL + '/sondage',
     user: backURL + '/user',
+    vote: backURL + '/vote',
     keycloak: keycloakConfig
   },
 };
