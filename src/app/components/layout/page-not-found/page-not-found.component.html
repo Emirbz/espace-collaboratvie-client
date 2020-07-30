@@ -1,0 +1,29 @@
+<section>
+  <div class="container">
+    <div class="row">
+      <div class="col col-xl-6 m-auto col-lg-6 col-md-12 col-sm-12 col-12">
+        <div class="page-404-content">
+          <h1 class="page-500-sup-title">404</h1>
+          <h2 class="h1 heading-title">Page non trouvée</h2>
+          <img style="margin-bottom: 0" src="assets/img/404.png" alt="photo">
+          <div class="crumina-module crumina-heading align-center">
+
+            <h2 class="h1 heading-title">Un <span class="c-primary">fantôme sauvage</span> sauvage apparaît!
+              Malheureusement, pas ce que vous recherchiez ...</h2>
+            <p class="heading-text">Désolé! La page que vous recherchez a été déplacée ou n'existe pas.
+              Si vous le souhaitez, vous pouvez revenir sur notre <a href="#" routerLink="/rooms"
+                                                                     routerLinkActive="active">page d'accueil</a>
+            </p>
+
+          </div>
+          <p *ngIf="path.length>0" class="heading-text">
+            Voulez Vous Dire ?
+
+          </p>
+          <a *ngIf="path.length>0" href="#" class="btn btn-primary btn-lg" [routerLink]="'/'+path"
+             routerLinkActive="active">{{path}}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -259,23 +259,21 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
   }
 
   connectToChat() {
+    const id = this.route.snapshot.paramMap.get('id');
     const self = this;
     if (this.connected) {
       return;
     }
     console.log('status = connected ');
-    this.eventBus = new EventBus(environment.apis.eventBus);
+    this.eventBus = new EventBus(environment.apis.eventBus + id);
     this.eventBus.enableReconnect(true);
     // tslint:disable-next-line:only-arrow-functions
     this.eventBus.onopen = function() {
       console.log('Connected to the web socket');
       self.connected = true;
       // tslint:disable-next-line:only-arrow-functions
-      self.eventBus.registerHandler('chat.to.client', function(error, message) {
+      self.eventBus.registerHandler('chat.to.client/' + id, function(error, message) {
         try {
-          if (self.loadedRoom.id !== (message.body).room_id) {
-            return;
-          }
           self.appendMessage(message.body);
         } catch (e) {
           console.log(e);

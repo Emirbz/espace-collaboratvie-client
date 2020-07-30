@@ -3,17 +3,32 @@ import {RouterModule, Routes} from '@angular/router';
 import {RoomsComponent} from './components/site/rooms/rooms.component';
 import {ChatComponent} from './components/site/chat/chat.component';
 import {AppAuthGuard} from './config/AppAuthGuard';
+import {PageNotFoundComponent} from './components/layout/page-not-found/page-not-found.component';
+import {PathResolveService} from './services/path-resolve.service';
 
 
+export const paths = {
+  rooms: 'rooms',
+  chat: 'rooms/:id',
+  pageNotFound: '404'
+};
 const routes: Routes = [
 
-  {path: 'rooms', component: RoomsComponent, canActivate: [AppAuthGuard]},
-  {path: 'rooms/:id', component: ChatComponent, canActivate: [AppAuthGuard]},
+  {path: paths.rooms, component: RoomsComponent, canActivate: [AppAuthGuard]},
+  {path: paths.chat, component: ChatComponent, canActivate: [AppAuthGuard]},
+  {path: paths.pageNotFound, component: PageNotFoundComponent},
   {
     path: '',
-    redirectTo: '/rooms',
+    redirectTo: paths.rooms,
     pathMatch: 'full'
   },
+  {
+    path: '**',
+    resolve: {
+      path: PathResolveService
+    },
+    component: PageNotFoundComponent
+  }
 
 ];
 

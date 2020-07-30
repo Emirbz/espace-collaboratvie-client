@@ -17,7 +17,7 @@ const keycloakConfig: KeycloakConfig = {
 export const environment = {
   production: false,
   apis: {
-    eventBus: backURL + '/ws/chat?user=',
+    eventBus: backURL + '/ws/chat?room_id=',
     rooms: backURL + '/room',
     message: backURL + '/msg',
     reaction: backURL + '/reaction',

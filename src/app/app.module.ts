@@ -20,6 +20,8 @@ import {KeycloakAngularModule, KeycloakService} from 'keycloak-angular';
 import {environment} from '../environments/environment';
 import {AuthInterceptor} from './config/AuthInterceptor';
 import {TimeAgoPipe} from 'time-ago-pipe';
+import {PageNotFoundComponent} from './components/layout/page-not-found/page-not-found.component';
+import {PathResolveService} from './services/path-resolve.service';
 
 
 const keycloakService: KeycloakService = new KeycloakService();
@@ -32,7 +34,8 @@ const keycloakService: KeycloakService = new KeycloakService();
     SidemenuComponent,
     RoomsComponent,
     ChatComponent,
-    TimeAgoPipe
+    TimeAgoPipe,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
@@ -48,6 +51,7 @@ const keycloakService: KeycloakService = new KeycloakService();
   providers: [
     RoomService,
     UserService,
+    PathResolveService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
