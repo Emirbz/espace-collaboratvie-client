@@ -49,7 +49,7 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
   connected = false;
   private eventBus;
   // tslint:disable-next-line:max-line-length
-  bodyData: { body: string, file?: string, firstName: string, lastName: string, user_img: string, room_id: number, user_id: string, type: string, message_id?: number };
+  bodyData: { body?: string, file?: string, firstName: string, lastName: string, user_img: string, room_id: number, user_id: string, type: string, message_id?: number };
   dataSondage: { body: string, type: string, user: User, room: Room, choix: Choix[] };
   dataReaction: { type: string, user: User, message: Message };
   dataMsg: { body: string, type: string, user: User, room: Room };
@@ -269,8 +269,9 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
     this.eventBus.enableReconnect(true);
     // tslint:disable-next-line:only-arrow-functions
     this.eventBus.onopen = function() {
-      console.log('Connected to the web socket');
+      console.log('Connected to the web socket Room id = ' + id);
       self.connected = true;
+
       // tslint:disable-next-line:only-arrow-functions
       self.eventBus.registerHandler('chat.to.client/' + id, function(error, message) {
         try {
@@ -283,25 +284,22 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
   }
 
   appendMessage(body: any) {
-    const msg = new Message();
-    const room = new Room();
-    room.id = body.room_id;
-    const user = new User();
-    user.id = body.user_id;
-    user.firstName = body.firstName;
-    user.lastName = body.lastName;
-    user.image = body.user_img;
-    msg.timestamp = body.timestamp;
-    msg.user = user;
-    msg.type = body.type;
-    msg.body = body.body;
-    msg.room = room;
-
-    if (body.type === 'REACTION') {
-      const reaction: Reaction = new Reaction(body.body, user);
-      this.appendReaction(reaction, body.message_id);
-    } else {
-      this.loadedMessages.push(msg);
+    const room = new Room(body.room_id);
+    const user = new User(body.user_id, body.firstName, body.lastName, body.user_img);
+    switch (body.type) {
+      case 'REACTION':
+        const reaction: Reaction = new Reaction(body.body, user);
+        this.appendReaction(reaction, body.message_id);
+        break;
+      case 'TEXT':
+        const msg = new Message(body.body, body.timestamp, body.type, room, user);
+        this.loadedMessages.push(msg);
+        break;
+      case 'SONDAGE':
+        const message = JSON.parse(body.body) as Message;
+        this.loadedMessages.push(message);
+        this.loadedSondages.splice(0, 0, message);
+        break;
     }
 
   }
@@ -331,19 +329,18 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
       return;
     }
     this.msgInput.nativeElement.value = '';
-    this.publishMessage(value, 'TEXT');
+    this.publishMessage('TEXT', value, null, null);
 
     this.dataMsg = {body: value, room: this.loadedRoom, type: 'TEXT', user: this.loggedUser};
-    this.chatService.addMessage(this.dataMsg).subscribe(value1 => {
+    this.chatService.addMessage(this.dataMsg).subscribe(() => {
     });
 
 
   }
 
-  publishMessage(value: string, type: string, message?: Message) {
+  publishMessage(type: string, value?: string, message?: Message, sondage?: any) {
 
     this.bodyData = {
-      body: value,
       firstName: this.loggedUser.firstName,
       lastName: this.loggedUser.lastName,
       room_id: this.loadedRoom.id,
@@ -354,8 +351,15 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
     };
     if (type === 'REACTION') {
       this.bodyData.message_id = message.id;
+      this.bodyData.body = value;
     }
-    this.eventBus.send('chat.to.server', this.bodyData);
+    if (type === 'TEXT') {
+      this.bodyData.body = value;
+    }
+    if (type === 'SONDAGE') {
+      this.bodyData.body = JSON.stringify(sondage);
+    }
+    this.eventBus.send('chat.to.server', JSON.stringify(this.bodyData));
 
   }
 
@@ -391,12 +395,12 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
 
   postSondage() {
     const {question, choix} = this.sondageFormGroup.value;
-    this.dataSondage = {body: question, choix, room: this.loadedRoom, type: 'SONDAGE', user: this.loggedUser};
-    this.chatService.addSondage(this.dataSondage).subscribe(value => {
-      this.loadedMessages.push(value);
-      this.loadedSondages.splice(0, 0, value);
+    this.dataSondage = {body: question, choix, room: new Room(this.loadedRoom.id), type: 'SONDAGE', user: this.loggedUser};
+    /*this.chatService.addSondage(this.dataSondage).subscribe(value => {
       this.showSucces();
-    });
+    });*/
+    this.publishMessage('SONDAGE', null, null, this.dataSondage);
+
 
   }
 
@@ -443,7 +447,7 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
   react(message: Message, type: string) {
     this.dataReaction = {type, message, user: this.loggedUser};
     this.chatService.addReaction(this.dataReaction).subscribe(value => {
-      this.publishMessage(type, 'REACTION', message);
+      this.publishMessage('REACTION', type, message, null);
     });
   }
 }

@@ -14,4 +14,11 @@ export default class Message {
   reactions?: Reaction[];
   choix: Choix[];
 
+  constructor(body: string, timestamp: string, type: string, room: Room, user: User) {
+    this.body = body;
+    this.timestamp = timestamp;
+    this.type = type;
+    this.room = room;
+    this.user = user;
+  }
 }

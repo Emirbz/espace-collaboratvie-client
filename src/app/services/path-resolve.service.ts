@@ -1,14 +1,22 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
-import {paths} from '../app-routing.module';
 
 
 @Injectable()
 export class PathResolveService implements Resolve<string | null> {
+
   resolve(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): string | null {
+    const paths = {
+      rooms: 'rooms',
+      chat: 'rooms/:id',
+      pageNotFound: '404',
+      listTopics: 'topic',
+      createTopic: 'topic/create',
+      detailsTopic: 'topic/:id'
+    };
     const typoPath = state.url.replace('/', '');
     const threshold = this.getThreshold(typoPath);
     const dictionary = Object.values(paths)

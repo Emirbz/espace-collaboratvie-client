@@ -22,6 +22,11 @@ import {AuthInterceptor} from './config/AuthInterceptor';
 import {TimeAgoPipe} from 'time-ago-pipe';
 import {PageNotFoundComponent} from './components/layout/page-not-found/page-not-found.component';
 import {PathResolveService} from './services/path-resolve.service';
+import {ListTopicsComponent} from './components/topic/list-topics/list-topics.component';
+import {DetailsTopicComponent} from './components/topic/details-topic/details-topic.component';
+import {CreateTopicComponent} from './components/topic/create-topic/create-topic.component';
+import {NgZorroAntdModule} from 'ng-zorro-antd';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 
 const keycloakService: KeycloakService = new KeycloakService();
@@ -35,7 +40,10 @@ const keycloakService: KeycloakService = new KeycloakService();
     RoomsComponent,
     ChatComponent,
     TimeAgoPipe,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    ListTopicsComponent,
+    DetailsTopicComponent,
+    CreateTopicComponent,
   ],
   imports: [
     BrowserModule,
@@ -46,7 +54,9 @@ const keycloakService: KeycloakService = new KeycloakService();
     FormsModule,
     ReactiveFormsModule,
     AngularFontAwesomeModule,
-    KeycloakAngularModule
+    KeycloakAngularModule,
+    NgZorroAntdModule,
+    BrowserAnimationsModule
   ],
   providers: [
     RoomService,
@@ -63,6 +73,7 @@ const keycloakService: KeycloakService = new KeycloakService();
       provide: KeycloakService,
       useValue: keycloakService
     },
+
   ],
   entryComponents: [AppComponent]
 })

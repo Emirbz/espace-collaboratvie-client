@@ -1301,6 +1301,7 @@
                     <div class="author-thumb">
                       <img class="img-user" [src]="m.user.image" alt="author" [attr.data-toggle]="'tooltip'"
                            [attr.data-placement]="'top'" [attr.title]="m.timestamp | date: 'yyyy-MM-dd HH:MM'">
+                      <!-- @TODO timestamp 1970 -->
                     </div>
                     <!-- Text MEssage -->
                     <div *ngIf="m?.type==='TEXT'" class="notification-event min-width-7 ">
@@ -1400,20 +1401,21 @@
                                       style="opacity:1" [ngStyle]="{'width':calculateUsersVote(c,m)+'%'}"></span>
                               </div>
 
-                              <div *ngIf="c?.users.length===0" class="counter-friends">Personne n'a voté pour cela.
+                              <div *ngIf="c?.users?.length===0" class="counter-friends">Personne n'a voté pour cela.
                               </div>
-                              <div *ngIf="c?.users.length===1  "
-                                   class="counter-friends">{{c.users[0].firstName}} {{c.users[0].lastName}} a voté pour
+                              <div *ngIf="c?.users?.length===1  "
+                                   class="counter-friends">{{c?.users[0].firstName}} {{c?.users[0].lastName}} a voté
+                                pour
                                 cela.
                               </div>
-                              <div *ngIf="c?.users.length>1 "
-                                   class="counter-friends">{{c.users[0].firstName}} {{c.users[0].lastName}}
+                              <div *ngIf="c?.users?.length>1 "
+                                   class="counter-friends">{{c?.users[0].firstName}} {{c?.users[0].lastName}}
                                 et {{c?.users?.length - 1}}  autres collaborateurs ont voté pour cela
                               </div>
 
 
                               <ul class="friends-harmonic cursor-pointer" data-toggle="modal"
-                                  (click)="openModalAllUsers(c.users)" data-target="#modal-list-users">
+                                  (click)="openModalAllUsers(c?.users)" data-target="#modal-list-users">
                                 <li style="padding: 0;overflow: unset" *ngFor="let u of c?.users | slice: 0:2">
                                   <a>
                                     <img [src]="u.image" alt="friend">
@@ -1421,7 +1423,7 @@
                                 </li>
 
                                 <li style="padding: 0;overflow: unset" *ngIf="c?.users?.length>2">
-                                  <a class="all-users c-white" style="color: white">+{{c.users.length - 2}}</a>
+                                  <a class="all-users c-white" style="color: white">+{{c?.users?.length - 2}}</a>
                                 </li>
                               </ul>
                             </div>
@@ -1590,10 +1592,11 @@
                         [ngStyle]="{'width':calculateUsersVote(c,loadedSondages[0])+'%'}"></span>
                 </div>
 
-                <div *ngIf="c?.users.length==1"
+                <div *ngIf="c?.users?.length==1"
                      class="counter-friends">{{c?.users[0]?.firstName}} {{c?.users[0]?.lastName}} a voté pour cela
                 </div>
-                <div *ngIf="c?.users.length>1" class="counter-friends">{{c?.users?.length}} Collaborateurs ont voté pour
+                <div *ngIf="c?.users?.length>1" class="counter-friends">{{c?.users?.length}} Collaborateurs ont voté
+                  pour
                   cela
                 </div>
 
@@ -1885,10 +1888,10 @@
                             [ngStyle]="{'width':calculateUsersVote(c,s)+'%'}"></span>
                     </div>
 
-                    <div *ngIf="c?.users.length==1"
+                    <div *ngIf="c?.users?.length==1"
                          class="counter-friends">{{c?.users[0]?.firstName}} {{c?.users[0]?.lastName}} a voté pour cela
                     </div>
-                    <div *ngIf="c?.users.length>1"
+                    <div *ngIf="c?.users?.length>1"
                          class="counter-friends">{{c?.users[0]?.firstName}} {{c?.users[0]?.lastName}}
                       et {{c?.users?.length - 1}} Collaborateurs ont voté pour
                       cela

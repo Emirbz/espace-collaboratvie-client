@@ -7,4 +7,7 @@ export default class Room {
   image?: string;
   users?: User[];
 
+  constructor(id: number) {
+    this.id = id;
+  }
 }
