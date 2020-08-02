@@ -1383,8 +1383,8 @@
 									<span class="skills-item-title">
 										<span class="radio">
 											<label>
-												<input [checked]="checkUserHasVoted(c)" (change)="vote(c.id)" type="radio"
-                               name="optionsRadios2"><span class="circle"></span><span class="check"></span>
+												<input [checked]="checkUserHasVoted(c,loggedUser)" (change)="vote(c.id,m)" type="radio"
+                               [name]="'choice'+m?.id"><span class="circle"></span><span class="check"></span>
                         {{c?.body}}
 											</label>
 										</span>
@@ -1574,7 +1574,8 @@
 									<span class="skills-item-title">
 										<span class="radio">
 											<label>
-												<input [checked]="checkUserHasVoted(c)" (change)="vote(c.id)" type="radio" name="optionsRadios"><span
+												<input [checked]="checkUserHasVoted(c,loggedUser)" (change)="vote(c.id,loadedSondages[0])"
+                               type="radio" name="optionsRadios"><span
                         class="circle"></span><span class="check"></span>
                         {{c?.body | titlecase}}
 											</label>
@@ -1870,8 +1871,8 @@
 									<span class="skills-item-title">
 										<span class="radio">
 											<label>
-												<input [checked]="checkUserHasVoted(c)" (change)="vote(c.id)" type="radio"
-                               name="optionsRadios1"><span class="circle"></span><span class="check"></span>
+												<input [checked]="checkUserHasVoted(c,loggedUser)" (change)="vote(c.id,s)" type="radio"
+                               [name]="'choices'+s.id"><span class="circle"></span><span class="check"></span>
                         {{c?.body | titlecase}}
 											</label>
 										</span>

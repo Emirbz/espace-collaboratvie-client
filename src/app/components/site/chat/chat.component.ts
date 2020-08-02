@@ -49,7 +49,7 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
   connected = false;
   private eventBus;
   // tslint:disable-next-line:max-line-length
-  bodyData: { body?: string, file?: string, firstName: string, lastName: string, user_img: string, room_id: number, user_id: string, type: string, message_id?: number };
+  bodyData: { body?: string, file?: string, firstName: string, lastName: string, user_img: string, room_id: number, user_id: string, type: string, message_id?: number, choix_id?: number };
   dataSondage: { body: string, type: string, user: User, room: Room, choix: Choix[] };
   dataReaction: { type: string, user: User, message: Message };
   dataMsg: { body: string, type: string, user: User, room: Room };
@@ -300,6 +300,10 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
         this.loadedMessages.push(message);
         this.loadedSondages.splice(0, 0, message);
         break;
+      case 'VOTE':
+        this.appendVote(this.loadedSondages, body.choix_id, user, body.message_id);
+        this.appendVote(this.loadedMessages, body.choix_id, user, body.message_id);
+        break;
     }
 
   }
@@ -338,7 +342,7 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
 
   }
 
-  publishMessage(type: string, value?: string, message?: Message, sondage?: any) {
+  publishMessage(type: string, value?: string, message?: Message, sondage?: any, choixId?: number) {
 
     this.bodyData = {
       firstName: this.loggedUser.firstName,
@@ -349,15 +353,21 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
       user_img: this.loggedUser.image,
 
     };
-    if (type === 'REACTION') {
-      this.bodyData.message_id = message.id;
-      this.bodyData.body = value;
-    }
-    if (type === 'TEXT') {
-      this.bodyData.body = value;
-    }
-    if (type === 'SONDAGE') {
-      this.bodyData.body = JSON.stringify(sondage);
+    switch (type) {
+      case 'REACTION':
+        this.bodyData.message_id = message.id;
+        this.bodyData.body = value;
+        break;
+      case 'TEXT':
+        this.bodyData.body = value;
+        break;
+      case 'SONDAGE':
+        this.bodyData.body = JSON.stringify(sondage);
+        break;
+      case 'VOTE':
+        this.bodyData.choix_id = choixId;
+        this.bodyData.message_id = message.id;
+        break;
     }
     this.eventBus.send('chat.to.server', JSON.stringify(this.bodyData));
 
@@ -426,18 +436,17 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
     }
   }
 
-  vote(id: number) {
+  vote(id: number, message?: Message) {
     console.log(id);
-    this.chatService.voteSondage(id, this.loggedUser).subscribe(value => {
-      this.loadRoomSondages();
-      this.loadRoomMessages();
+    this.publishMessage('VOTE', null, message, null, id);
+    this.chatService.voteSondage(id, this.loggedUser).subscribe(() => {
     });
 
 
   }
 
-  checkUserHasVoted(c: Choix) {
-    return c.users.some(item => item.id.includes(this.loggedUser.id));
+  checkUserHasVoted(c: Choix, user?: User) {
+    return c.users.some(item => item.id.includes(user.id));
   }
 
   checkUserReacted(m: Message, u: User) {
@@ -450,4 +459,30 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
       this.publishMessage('REACTION', type, message, null);
     });
   }
+
+  private appendVote(sondageArray: Message[], choixId: number, user: User, messageId: any) {
+    sondageArray.forEach(m => {
+      if (m.id === messageId) {
+        m.choix.forEach(c => {
+          if (this.checkUserHasVoted(c, user)) {
+            this.removeOldVote(c, user);
+          }
+          if (c.id === choixId) {
+            c.users.push(user);
+          }
+        });
+      }
+    });
+
+  }
+
+  private removeOldVote(c: Choix, user: User) {
+    c.users.forEach((u, index) => {
+      if (u.id === user.id) {
+        c.users.splice(index, 1);
+      }
+    });
+
+  }
+
 }
