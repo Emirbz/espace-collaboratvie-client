@@ -27,6 +27,9 @@ import {DetailsTopicComponent} from './components/topic/details-topic/details-to
 import {CreateTopicComponent} from './components/topic/create-topic/create-topic.component';
 import {NgZorroAntdModule} from 'ng-zorro-antd';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {TopicService} from './services/topic.service';
+import {TagService} from './services/tag.service';
+import {ReplyService} from './services/reply.service';
 
 
 const keycloakService: KeycloakService = new KeycloakService();
@@ -61,6 +64,9 @@ const keycloakService: KeycloakService = new KeycloakService();
   providers: [
     RoomService,
     UserService,
+    TopicService,
+    TagService,
+    ReplyService,
     PathResolveService,
     {
       provide: HTTP_INTERCEPTORS,

@@ -24,6 +24,9 @@ export const environment = {
     sondage: backURL + '/sondage',
     user: backURL + '/user',
     vote: backURL + '/vote',
+    topic: backURL + '/topic',
+    tag: backURL + '/tag',
+    reply: backURL + '/reply',
     keycloak: keycloakConfig
   },
 };

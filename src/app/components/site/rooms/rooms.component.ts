@@ -102,9 +102,7 @@ export class RoomsComponent implements OnInit, AfterViewInit {
       const {name, subject} = this.roomFormGroup.value;
       const usertoPersist: User[] = [];
       this.selectedUsers.forEach(value => {
-        const u = new User();
-        u.id = value;
-        usertoPersist.push(u);
+        const u = new User(value, null, null, null);
       });
       const dataRoom = {
         name,

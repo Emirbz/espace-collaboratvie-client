@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
+import User from '../../../models/User';
+import Topic from '../../../models/Topic';
 
 @Component({
   selector: 'app-create-topic',
@@ -9,6 +11,7 @@ import {Router} from '@angular/router';
 export class CreateTopicComponent implements OnInit {
   listOfOption = [];
   listOfTagOptions = [];
+  dataReply: { reply: string, user: User, topic: Topic };
 
   constructor(private route: Router) {
   }
