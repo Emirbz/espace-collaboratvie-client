@@ -15,7 +15,8 @@ export class PathResolveService implements Resolve<string | null> {
       pageNotFound: '404',
       listTopics: 'topic',
       createTopic: 'topic/create',
-      detailsTopic: 'topic/:id'
+      detailsTopic: 'topic/:id',
+      profile: 'profile'
     };
     const typoPath = state.url.replace('/', '');
     const threshold = this.getThreshold(typoPath);

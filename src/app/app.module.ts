@@ -25,14 +25,27 @@ import {PathResolveService} from './services/path-resolve.service';
 import {ListTopicsComponent} from './components/topic/list-topics/list-topics.component';
 import {DetailsTopicComponent} from './components/topic/details-topic/details-topic.component';
 import {CreateTopicComponent} from './components/topic/create-topic/create-topic.component';
-import {NgZorroAntdModule} from 'ng-zorro-antd';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {TopicService} from './services/topic.service';
 import {TagService} from './services/tag.service';
 import {ReplyService} from './services/reply.service';
+import {JwPaginationModule} from 'jw-angular-pagination';
+import {ProfileComponent} from './components/site/profile/profile.component';
+import {en_US, NgZorroAntdModule, NZ_I18N, NZ_ICONS} from 'ng-zorro-antd';
+import * as AllIcons from '@ant-design/icons-angular/icons';
+import {IconDefinition} from '@ant-design/icons-angular';
+import {registerLocaleData} from '@angular/common';
+import en from '@angular/common/locales/en';
+
+registerLocaleData(en);
 
 
 const keycloakService: KeycloakService = new KeycloakService();
+
+const antDesignIcons = AllIcons as {
+  [key: string]: IconDefinition;
+};
+const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesignIcons[key]);
 
 
 @NgModule({
@@ -47,6 +60,7 @@ const keycloakService: KeycloakService = new KeycloakService();
     ListTopicsComponent,
     DetailsTopicComponent,
     CreateTopicComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,
@@ -58,8 +72,9 @@ const keycloakService: KeycloakService = new KeycloakService();
     ReactiveFormsModule,
     AngularFontAwesomeModule,
     KeycloakAngularModule,
-    NgZorroAntdModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    JwPaginationModule,
+    NgZorroAntdModule
   ],
   providers: [
     RoomService,
@@ -79,6 +94,8 @@ const keycloakService: KeycloakService = new KeycloakService();
       provide: KeycloakService,
       useValue: keycloakService
     },
+    {provide: NZ_I18N, useValue: en_US},
+    {provide: NZ_ICONS, useValue: icons},
 
   ],
   entryComponents: [AppComponent]

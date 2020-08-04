@@ -6632,25 +6632,44 @@ ol ol li {
     -webkit-box-align: start;
         -ms-flex-align: start;
             align-items: flex-start; }
+
   .post-additional-info > * {
-    margin-right: 0; }
-    .post-additional-info > * + * {
-      margin-top: 10px; }
-    .post-additional-info > *:last-child {
-      margin-left: 0; } }
+    margin-right: 0;
+  }
+
+  .post-additional-info > * + * {
+    margin-top: 10px;
+  }
+
+  .post-additional-info > *:last-child {
+    margin-left: 0;
+  }
+}
 
 /*------------- #COMMENTS-LIST --------------*/
 .comments-list {
-  margin-bottom: 0; }
-  .comments-list .comment-item {
-    padding: 25px;
-    border-bottom: 1px solid #e6ecf5;
-    background-color: #fafbfd;
-    position: relative; }
-    .comments-list .comment-item.has-children {
-      padding-bottom: 0; }
-  .comments-list .post-add-icon {
-    margin-right: 20px; }
+  margin-bottom: 0;
+}
+
+.comments-list li:nth-child(odd) {
+  background-color: #e0e0e029;
+}
+
+
+.comments-list .comment-item {
+  padding: 25px;
+  border-bottom: 1px solid #e6ecf5;
+  /*  background-color: #fafbfd;*/
+  position: relative;
+}
+
+.comments-list .comment-item.has-children {
+  padding-bottom: 0;
+}
+
+.comments-list .post-add-icon {
+  margin-right: 20px;
+}
   .comments-list .post__author img {
     width: 26px;
     height: 26px; }
@@ -6668,7 +6687,8 @@ ol ol li {
   .comments-list.style-2 .post__author {
     margin-bottom: 0; }
   .comments-list.style-3 .comment-item {
-    background-color: transparent; }
+    /*   background-color: transparent; */
+  }
   .comments-list.style-3 .reply {
     margin-right: 20px;
     color: #ff5e3a; }
@@ -6686,6 +6706,7 @@ ol ol li {
     border-left: none; }
     .comments-list.style-3 .children .comment-item:before {
       display: none; }
+
 
 .children {
   border-top: 1px solid #e6ecf5;
@@ -8893,8 +8914,9 @@ ol ol li {
     width: 100%; }
   .with-title-decoration .heading-title:before {
     height: 2px;
-    background-color: #ff5e3a;
-    width: 10%; }
+    background-color: #74c3ff;
+    width: 10%;
+  }
 
 .with-title-decoration:hover .heading-title:before {
   width: 100%; }

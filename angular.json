@@ -22,13 +22,20 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              "src/assets/svg-icons/*"
+              "src/assets/svg-icons/*",
+              {
+                "glob": "**/*",
+                "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
+                "output": "/assets/"
+              }
             ],
             "styles": [
+              "node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
               "src/styles.css",
               "src/assets/Bootstrap/dist/css/bootstrap.css",
               "src/assets/css/main.css",
-              "src/assets/css/fonts.min.css"
+              "src/assets/css/fonts.min.css",
+              "node_modules/aos/dist/aos.css"
             ],
             "scripts": [
               "src/assets/js/jQuery/jquery-3.4.1.js",
@@ -68,7 +75,8 @@
               "src/assets/js/libs/MarkerClusterGroup.js",
               "src/assets/fonts/fontawesome-all.js",
               "src/assets/Bootstrap/dist/js/bootstrap.bundle.js",
-              "src/assets/js/svg-loader.js"
+              "src/assets/js/svg-loader.js",
+              "node_modules/aos/dist/aos.js"
             ]
           },
           "configurations": {
@@ -128,6 +136,7 @@
               "src/assets/svg-icons/*"
             ],
             "styles": [
+              "./node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
               "src/styles.css",
               "./node_modules/@ng-select/ng-select/themes/default.theme.css"
             ],
@@ -160,6 +169,7 @@
           }
         }
       }
-    }},
+    }
+  },
   "defaultProject": "espace-collaborative-angular"
 }
