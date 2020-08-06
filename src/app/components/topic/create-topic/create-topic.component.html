@@ -8,47 +8,84 @@
         </div>
         <div class="ui-block-content">
 
-          <form>
+          <form [formGroup]="topicFormGroup">
             <div class="row">
               <div class="col col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                 <div class="form-group label-floating">
                   <label class="control-label">Topic Title</label>
-                  <input class="form-control" type="text" placeholder=""
+                  <input formControlName="title" class="form-control" type="text" placeholder="Titre tu topic "
                          value="New York Comix Con is having the best panels this year!">
                 </div>
               </div>
 
               <div class="col col-xl-12 col-lg-6 col-md-12 col-sm-12 col-12">
-                <!--   <div class="form-group label-floating is-select">
-                     <label class="control-label">Tags</label>
-                     <input class="form-control" type="text" >
-                   </div>-->
+                <div class="form-group label-floating is-select tags-select">
 
-                <nz-select nzMode="tags" style="width: 100%;" (ngModelChange)="changed($event)" nzPlaceHolder="Tag Mode"
-                           [(ngModel)]="listOfTagOptions" name="tags">
-                  <nz-option nzCustomContent nzValue="9am-5pm">Example: 9am-5pm
-                  </nz-option>
-                  <nz-option nzCustomContent nzValue="9-2|7-10">Example: 9-2|7-10 (Split-shift)
-                  </nz-option>
-                </nz-select>
+                  <nz-select
+                    formControlName="tags"
+                    (nzOnSearch)="onSearchTags($event)"
+                    [(ngModel)]="selectedTags"
+                    nzMode="tags"
+                    nzPlaceHolder="Ajouter des tags ...">
+                    <ng-container *ngFor="let t of loadedTags">
+                      <nz-option *ngIf="!tagsSearching" nzCustomContent [nzLabel]="t.name" [nzValue]="t">
+                        <div class=" height-38 position-relative">
+                          <a class="more position-relative">
+                            <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+                                 width="28" height="28"
+                                 viewBox="0 0 172 172"
+                                 style=" fill:#000000;">
+                              <g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt"
+                                 stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray=""
+                                 stroke-dashoffset="0"
+                                 font-family="none" font-size="none"
+                                 style="mix-blend-mode: normal">
+                                <path d="M0,172v-172h172v172z" fill="none"></path>
+                                <path
+                                  d="M86,172c-47.49649,0 -86,-38.50351 -86,-86v0c0,-47.49649 38.50351,-86 86,-86v0c47.49649,0 86,38.50351 86,86v0c0,47.49649 -38.50351,86 -86,86z"
+                                  fill="#eeeeee"></path>
+                                <g fill="#7e7e7e">
+                                  <path
+                                    d="M59.53846,33.07692c-3.18365,0 -5.29231,2.10866 -5.29231,5.29231v15.87692h-15.87692c-3.18365,0 -5.29231,2.10866 -5.29231,5.29231v10.58462c0,3.18366 2.10866,5.29231 5.29231,5.29231h15.87692v21.16923h-15.87692c-3.18365,0 -5.29231,2.10866 -5.29231,5.29231v10.58462c0,3.18366 2.10866,5.29231 5.29231,5.29231h15.87692v15.87692c0,3.18366 2.10866,5.29231 5.29231,5.29231h10.58462c3.18366,0 5.29231,-2.10865 5.29231,-5.29231v-15.87692h21.16923v15.87692c0,3.18366 2.10866,5.29231 5.29231,5.29231h10.58462c3.18366,0 5.29231,-2.10865 5.29231,-5.29231v-15.87692h15.87692c3.18366,0 5.29231,-2.10865 5.29231,-5.29231v-10.58462c0,-3.18365 -2.10865,-5.29231 -5.29231,-5.29231h-15.87692v-21.16923h15.87692c3.18366,0 5.29231,-2.10865 5.29231,-5.29231v-10.58462c0,-3.18365 -2.10865,-5.29231 -5.29231,-5.29231h-15.87692v-15.87692c0,-3.18365 -2.10865,-5.29231 -5.29231,-5.29231h-10.58462c-3.18365,0 -5.29231,2.10866 -5.29231,5.29231v15.87692h-21.16923v-15.87692c0,-3.18365 -2.10865,-5.29231 -5.29231,-5.29231zM75.41538,75.41538h21.16923v21.16923h-21.16923z"></path>
+                                </g>
+                              </g>
+                            </svg>
+                          </a>
+                          <label class="tag-name position-relative">{{t.name}}</label>
+                          <label class="count-topics position-relative">{{t.countTopics}} topics</label>
+                        </div>
+                      </nz-option>
+                    </ng-container>
+                    <nz-option *ngIf="tagsSearching" nzDisabled nzCustomContent>
+                      <i nz-icon nzType="loading" class="loading-icon"></i> Chargement des données ...
+                    </nz-option>
+                  </nz-select>
+                </div>
               </div>
 
 
               <div class="col col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                 <div class="form-group">
-                  <textarea class="form-control" style="height: 240px" placeholder="Topic Title">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</textarea>
+                  <textarea formControlName="description" class="form-control" style="height: 240px"
+                            [value]="'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum'"></textarea>
                 </div>
 
 
               </div>
 
               <div class="col col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
-                <a href="#" class="btn btn-secondary btn-lg full-width">Annuler</a>
+                <a href="#" class="btn  btn-lg full-width grey-button" [routerLink]="['/topic']"
+                   routerLinkActive="active">Annuler</a>
               </div>
 
               <div class="col col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
-                <a class="btn btn-blue btn-lg full-width" style="color: white" (click)="createTopic()">Créer le
-                  Topic</a>
+                <button [disabled]="topicFormGroup.invalid" class="btn btn-blue btn-lg full-width  c-white "
+                        (click)="createTopic()">Créer le
+                  Topic
+                </button>
+              </div>
+              <div [ngClass]="toastSucces" role="alert">
+                Le Topic a été créer avec <b>succès</b>
               </div>
             </div>
           </form>

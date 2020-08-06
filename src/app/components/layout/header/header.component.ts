@@ -2,6 +2,7 @@ import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit} from '@
 import {TitleService} from '../../../services/title.service';
 import User from '../../../models/User';
 import {UserService} from '../../../services/user.service';
+import {SearchService} from '../../../services/search.service';
 
 @Component({
   selector: 'app-header',
@@ -15,7 +16,8 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   constructor(private elementRef: ElementRef,
               private titleService: TitleService,
               private cdr: ChangeDetectorRef,
-              private  userService: UserService) {
+              private  userService: UserService,
+              private searchService: SearchService) {
   }
 
   ngAfterViewInit() {
@@ -27,7 +29,6 @@ export class HeaderComponent implements OnInit, AfterViewInit {
       this.title = appTitle;
       this.cdr.detectChanges();
 
-
     });
     this.getLoggedUser();
 
@@ -37,5 +38,10 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     this.userService.getUser().subscribe(user => {
       this.loggedUser = user;
     });
+  }
+
+  onSearchChange(event) {
+    console.log('Header :' + event.target.value);
+    this.searchService.setValue(event.target.value);
   }
 }

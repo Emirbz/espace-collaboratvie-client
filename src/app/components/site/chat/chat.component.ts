@@ -406,9 +406,9 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
   postSondage() {
     const {question, choix} = this.sondageFormGroup.value;
     this.dataSondage = {body: question, choix, room: new Room(this.loadedRoom.id), type: 'SONDAGE', user: this.loggedUser};
-    /*this.chatService.addSondage(this.dataSondage).subscribe(value => {
-      this.showSucces();
-    });*/
+
+    this.showSucces();
+
     this.publishMessage('SONDAGE', null, null, this.dataSondage);
 
 

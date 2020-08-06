@@ -17,7 +17,7 @@ export class TagService {
     return this.http.get<Tag[]>(`${this.tagUrl}`);
   }
 
-  getTopic(searchToken): Observable<Tag> {
-    return this.http.get<Tag>(`${this.tagUrl}/topic/${searchToken}`);
+  getTagsByName(searchToken): Observable<Tag[]> {
+    return this.http.get<Tag[]>(`${this.tagUrl}/${searchToken}`);
   }
 }

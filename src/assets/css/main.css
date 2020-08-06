@@ -3302,20 +3302,40 @@ input, .form-control {
 
 .has-success .form-control-success,
 .has-error .form-control-danger {
-  background-image: none; }
+  background-image: none;
+}
 
 .form-group.with-icon-right .form-control, .form-group.with-icon-right input, .form-group.with-icon-right textarea {
-  padding-right: 60px; }
+  padding-right: 60px;
+}
 
 .label-floating .form-control, .label-floating input, .label-floating select {
   padding: 1.5rem 1.1rem .5rem;
-  line-height: 1.75; }
+  line-height: 1.75;
+}
+
+.tags-select input {
+  padding: 0.5rem 1.1rem .5rem 0.1em;
+
+}
+
+.tags-select input {
+  padding: 0.5rem 1.1rem .5rem 0.1em;
+
+}
+
+.tags-search span {
+  padding: 15px;
+}
+
 
 .label-floating textarea.form-control {
-  padding: 1.5rem 1.1rem .2rem; }
+  padding: 1.5rem 1.1rem .2rem;
+}
 
 .label-floating.with-icon .form-control, .label-floating.with-icon input, .label-floating.with-icon textarea {
-  padding-left: 70px; }
+  padding-left: 70px;
+}
 
 .form-group.has-error:after {
   content: '\f00d';

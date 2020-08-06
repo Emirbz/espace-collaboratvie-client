@@ -36,6 +36,7 @@ import * as AllIcons from '@ant-design/icons-angular/icons';
 import {IconDefinition} from '@ant-design/icons-angular';
 import {registerLocaleData} from '@angular/common';
 import en from '@angular/common/locales/en';
+import {SearchService} from './services/search.service';
 
 registerLocaleData(en);
 
@@ -82,6 +83,7 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
     TopicService,
     TagService,
     ReplyService,
+    SearchService,
     PathResolveService,
     {
       provide: HTTP_INTERCEPTORS,

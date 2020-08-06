@@ -1,8 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import User from '../../../models/User';
-import Topic from '../../../models/Topic';
 import {TitleService} from '../../../services/title.service';
+import Tag from '../../../models/Tag';
+import {TagService} from '../../../services/tag.service';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {TopicService} from '../../../services/topic.service';
+import {UserService} from '../../../services/user.service';
 
 @Component({
   selector: 'app-create-topic',
@@ -12,19 +16,36 @@ import {TitleService} from '../../../services/title.service';
 export class CreateTopicComponent implements OnInit {
   listOfOption = [];
   listOfTagOptions = [];
-  dataReply: { reply: string, user: User, topic: Topic };
+  selectedTags: any[] = [];
+  loadedTags: Tag[];
+  tagsSearching = false;
+  topicFormGroup: FormGroup;
+  loggedUser: User;
+  toastSucces = 'alert alert-success d-none full-width';
+
 
   constructor(private route: Router,
-              private titleService: TitleService) {
+              private titleService: TitleService,
+              private tagService: TagService,
+              private topicService: TopicService,
+              private formBuilder: FormBuilder,
+              private userService: UserService
+  ) {
   }
 
   ngOnInit() {
     this.setTitle();
-    const children = [];
-    for (let i = 10; i < 36; i++) {
-      children.push({label: i.toString(36) + i, value: i.toString(36) + i});
-    }
-    this.listOfOption = children;
+    this.loadTags();
+    this.topicFormValidate();
+    this.getLoggedUser();
+
+
+  }
+
+  getLoggedUser() {
+    this.userService.getUser().subscribe(user => {
+      this.loggedUser = user;
+    });
   }
 
   setTitle() {
@@ -34,15 +55,62 @@ export class CreateTopicComponent implements OnInit {
   }
 
   createTopic() {
-    this.route.navigate(['topic']);
+    this.reformSelectedTag();
+    const {title, description} = this.topicFormGroup.value;
+    const dataTopic = {title, description, tags: this.selectedTags, user: this.loggedUser};
+    this.topicService.addTopic(dataTopic).subscribe(value => {
+      this.showSucces();
+    });
+  }
+
+  reformSelectedTag() {
+    this.selectedTags.forEach((value, index) => {
+      if (value.id !== undefined) {
+        return;
+      }
+      const tag = new Tag();
+      tag.name = value;
+      this.selectedTags[index] = tag;
+    });
+  }
+
+  showSucces() {
+    this.toastSucces = 'alert alert-success full-width animated bounceInDown';
+    setTimeout(() => {
+
+      this.toastSucces = 'alert alert-success full-width animated bounceOutUp';
+      setTimeout(() => {
+        this.route.navigate(['/topic']);
+      }, 400);
+    }, 1500);
+
 
   }
 
-  changed(event) {
-    console.log(event);
-    this.listOfOption = [{label: 'set', value: 'set'}];
 
-    console.log(this.listOfTagOptions);
-    console.log(this.listOfOption);
+  loadTags() {
+    this.tagService.getTags().subscribe(tags => {
+      this.loadedTags = tags;
+    });
+
   }
+
+  onSearchTags(event: string) {
+    this.tagsSearching = true;
+    this.tagService.getTagsByName(event).subscribe(tags => {
+      this.loadedTags = tags;
+      this.tagsSearching = false;
+    });
+  }
+
+  topicFormValidate() {
+    this.topicFormGroup = this.formBuilder.group({
+      title: ['', Validators.required],
+      description: ['', Validators.required],
+      tags: ['', Validators.required],
+    });
+
+  }
+
+
 }
