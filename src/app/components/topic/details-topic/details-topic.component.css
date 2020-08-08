@@ -1,0 +1,403 @@
+.margin-t-40 {
+  margin-top: 40px;
+}
+
+.padding-l-40 {
+  padding-left: 40px;
+}
+
+.padding-r-40 {
+  padding-right: 40px;
+}
+
+.margin-r-0 {
+  margin-right: 0;
+}
+
+/*------ SCroll ---- */
+.scroll {
+  overflow-y: scroll;
+  max-height: 600px;
+}
+
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+/* ---- SCroll bar --- */
+::-webkit-scrollbar-track {
+  background-color: #ebebeb;
+  -webkit-border-radius: 15px;
+  border-radius: 15px;
+}
+
+::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 15px;
+  border-radius: 15px;
+  background: #adadad;
+}
+
+.margin-t-0 {
+  margin-top: 0;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+/* ------------ Animation fadeIN ----------------------*/
+.fade-in-slow {
+  -webkit-animation: 2s ease 0s normal forwards 1 fadein;
+  animation: 2s ease 0s normal forwards 1 fadein;
+}
+
+@keyframes fadein {
+  0% {
+    opacity: 0;
+  }
+  66% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes fadein {
+  0% {
+    opacity: 0;
+  }
+  66% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+
+.scale-up {
+  -webkit-animation: 600ms ease 0s normal forwards 1 scale-up;
+  animation: 600ms ease 0s normal forwards 1 scale-up;
+}
+
+@keyframes scale-up {
+  0% {
+    transform: scale(2.5);
+  }
+  66% {
+    transform: scale(2.5);
+  }
+  100% {
+    transform: scale(1.0);
+  }
+}
+
+@-webkit-keyframes scale-up {
+  0% {
+    transform: scale(2.5);
+  }
+  66% {
+    transform: scale(2.5);
+  }
+  100% {
+    transform: scale(1.0);
+  }
+}
+
+.page-link:hover {
+  color: white;
+
+}
+
+.margin-l-0 {
+  margin-left: 0;
+}
+
+
+/* ----------- Like  Button ------------- */
+.heart-svg {
+  margin-left: -6px;
+  cursor: pointer;
+  overflow: visible;
+  margin-top: 8px;
+  width: 48px;
+
+}
+
+.span-likes {
+  margin-left: 0.9em;
+  font-size: 14px;
+}
+
+.like-reply {
+  padding: 18px 0 0;
+}
+
+.padding-25 {
+  padding: 25px 25px 35px 25px;
+}
+
+.heart-svg .heart {
+  transform-origin: center;
+  animation: animateHeartOut 0.3s linear forwards;
+}
+
+.heart-svg .main-circ {
+  transform-origin: 29.5px 29.5px;
+}
+
+.useful-love {
+  display: none;
+}
+
+.useful-love:checked + label svg .heart {
+  transform: scale(0.2);
+  fill: #e2264d;
+  animation: animateHeart 0.3s linear forwards 0.25s;
+}
+
+.useful-love:checked + label svg .main-circ {
+  transition: all 2s;
+  animation: animateCircle 0.3s linear forwards;
+  opacity: 1;
+}
+
+.useful-love:checked + label svg .grp1 {
+  opacity: 1;
+  transition: 0.1s all 0.3s;
+}
+
+.useful-love:checked + label svg .grp1 .oval1 {
+  transform: scale(0) translate(0, -30px);
+  transform-origin: 0 0 0;
+  transition: 0.5s transform 0.3s;
+}
+
+.useful-love:checked + label svg .grp1 .oval2 {
+  transform: scale(0) translate(10px, -40px);
+  transform-origin: 0 0 0;
+  transition: 1.5s transform 0.3s;
+}
+
+.useful-love:checked + label svg .grp2 {
+  opacity: 1;
+  transition: 0.1s all 0.3s;
+}
+
+.useful-love:checked + label svg .grp2 .oval1 {
+  transform: scale(0) translate(30px, -15px);
+  transform-origin: 0 0 0;
+  transition: 0.5s transform 0.3s;
+}
+
+.useful-love:checked + label svg .grp2 .oval2 {
+  transform: scale(0) translate(40px, -15px);
+  transform-origin: 0 0 0;
+  transition: 1.5s transform 0.3s;
+}
+
+.useful-love:checked + label svg .grp3 {
+  opacity: 1;
+  transition: 0.1s all 0.3s;
+}
+
+.useful-love:checked + label svg .grp3 .oval1 {
+  transform: scale(0) translate(30px, 0px);
+  transform-origin: 0 0 0;
+  transition: 0.5s transform 0.3s;
+}
+
+.useful-love:checked + label svg .grp3 .oval2 {
+  transform: scale(0) translate(40px, 10px);
+  transform-origin: 0 0 0;
+  transition: 1.5s transform 0.3s;
+}
+
+.useful-love:checked + label svg .grp4 {
+  opacity: 1;
+  transition: 0.1s all 0.3s;
+}
+
+.useful-love:checked + label svg .grp4 .oval1 {
+  transform: scale(0) translate(30px, 15px);
+  transform-origin: 0 0 0;
+  transition: 0.5s transform 0.3s;
+}
+
+.useful-love:checked + label svg .grp4 .oval2 {
+  transform: scale(0) translate(40px, 40px);
+  transform-origin: 0 0 0;
+  transition: 1.5s transform 0.3s;
+}
+
+.useful-love:checked + label svg .grp5 {
+  opacity: 1;
+  transition: 0.1s all 0.3s;
+}
+
+.useful-love:checked + label svg .grp5 .oval1 {
+  transform: scale(0) translate(-10px, 20px);
+  transform-origin: 0 0 0;
+  transition: 0.5s transform 0.3s;
+}
+
+.useful-love:checked + label svg .grp5 .oval2 {
+  transform: scale(0) translate(-40px, 30px);
+  transform-origin: 0 0 0;
+  transition: 1.5s transform 0.3s;
+}
+
+.useful-love:checked + label svg .grp6 {
+  opacity: 1;
+  transition: 0.1s all 0.3s;
+}
+
+.useful-love:checked + label svg .grp6 .oval1 {
+  transform: scale(0) translate(-30px, 0px);
+  transform-origin: 0 0 0;
+  transition: 0.5s transform 0.3s;
+}
+
+.useful-love:checked + label svg .grp6 .oval2 {
+  transform: scale(0) translate(-40px, -5px);
+  transform-origin: 0 0 0;
+  transition: 1.5s transform 0.3s;
+}
+
+.useful-love:checked + label svg .grp7 {
+  opacity: 1;
+  transition: 0.1s all 0.3s;
+}
+
+.useful-love:checked + label svg .grp7 .oval1 {
+  transform: scale(0) translate(-30px, -15px);
+  transform-origin: 0 0 0;
+  transition: 0.5s transform 0.3s;
+}
+
+.useful-love:checked + label svg .grp7 .oval2 {
+  transform: scale(0) translate(-55px, -30px);
+  transform-origin: 0 0 0;
+  transition: 1.5s transform 0.3s;
+}
+
+.useful-love:checked + label svg .grp2 {
+  opacity: 1;
+  transition: 0.1s opacity 0.3s;
+}
+
+.useful-love:checked + label svg .grp3 {
+  opacity: 1;
+  transition: 0.1s opacity 0.3s;
+}
+
+.useful-love:checked + label svg .grp4 {
+  opacity: 1;
+  transition: 0.1s opacity 0.3s;
+}
+
+.useful-love:checked + label svg .grp5 {
+  opacity: 1;
+  transition: 0.1s opacity 0.3s;
+}
+
+.useful-love:checked + label svg .grp6 {
+  opacity: 1;
+  transition: 0.1s opacity 0.3s;
+}
+
+.useful-love:checked + label svg .grp7 {
+  opacity: 1;
+  transition: 0.1s opacity 0.3s;
+}
+
+@keyframes animateCircle {
+  40% {
+    transform: scale(10);
+    opacity: 1;
+    fill: #dd4688;
+  }
+  55% {
+    transform: scale(11);
+    opacity: 1;
+    fill: #d46abf;
+  }
+  65% {
+    transform: scale(12);
+    opacity: 1;
+    fill: #cc8ef5;
+  }
+  75% {
+    transform: scale(13);
+    opacity: 1;
+    fill: transparent;
+    stroke: #cc8ef5;
+    stroke-width: 0.5;
+  }
+  85% {
+    transform: scale(17);
+    opacity: 1;
+    fill: transparent;
+    stroke: #cc8ef5;
+    stroke-width: 0.2;
+  }
+  95% {
+    transform: scale(18);
+    opacity: 1;
+    fill: transparent;
+    stroke: #cc8ef5;
+    stroke-width: 0.1;
+  }
+  100% {
+    transform: scale(19);
+    opacity: 1;
+    fill: transparent;
+    stroke: #cc8ef5;
+    stroke-width: 0;
+  }
+}
+
+@keyframes animateHeart {
+  0% {
+    transform: scale(0.2);
+  }
+  40% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes animateHeartOut {
+  0% {
+    transform: scale(1.4);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.btn-sky-blue {
+  background-color: #4da8ff;
+  border-color: #4da8ff;
+}
+
+.btn-sky-blue:hover {
+  background-color: #5fb1ff;
+  border-color: #5fb1ff;
+}
+
+.add-comment {
+  padding-left: 15px;
+  top: 7px;
+}
+
+.color-grey-smoke {
+  color: #656565;
+}
+
+
+
+

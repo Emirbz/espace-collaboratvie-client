@@ -1,0 +1,233 @@
+<div class="container padding-t-40 animated slideDown">
+  <div class="row">
+    <div class="col col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+      <div class="ui-block responsive-flex">
+        <div class="ui-block-title" style="padding: 8px 25px 8px;">
+          <div class="h6 title">Forum des Experts
+            <a (click)="resetFilter()" class="search-icon" data-toggle="collapse" data-parent="#searchBar"
+               aria-expanded="true"
+               aria-controls="collapseOne" href="#searchBar">
+              <i class="fa fa-search" aria-hidden="true"></i>
+            </a></div>
+
+          <div class="align-right">
+
+
+            <a href="#" class="btn btn-blue btn-md tag" style="color: white" routerLink="/topic/create"
+               routerLinkActive="active">Create New Topic</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 collapse " id="searchBar">
+      <div class="ui-block responsive-flex tags-select">
+        <nz-select
+          class="full-width padding-nz-select tags-search"
+          (nzOnSearch)="onSearchTags($event)"
+          [(ngModel)]="selectedTags"
+          (ngModelChange)="loadTopics(selectedTags)"
+
+
+          nzMode="multiple"
+          nzPlaceHolder="Ajouter des tags ...">
+          <ng-container *ngFor="let t of loadedTags">
+            <nz-option *ngIf="!tagsSearching" nzCustomContent [nzLabel]="t.name" [nzValue]="t">
+              <div class=" height-38 position-relative">
+                <a class="more position-relative">
+                  <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+                       width="28" height="28"
+                       viewBox="0 0 172 172"
+                       style=" fill:#000000;">
+                    <g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt"
+                       stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray=""
+                       stroke-dashoffset="0"
+                       font-family="none" font-size="none"
+                       style="mix-blend-mode: normal">
+                      <path d="M0,172v-172h172v172z" fill="none"></path>
+                      <path
+                        d="M86,172c-47.49649,0 -86,-38.50351 -86,-86v0c0,-47.49649 38.50351,-86 86,-86v0c47.49649,0 86,38.50351 86,86v0c0,47.49649 -38.50351,86 -86,86z"
+                        fill="#eeeeee"></path>
+                      <g fill="#7e7e7e">
+                        <path
+                          d="M59.53846,33.07692c-3.18365,0 -5.29231,2.10866 -5.29231,5.29231v15.87692h-15.87692c-3.18365,0 -5.29231,2.10866 -5.29231,5.29231v10.58462c0,3.18366 2.10866,5.29231 5.29231,5.29231h15.87692v21.16923h-15.87692c-3.18365,0 -5.29231,2.10866 -5.29231,5.29231v10.58462c0,3.18366 2.10866,5.29231 5.29231,5.29231h15.87692v15.87692c0,3.18366 2.10866,5.29231 5.29231,5.29231h10.58462c3.18366,0 5.29231,-2.10865 5.29231,-5.29231v-15.87692h21.16923v15.87692c0,3.18366 2.10866,5.29231 5.29231,5.29231h10.58462c3.18366,0 5.29231,-2.10865 5.29231,-5.29231v-15.87692h15.87692c3.18366,0 5.29231,-2.10865 5.29231,-5.29231v-10.58462c0,-3.18365 -2.10865,-5.29231 -5.29231,-5.29231h-15.87692v-21.16923h15.87692c3.18366,0 5.29231,-2.10865 5.29231,-5.29231v-10.58462c0,-3.18365 -2.10865,-5.29231 -5.29231,-5.29231h-15.87692v-15.87692c0,-3.18365 -2.10865,-5.29231 -5.29231,-5.29231h-10.58462c-3.18365,0 -5.29231,2.10866 -5.29231,5.29231v15.87692h-21.16923v-15.87692c0,-3.18365 -2.10865,-5.29231 -5.29231,-5.29231zM75.41538,75.41538h21.16923v21.16923h-21.16923z"></path>
+                      </g>
+                    </g>
+                  </svg>
+                </a>
+                <label class="tag-name position-relative">{{t.name}}</label>
+                <label class="count-topics position-relative">{{t.countTopics}} topics</label>
+              </div>
+            </nz-option>
+          </ng-container>
+          <nz-option *ngIf="tagsSearching" nzDisabled nzCustomContent>
+            <i nz-icon nzType="loading" class="loading-icon"></i> Chargement des données ...
+          </nz-option>
+        </nz-select>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="container animated slideDown">
+  <div class="row">
+    <div class="col col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+
+      <div class="ui-block">
+
+
+        <!-- Forums Table -->
+
+        <table class="forums-table">
+
+          <thead>
+
+          <tr>
+
+            <th class="forum">
+              Topic
+            </th>
+
+            <th class="topics">
+              Commentaires
+            </th>
+
+            <th class="posts">
+              Vues
+            </th>
+
+            <th class="freshness">
+              Propriétaire
+            </th>
+
+          </tr>
+
+          </thead>
+
+          <tbody>
+          <tr *ngFor="let t of loadedTopics" class="bg-smoke-light">
+            <td class="forum" style="padding-bottom: 10px;">
+              <div class="forum-item">
+
+                <div class="content">
+                  <a href="#" class="h6 title" [routerLink]="['/topic/',t?.id]"
+                     routerLinkActive="active">{{t?.title}}</a>
+                  <p class="text">
+                    <time class="entry-date updated" datetime="2017-06-24T18:18"><i
+                      class="fa fa-clock ic-fa"> </i> {{t?.timestamp * 1000| timeAgo}}</time>
+                  </p>
+                  <ul class="tags-display">
+                    <li *ngFor="let tag of t.tags | slice:0:4"><a href="#" class="tag-display">{{tag?.name}}</a></li>
+                    <li *ngIf="t?.tags.length>4"><a href="#" class="tag-display">{{t?.tags?.length - 4}} autres ..</a>
+                    </li>
+
+
+                  </ul>
+                </div>
+              </div>
+            </td>
+            <td class="topics">
+              <a href="#" class="h6 count"><i class="fa fa-comment ic-fa"></i>{{t?.countReplies}}</a>
+            </td>
+            <td class="posts">
+              <a href="#" class="h6 count"><i class="fa fa-eye ic-fa" style="margin-right: 3px"></i>{{t?.seen}}</a>
+            </td>
+            <td class="freshness">
+              <div class="author-freshness">
+                <div class="author-thumb">
+                  <img [src]="t.user.image" alt="author">
+                </div>
+                <a href="#" class="h6 title">{{t?.user?.firstName}} {{t?.user?.lastName}}</a>
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="loadedTopics?.length===0">
+            <div class="no-results-container container ">
+              <div class="row">
+                <div class="col col-xl-6 col-lg-7 col-md-12 col-sm-12 col-12">
+                  <img src="assets/img/no-results.png" alt="error_500">
+                </div>
+                <div class="col col-xl-6 col-lg-5 col-md-12 col-sm-12 col-12">
+                  <div class="crumina-module crumina-heading">
+                    <h2 class=" h2 page-500-sup-title">Oops</h2>
+                    <h3 class="h3 heading-title">Pas de résultat trouvé</h3>
+                  </div>
+                  <a class="btn btn-primary btn-lg" style="color: white" (click)="resetFilter()">Réinitialiser </a>
+                </div>
+              </div>
+            </div>
+          </tr>
+
+
+          </tbody>
+        </table>
+
+        <!-- ... end Forums Table -->
+
+      </div>
+
+
+    </div>
+
+    <div class="col col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+      <div class="ui-block">
+        <div class="ui-block-title">
+          <h6 class="title">Featured Topics</h6>
+        </div>
+        <div class="ui-block-content">
+
+
+          <!-- Widget Featured Topics -->
+
+          <ul class="widget w-featured-topics">
+            <li>
+              <i class="icon fa fa-star" aria-hidden="true"></i>
+              <div class="content">
+                <a href="#" class="h6 title">The new Goddess of War trailer was launched at E3!</a>
+                <time class="entry-date updated" datetime="2017-06-24T18:18">2 hours, 16 minutes ago</time>
+              </div>
+            </li>
+            <li>
+              <i class="icon fa fa-star" aria-hidden="true"></i>
+              <div class="content">
+                <a href="#" class="h6 title">This year’s ComixCon will have the best presentations</a>
+                <time class="entry-date updated" datetime="2017-06-24T18:18">14 hours, 36 minutes ago</time>
+              </div>
+            </li>
+            <li>
+              <i class="icon fa fa-star" aria-hidden="true"></i>
+              <div class="content">
+                <a href="#" class="h6 title">Here are the behind-the-scenes photos of “Vilords”</a>
+                <time class="entry-date updated" datetime="2017-06-24T18:18">9 hours, 8 minutes ago</time>
+              </div>
+            </li>
+          </ul>
+
+          <!-- ... end Widget Featured Topics -->
+        </div>
+      </div>
+
+      <div class="ui-block">
+        <div class="ui-block-title">
+          <h6 class="title">Tas populaires</h6>
+        </div>
+        <div class="ui-block-content" style="padding: 23px 10px 23px">
+          <ul class="tags-display ">
+            <li *ngFor="let tag of loadedTags "><a href="#" class="tag-display tag-list">{{tag?.name}} </a></li>
+
+
+          </ul>
+
+
+          <!-- Widget Recent Topics -->
+
+
+          <!-- ... end Widget Recent Topics -->
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+

@@ -1,0 +1,247 @@
+<div class="container margin-t-40 ">
+  <div class="col col-xl-12 m-auto col-lg-12 col-md-12 col-sm-12 col-12">
+    <div class="ui-block">
+
+
+      <!-- Single Post -->
+
+      <article class="hentry blog-post single-post single-post-v1" data-aos="fade-left" data-aos-duration="1000"
+               data-aos-offset="500" data-aos-once="true">
+
+
+        <h1 class="post-title">{{loadedTopic?.title | titlecase}}</h1>
+
+        <div class="author-date">
+          <div class="author-thumb">
+            <img *ngIf="loadedTopic?.user?.image" alt="author" [src]="loadedTopic?.user?.image" width="35" height="35"
+                 class="avatar">
+          </div>
+          Ouvert par
+          <a class="h6 post__author-name fn"
+             href="#">{{loadedTopic?.user?.firstName}} {{loadedTopic?.user?.lastName}} </a>
+          <div class="post__date">
+            <time class="published" datetime="2017-03-24T18:18">
+              - {{loadedTopic?.timestamp * 1000 | timeAgo}}
+            </time>
+          </div>
+        </div>
+
+
+        <div class="post-content-wrap">
+          <ul class="filter-icons">
+            <li>
+              <a (click)="scrollToElement('comments')" class="post-add-icon inline-items cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+                     width="28" height="28"
+                     viewBox="0 0 172 172"
+                     style=" fill:#000000;">
+                  <g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt"
+                     stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0"
+                     font-family="none" font-size="none"
+                     style="mix-blend-mode: normal">
+                    <path d="M0,172v-172h172v172z" fill="none"></path>
+                    <g fill="#38a9ff">
+                      <path
+                        d="M86,13.76c-43.59125,0 -79.12,30.54344 -79.12,68.77313c0,22.19875 12.1475,41.52187 30.82563,54.13969c-0.02688,0.73906 0.02687,1.94844 -0.95406,5.54969c-1.19594,4.47469 -3.64156,10.76344 -8.58656,17.85844l-3.52062,5.03906h6.14094c21.29844,0 33.62062,-13.88094 35.52875,-16.11156c6.3425,1.49156 12.87312,2.31125 19.68594,2.31125c43.59125,0 79.12,-30.54344 79.12,-68.78656c0,-38.22969 -35.52875,-68.77313 -79.12,-68.77313z"></path>
+                    </g>
+                  </g>
+                </svg>
+                <span>{{loadedTopic?.countReplies}}</span>
+              </a>
+            </li>
+            <li>
+              <span class="post-add-icon inline-items">
+                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+                     width="28" height="28"
+                     viewBox="0 0 172 172"
+                     style=" fill:#000000; width: 22px ;height: 22px">
+                  <g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt"
+                     stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0"
+                     font-family="none" font-size="none"
+                     style="mix-blend-mode: normal">
+                    <path d="M0,172v-172h172v172z" fill="none"></path>
+                    <g>
+                      <path
+                        d="M86,139.75c-41.9766,0 -77.3914,-45.6402 -83.3512,-53.75c5.9598,-8.1055 41.4047,-53.75 83.3512,-53.75c41.9766,0 77.3914,45.6402 83.3512,53.75c-5.9598,8.1055 -41.4047,53.75 -83.3512,53.75z"
+                        fill="#ffffff"></path>
+                      <path
+                        d="M86,34.4c39.1171,0 72.6958,41.0564 80.668,51.6c-7.9722,10.5436 -41.5509,51.6 -80.668,51.6c-39.1171,0 -72.6958,-41.0564 -80.668,-51.6c7.9722,-10.5436 41.5509,-51.6 80.668,-51.6M86,30.1c-47.4978,0 -86,55.9 -86,55.9c0,0 38.5022,55.9 86,55.9c47.4978,0 86,-55.9 86,-55.9c0,0 -38.5022,-55.9 -86,-55.9z"
+                        fill="#38a9ff"></path>
+                      <path
+                        d="M86,122.55c-20.1541,0 -36.55,-16.3959 -36.55,-36.55c0,-20.1541 16.3959,-36.55 36.55,-36.55c20.1541,0 36.55,16.3959 36.55,36.55c0,20.1541 -16.3959,36.55 -36.55,36.55z"
+                        fill="#38a9ff"></path>
+                      <path
+                        d="M86,51.6c18.9673,0 34.4,15.4327 34.4,34.4c0,18.9673 -15.4327,34.4 -34.4,34.4c-18.9673,0 -34.4,-15.4327 -34.4,-34.4c0,-18.9673 15.4327,-34.4 34.4,-34.4M86,47.3c-21.3753,0 -38.7,17.3247 -38.7,38.7c0,21.3753 17.3247,38.7 38.7,38.7c21.3753,0 38.7,-17.3247 38.7,-38.7c0,-21.3753 -17.3247,-38.7 -38.7,-38.7z"
+                        fill="#38a9ff"></path>
+                      <path
+                        d="M86,68.8c-9.4993,0 -17.2,7.7007 -17.2,17.2c0,9.4993 7.7007,17.2 17.2,17.2c9.4993,0 17.2,-7.7007 17.2,-17.2c0,-9.4993 -7.7007,-17.2 -17.2,-17.2z"
+                        fill="#36404d"></path>
+                      <path
+                        d="M98.9,60.2c-4.74965,0 -8.6,3.85035 -8.6,8.6c0,4.74965 3.85035,8.6 8.6,8.6c4.74965,0 8.6,-3.85035 8.6,-8.6c0,-4.74965 -3.85035,-8.6 -8.6,-8.6z"
+                        fill="#ffffff"></path>
+                    </g>
+                  </g>
+                </svg>
+                <span>{{loadedTopic?.seen}}</span>
+              </span>
+            </li>
+
+          </ul>
+
+          <div class="post-content">
+
+            <p>
+              {{loadedTopic?.description}}
+            </p>
+
+          </div>
+        </div>
+
+
+      </article>
+
+      <!-- ... end Single Post -->
+
+
+      <!-- Comments -->
+
+      <div class="crumina-module crumina-heading with-title-decoration  padding-l-40 padding-r-40"
+           style="margin-bottom:0 ">
+        <h5 id="comments" class="heading-title cursor-pointer" (click)="scrollToElement('commentInput')">Commentaires
+          ({{loadedTopic?.countReplies}})
+
+        </h5>
+
+      </div>
+      <ul class="comments-list style-3  margin-t-0 ">
+        <li *ngFor="let r of loadedReplies" #comment [id]="'comment'+r?.id" class="comment-item"
+            [ngClass]="comment.id == lastCommentId ? 'comment-item padding-25 fade-in-slow': 'comment-item padding-25'"
+            data-aos="fade-right" data-aos-easing="ease-in-sine" data-aos-once="true"
+        >
+          <div class="post__author-thumb">
+            <img style="width: 37px;height: 37px" [src]="r?.user?.image" alt="author">
+            <div class="margin-r-0">
+              <input class="useful-love" type="checkbox" [id]="'checkbox'+r?.id" (change)="reactReply(r.id)"/>
+              <label [attr.for]="'checkbox'+r.id">
+                <svg class="heart-svg" viewBox="467 392 58 57" xmlns="http://www.w3.org/2000/svg">
+                  <g class="Group" fill="none" fill-rule="evenodd" transform="translate(467 392)">
+                    <path
+                      d="M29.144 20.773c-.063-.13-4.227-8.67-11.44-2.59C7.63 28.795 28.94 43.256 29.143 43.394c.204-.138 21.513-14.6 11.44-25.213-7.214-6.08-11.377 2.46-11.44 2.59z"
+                      class="heart" fill="#AAB8C2"/>
+                    <circle class="main-circ" fill="#E2264D" opacity="0" cx="29.5" cy="29.5" r="1.5"/>
+
+                    <g class="grp7" opacity="0" transform="translate(7 6)">
+                      <circle class="oval1" fill="#9CD8C3" cx="2" cy="6" r="2"/>
+                      <circle class="oval2" fill="#8CE8C3" cx="5" cy="2" r="2"/>
+                    </g>
+
+                    <g class="grp6" opacity="0" transform="translate(0 28)">
+                      <circle class="oval1" fill="#CC8EF5" cx="2" cy="7" r="2"/>
+                      <circle class="oval2" fill="#91D2FA" cx="3" cy="2" r="2"/>
+                    </g>
+
+                    <g class="grp3" opacity="0" transform="translate(52 28)">
+                      <circle class="oval2" fill="#9CD8C3" cx="2" cy="7" r="2"/>
+                      <circle class="oval1" fill="#8CE8C3" cx="4" cy="2" r="2"/>
+                    </g>
+
+                    <g class="grp2" opacity="0" transform="translate(44 6)">
+                      <circle class="oval2" fill="#CC8EF5" cx="5" cy="6" r="2"/>
+                      <circle class="oval1" fill="#CC8EF5" cx="2" cy="2" r="2"/>
+                    </g>
+
+                    <g class="grp5" opacity="0" transform="translate(14 50)">
+                      <circle class="oval1" fill="#91D2FA" cx="6" cy="5" r="2"/>
+                      <circle class="oval2" fill="#91D2FA" cx="2" cy="2" r="2"/>
+                    </g>
+
+                    <g class="grp4" opacity="0" transform="translate(35 50)">
+                      <circle class="oval1" fill="#F48EA7" cx="6" cy="5" r="2"/>
+                      <circle class="oval2" fill="#F48EA7" cx="2" cy="2" r="2"/>
+                    </g>
+
+                    <g class="grp1" opacity="0" transform="translate(24)">
+                      <circle class="oval1" fill="#9FC7FA" cx="2.5" cy="3" r="2"/>
+                      <circle class="oval2" fill="#9FC7FA" cx="7.5" cy="2" r="2"/>
+                    </g>
+                  </g>
+                </svg>
+              </label>
+
+            </div>
+
+            <span class="span-likes" [id]="'reply'+r.id" #like
+                  [ngClass]="like.id == lastLikedId ? 'scale-up': ''">{{nbrLikes}}</span>
+          </div>
+
+          <div class="comments-content">
+            <div class="post__author author vcard">
+
+
+              <div class="author-date">
+                <a class="h6 post__author-name fn" href="#">{{r?.user?.firstName}} {{r?.user?.lastName}}</a>
+                <div class="post__date">
+                  <time class="published" datetime="2004-07-24T18:18">
+                    {{r?.timestamp * 1000 | timeAgo}}
+                  </time>
+                </div>
+              </div>
+
+            </div>
+
+
+            <p>{{r?.reply}}</p>
+
+          </div>
+          <div *ngIf="r?.users?.length>0" class="post-additional-info inline-items like-reply">
+
+
+            <ul class="friends-harmonic">
+              <li *ngFor="let u of r?.users">
+                <a href="#">
+                  <img [src]="u.image" alt="friend">
+                </a>
+              </li>
+
+            </ul>
+
+            <div *ngIf="r?.users?.length>0" class="names-people-likes margin-l-0">
+              <span class="font-weight-bold color-grey-smoke"
+                    *ngIf="r?.users.length>1">{{r?.users[0].firstName}} {{r?.users[0].lastName}}
+                et  {{r?.users[1].firstName}} {{r?.users[1].lastName}}</span>
+              <span class="font-weight-bold color-grey-smoke"
+                    *ngIf="r?.users.length === 1">{{r?.users[0].firstName}} {{r?.users[0].lastName}}
+                a trouvé cela utile </span>
+              <span *ngIf="r?.users?.length>2"> et {{r?.users.length - 2}} autres </span>
+              <span *ngIf="r?.users?.length>1"> ont trouvé cela utile </span>
+            </div>
+
+
+          </div>
+
+        </li>
+
+      </ul>
+
+
+      <form class="comment-form inline-items">
+
+        <div class="post__author author vcard inline-items">
+          <img [src]="loggedUser?.image" alt="author">
+
+          <div class="form-group with-icon-right ">
+            <textarea id="commentInput" #commentInput class="form-control"
+                      placeholder="Écrire un commentaire ... "></textarea>
+
+          </div>
+        </div>
+
+        <button class="btn btn-md-2  btn-sky-blue" (click)="postComment(commentInput.value)">Valider</button>
+
+
+      </form>
+
+      <!-- ... end Comment Form  -->
+    </div>
+  </div>
+</div>

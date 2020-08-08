@@ -49,7 +49,7 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
   connected = false;
   private eventBus;
   // tslint:disable-next-line:max-line-length
-  bodyData: { body?: string, file?: string, firstName: string, lastName: string, user_img: string, room_id: number, user_id: string, type: string, message_id?: number, choix_id?: number };
+  bodyData: { body?: string, file?: string, room_id: number, user_id: string, type: string, message_id?: number, choix_id?: number };
   dataSondage: { body: string, type: string, user: User, room: Room, choix: Choix[] };
   dataReaction: { type: string, user: User, message: Message };
   dataMsg: { body: string, type: string, user: User, room: Room };
@@ -266,13 +266,10 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
     console.log('status = connected ');
     this.eventBus = new EventBus(environment.apis.eventBus + id);
     this.eventBus.enableReconnect(true);
-    // tslint:disable-next-line:only-arrow-functions
-    this.eventBus.onopen = function() {
+    this.eventBus.onopen = () => {
       console.log('Connected to the web socket Room id = ' + id);
       self.connected = true;
-
-      // tslint:disable-next-line:only-arrow-functions
-      self.eventBus.registerHandler('chat.to.client/' + id, function(error, message) {
+      self.eventBus.registerHandler('chat.to.client/' + id, (error, message) => {
         try {
           self.appendMessage(message.body);
         } catch (e) {
@@ -283,16 +280,16 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
   }
 
   appendMessage(body: any) {
-    const room = new Room(body.room_id);
-    const user = new User(body.user_id, body.firstName, body.lastName, body.user_img);
     switch (body.type) {
       case 'REACTION':
-        const reaction: Reaction = new Reaction(body.body, user);
+        const reaction = JSON.parse(body.body) as Reaction;
+        console.log(reaction);
         this.appendReaction(reaction, body.message_id);
         break;
       case 'TEXT':
-        const msg = new Message(body.body, body.timestamp, body.type, room, user);
-        this.loadedMessages.push(msg);
+        const recivedMessage = JSON.parse(body.body) as Message;
+        recivedMessage.reactions = [];
+        this.loadedMessages.push(recivedMessage);
         break;
       case 'SONDAGE':
         const message = JSON.parse(body.body) as Message;
@@ -300,6 +297,7 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
         this.loadedSondages.splice(0, 0, message);
         break;
       case 'VOTE':
+        const user = JSON.parse(body.user) as User;
         this.appendVote(this.loadedSondages, body.choix_id, user, body.message_id);
         this.appendVote(this.loadedMessages, body.choix_id, user, body.message_id);
         break;
@@ -308,21 +306,17 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
   }
 
   appendReaction(reaction: Reaction, messageId: any) {
-    this.loadedMessages.forEach((message, index) => {
-      if (message.id === messageId) {
-        if (this.checkUserReacted(message, reaction.user)) {
-          this.removeOldReaction(message, reaction.user, index);
-        }
-        message.reactions.push(reaction);
-      }
-    });
-
+    const reactedMessage = this.loadedMessages.find(message => message.id === messageId);
+    if (this.checkUserReacted(reactedMessage, reaction.user)) {
+      this.removeOldReaction(reactedMessage, reaction.user);
+    }
+    reactedMessage.reactions.push(reaction);
   }
 
-  removeOldReaction(votedMessage: Message, user: User, index: number) {
+  removeOldReaction(votedMessage: Message, user: User) {
     const oldReaction: Reaction = votedMessage.reactions.find(r => r.user.id === user.id);
     const i = votedMessage.reactions.indexOf(oldReaction);
-    this.loadedMessages[index].reactions.splice(i, 1);
+    votedMessage.reactions.splice(i, 1);
 
   }
 
@@ -333,24 +327,14 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
     }
     this.msgInput.nativeElement.value = '';
     this.publishMessage('TEXT', value, null, null);
-
-    this.dataMsg = {body: value, room: this.loadedRoom, type: 'TEXT', user: this.loggedUser};
-    this.chatService.addMessage(this.dataMsg).subscribe(() => {
-    });
-
-
   }
 
   publishMessage(type: string, value?: string, message?: Message, sondage?: any, choixId?: number) {
 
     this.bodyData = {
-      firstName: this.loggedUser.firstName,
-      lastName: this.loggedUser.lastName,
       room_id: this.loadedRoom.id,
       user_id: this.loggedUser.id,
-      type,
-      user_img: this.loggedUser.image,
-
+      type
     };
     switch (type) {
       case 'REACTION':
@@ -438,9 +422,6 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
   vote(id: number, message?: Message) {
     console.log(id);
     this.publishMessage('VOTE', null, message, null, id);
-    this.chatService.voteSondage(id, this.loggedUser).subscribe(() => {
-    });
-
 
   }
 
@@ -449,30 +430,25 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
   }
 
   checkUserReacted(m: Message, u: User) {
-    return m.reactions.some(item => item.user.id.includes(this.loggedUser.id));
+    return m.reactions.some(item => item.user.id.includes(u.id));
   }
 
   react(message: Message, type: string) {
     this.dataReaction = {type, message, user: this.loggedUser};
-    this.chatService.addReaction(this.dataReaction).subscribe(value => {
-      this.publishMessage('REACTION', type, message, null);
-    });
+    this.publishMessage('REACTION', type, message, null);
+
   }
 
   private appendVote(sondageArray: Message[], choixId: number, user: User, messageId: any) {
-    sondageArray.forEach(m => {
-      if (m.id === messageId) {
-        m.choix.forEach(c => {
-          if (this.checkUserHasVoted(c, user)) {
-            this.removeOldVote(c, user);
-          }
-          if (c.id === choixId) {
-            c.users.push(user);
-          }
-        });
+    const sondage = sondageArray.find(s => s.id === messageId);
+    sondage.choix.forEach(c => {
+      if (this.checkUserHasVoted(c, user)) {
+        this.removeOldVote(c, user);
+      }
+      if (c.id === choixId) {
+        c.users.push(user);
       }
     });
-
   }
 
   private removeOldVote(c: Choix, user: User) {

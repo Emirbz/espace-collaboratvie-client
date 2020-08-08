@@ -1,0 +1,113 @@
+.padding-t-40 {
+  padding-top: 40px;
+}
+
+.ic-fa {
+  color: #38a9ff;
+  margin-right: 1px;
+}
+
+/*------------ Tag display -----------*/
+
+.tags-display {
+  list-style: none;
+  margin: 0;
+  overflow: hidden;
+  padding: 10px 0 0 0;
+}
+
+.tags-display li {
+  float: left;
+}
+
+.tag-display {
+  background: #eee;
+  border-radius: 3px 0 0 3px;
+  color: #999;
+  display: inline-block;
+  height: 26px;
+  line-height: 26px;
+  padding: 0 20px 0 23px;
+  position: relative;
+  margin: 0 10px 10px 0;
+  text-decoration: none;
+  -webkit-transition: color 0.2s;
+}
+
+.tag-display::before {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: inset 0 1px rgba(0, 0, 0, 0.25);
+  content: '';
+  height: 6px;
+  left: 10px;
+  position: absolute;
+  width: 6px;
+  top: 10px;
+}
+
+.tag-display::after {
+  background: #fafbfd;
+  border-bottom: 13px solid transparent;
+  border-left: 10px solid #eee;
+  border-top: 13px solid transparent;
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.tag-list:after {
+  background: #fff;
+
+}
+
+.tag-display:hover {
+  background-color: #38a9ff;
+  color: white;
+}
+
+.tag-display:hover::after {
+  border-left-color: #38a9ff;
+}
+
+.ant-select-selection__rendered {
+  padding: 10px 0 10px;
+}
+
+
+/* -------- Nz select ---------- */
+
+.count-topics {
+  display: block;
+  top: -23px;
+  left: 3.3%;
+  font-size: 13px;
+}
+
+.tag-name {
+  left: 1%;
+  font-weight: bold;
+  FONT-SIZE: 15px;
+  top: -12px;
+}
+
+.height-38 {
+  height: 38px
+}
+
+.padding-nz-select {
+  padding: 15px 10px 15px;
+}
+
+/*-------- no results ---------*/
+.no-results-container {
+  padding: 20px 0 20px;
+  margin-left: 30%;
+}
+
+.search-icon {
+  color: #38a9ff;
+  padding-left: 5px;
+}
+
