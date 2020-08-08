@@ -40,8 +40,8 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     });
   }
 
-  onSearchChange(event) {
+ /* onSearchChange(event) {
     console.log('Header :' + event.target.value);
     this.searchService.setValue(event.target.value);
-  }
+  }*/
 }

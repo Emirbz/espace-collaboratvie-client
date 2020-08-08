@@ -6,6 +6,7 @@ export default class Reply {
   reply?: string;
   timestamp?: string;
   user?: User;
+  users?: User[];
 
 
 }

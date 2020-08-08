@@ -38,7 +38,7 @@
               "node_modules/aos/dist/aos.css"
             ],
             "scripts": [
-              "src/assets/js/jQuery/jquery-3.4.1.js",
+              "node_modules/jquery/dist/jquery.min.js",
               "src/assets/js/libs/jquery.appear.js",
               "src/assets/js/libs/jquery.mousewheel.js",
               "src/assets/js/libs/perfect-scrollbar.js",

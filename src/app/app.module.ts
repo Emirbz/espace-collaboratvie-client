@@ -29,7 +29,6 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {TopicService} from './services/topic.service';
 import {TagService} from './services/tag.service';
 import {ReplyService} from './services/reply.service';
-import {JwPaginationModule} from 'jw-angular-pagination';
 import {ProfileComponent} from './components/site/profile/profile.component';
 import {en_US, NgZorroAntdModule, NZ_I18N, NZ_ICONS} from 'ng-zorro-antd';
 import * as AllIcons from '@ant-design/icons-angular/icons';
@@ -74,7 +73,6 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
     AngularFontAwesomeModule,
     KeycloakAngularModule,
     BrowserAnimationsModule,
-    JwPaginationModule,
     NgZorroAntdModule
   ],
   providers: [

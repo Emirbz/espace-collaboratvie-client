@@ -36,8 +36,7 @@ export class RoomsComponent implements OnInit, AfterViewInit {
   }
   ngAfterViewInit(): void {
 
-    this.loadScript('assets/js/main.js');
-    this.loadScript('assets/js/libs-init/libs-init.js');
+
   }
 
   ngOnInit() {

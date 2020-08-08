@@ -59,8 +59,7 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
 
   ngAfterViewInit() {
 
-    this.loadScript('assets/js/main.js');
-    this.loadScript('assets/js/libs-init/libs-init.js');
+
   }
 
 
@@ -102,7 +101,7 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
     const node = document.createElement('script');
     node.src = url;
     node.type = 'text/javascript';
-    document.getElementsByTagName('head')[0].appendChild(node);
+    document.getElementsByTagName('body')[0].appendChild(node);
 
 
   }
