@@ -52,9 +52,8 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
   bodyData: { body?: string, file?: string, room_id: number, user_id: string, type: string, message_id?: number, choix_id?: number };
   dataSondage: { body: string, type: string, user: User, room: Room, choix: Choix[] };
   dataReaction: { type: string, user: User, message: Message };
-  dataMsg: { body: string, type: string, user: User, room: Room };
-
   sondageFormGroup: FormGroup;
+  lastReactedId: string;
 
 
   ngAfterViewInit() {
@@ -202,8 +201,25 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
     this.chatService.getMessageByRoom(id).subscribe(msg => {
       this.loadedMessages = msg;
       this.messagesHasbeenLoaded = true;
+      this.scrollToElement('message' + msg[msg.length - 1].id, 'auto', 0);
 
     });
+  }
+
+  scrollToElement(elementSelector: string, behavior: string, time: number) {
+    setTimeout(() => {
+      const el = document.getElementById(elementSelector);
+      switch (behavior) {
+        case 'smooth':
+          el.scrollIntoView({behavior: 'smooth', block: 'center'});
+          break;
+        case 'auto':
+          el.scrollIntoView({behavior: 'auto', block: 'center'});
+          break;
+      }
+    }, time);
+
+
   }
 
   loadRoomSondages() {
@@ -290,11 +306,14 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
         const recivedMessage = JSON.parse(body.body) as Message;
         recivedMessage.reactions = [];
         this.loadedMessages.push(recivedMessage);
+        this.scrollToElement('message' + recivedMessage.id, 'smooth', 50);
         break;
       case 'SONDAGE':
-        const message = JSON.parse(body.body) as Message;
-        this.loadedMessages.push(message);
-        this.loadedSondages.splice(0, 0, message);
+        const recivedSondage = JSON.parse(body.body) as Message;
+        this.loadedMessages.push(recivedSondage);
+        this.loadedSondages.splice(0, 0, recivedSondage);
+        this.scrollToElement('message' + recivedSondage.id, 'smooth', 50);
+
         break;
       case 'VOTE':
         const user = JSON.parse(body.user) as User;
@@ -306,6 +325,7 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
   }
 
   appendReaction(reaction: Reaction, messageId: any) {
+    this.lastReactedId = 'reaction' + messageId;
     const reactedMessage = this.loadedMessages.find(message => message.id === messageId);
     if (this.checkUserReacted(reactedMessage, reaction.user)) {
       this.removeOldReaction(reactedMessage, reaction.user);

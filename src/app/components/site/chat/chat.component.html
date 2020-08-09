@@ -1,4 +1,3 @@
-
 <!-- Fixed Sidebar Right -->
 
 <div class="fixed-sidebar right">
@@ -1290,14 +1289,16 @@
             <!-- Chat Field -->
 
             <div class="chat-field">
-              <div #scrollMe [scrollTop]="scrollMe.scrollHeight" class="mCustomScrollbarNew popup-chat"
+              <!--              [scrollTop]="scrollMe.scrollHeight"-->
+              <div #scrollMe class="mCustomScrollbarNew popup-chat"
                    style="overflow-y: scroll" data-mcs-theme="dark">
                 <!-- @TODO loader -->
                 <ul *ngIf="messagesHasbeenLoaded" class="notification-list chat-message chat-message-field ">
 
 
                   <li *ngFor="let m of loadedMessages"
-                      [ngClass]="loggedUser?.id == m?.user?.id ? 'sender user-msg': 'user-msg'">
+                      [ngClass]="loggedUser?.id == m?.user?.id ? 'sender user-msg': 'user-msg'"
+                      [id]="'message'+m?.id">
                     <div class="author-thumb">
                       <img class="img-user" [src]="m.user.image" alt="author" [attr.data-toggle]="'tooltip'"
                            [attr.data-placement]="'top'" [attr.title]="m.timestamp | date: 'yyyy-MM-dd HH:MM'">
@@ -1306,10 +1307,11 @@
                     <!-- Text MEssage -->
                     <div *ngIf="m?.type==='TEXT'" class="notification-event min-width-7 ">
 
-                      <span class="chat-message-item">{{m?.body | titlecase}}
+                      <span class="chat-message-item ">{{m?.body | titlecase}}
 																</span>
-                      <div *ngIf="m?.reactions?.length>0 && loadedMessages " class="user-reactions">
-                        <ul data-toggle="modal" data-target="#modal-list-reactions" (click)="openModalReaction(m)">
+                      <div [id]="'reaction'+m?.id" #reaction *ngIf="m?.reactions?.length>0 && loadedMessages "
+                           [ngClass]="reaction.id == lastReactedId ? ' user-reactions blink': 'user-reactions'">
+                        <ul data-toggle="modal" data-target="#modal-list-rescroactions" (click)="openModalReaction(m)">
                           <!-- Reaction buttons container-->
                           <li *ngIf="checkReactionsExists(m,'LIKE')" class="reaction"><img src="assets/img/like.png">
                           </li>
