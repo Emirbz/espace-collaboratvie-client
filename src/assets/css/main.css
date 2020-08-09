@@ -3323,6 +3323,13 @@ ng-select .ng-select-container {
 
 }
 
+.tags-select .ant-select-selection {
+  border: unset;
+  border-bottom: 1px solid #d9d9d9;
+  box-shadow: unset;
+
+}
+
 .tags-select input {
   padding: 0.5rem 1.1rem .5rem 0.1em;
 

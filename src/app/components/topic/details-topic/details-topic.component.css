@@ -77,13 +77,13 @@
 
 
 .scale-up {
-  -webkit-animation: 600ms ease 0s normal forwards 1 scale-up;
+
   animation: 600ms ease 0s normal forwards 1 scale-up;
 }
 
 @keyframes scale-up {
   0% {
-    transform: scale(2.5);
+    transform: scale(1.0);
   }
   66% {
     transform: scale(2.5);
@@ -93,17 +93,6 @@
   }
 }
 
-@-webkit-keyframes scale-up {
-  0% {
-    transform: scale(2.5);
-  }
-  66% {
-    transform: scale(2.5);
-  }
-  100% {
-    transform: scale(1.0);
-  }
-}
 
 .page-link:hover {
   color: white;
@@ -125,6 +114,11 @@
 
 }
 
+.height-50 {
+  height: 50px;
+}
+
+
 .span-likes {
   margin-left: 0.9em;
   font-size: 14px;
@@ -135,7 +129,7 @@
 }
 
 .padding-25 {
-  padding: 25px 25px 35px 25px;
+  padding: 25px 25px 15px 25px;
 }
 
 .heart-svg .heart {

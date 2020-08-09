@@ -120,8 +120,9 @@
         >
           <div class="post__author-thumb">
             <img style="width: 37px;height: 37px" [src]="r?.user?.image" alt="author">
-            <div class="margin-r-0">
-              <input class="useful-love" type="checkbox" [id]="'checkbox'+r?.id" (change)="reactReply(r.id)"/>
+            <div class="margin-r-0 height-50">
+              <input class="useful-love" type="checkbox" [checked]="checkUserLiked(r,loggedUser)"
+                     [id]="'checkbox'+r?.id" (change)="reactReply(r.id)"/>
               <label [attr.for]="'checkbox'+r.id">
                 <svg class="heart-svg" viewBox="467 392 58 57" xmlns="http://www.w3.org/2000/svg">
                   <g class="Group" fill="none" fill-rule="evenodd" transform="translate(467 392)">
@@ -170,11 +171,11 @@
 
             </div>
 
-            <span class="span-likes" [id]="'reply'+r.id" #like
-                  [ngClass]="like.id == lastLikedId ? 'scale-up': ''">{{nbrLikes}}</span>
+            <span [id]="'reply'+r.id" #like
+                  [ngClass]="like.id == lastLikedId ? 'scale-up span-likes ': ' span-likes'">{{r?.users?.length}}</span>
           </div>
 
-          <div class="comments-content">
+          <div class="comments-content" style="padding-bottom: 13px">
             <div class="post__author author vcard">
 
 
@@ -193,9 +194,8 @@
             <p>{{r?.reply}}</p>
 
           </div>
-          <div *ngIf="r?.users?.length>0" class="post-additional-info inline-items like-reply">
-
-
+          <div
+            [ngClass]="r?.users?.length>0 ? 'post-additional-info inline-items like-reply animated bounceInDown': 'post-additional-info inline-items like-reply d-none'">
             <ul class="friends-harmonic">
               <li *ngFor="let u of r?.users">
                 <a href="#">
@@ -210,8 +210,8 @@
                     *ngIf="r?.users.length>1">{{r?.users[0].firstName}} {{r?.users[0].lastName}}
                 et  {{r?.users[1].firstName}} {{r?.users[1].lastName}}</span>
               <span class="font-weight-bold color-grey-smoke"
-                    *ngIf="r?.users.length === 1">{{r?.users[0].firstName}} {{r?.users[0].lastName}}
-                a trouvé cela utile </span>
+                    *ngIf="r?.users.length === 1">{{r?.users[0].firstName}} {{r?.users[0].lastName}} </span>
+              <span *ngIf="r?.users.length === 1">   a trouvé cela utile </span>
               <span *ngIf="r?.users?.length>2"> et {{r?.users.length - 2}} autres </span>
               <span *ngIf="r?.users?.length>1"> ont trouvé cela utile </span>
             </div>

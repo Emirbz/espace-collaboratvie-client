@@ -113,9 +113,10 @@ export class DetailsTopicComponent implements OnInit, AfterViewInit {
   }
 
   reactReply(id: number) {
-    this.nbrLikes += 1;
-    this.lastLikedId = 'reply' + id;
-
+    this.replyService.likeReply(id).subscribe(reply => {
+      const index = this.loadedReplies.findIndex(r => r.id === id);
+      this.loadedReplies[index].users = reply.users;
+    });
   }
 
   checkUserLiked(r: Reply, u: User) {

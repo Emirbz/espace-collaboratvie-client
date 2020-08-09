@@ -28,6 +28,7 @@
           (ngModelChange)="loadTopics(selectedTags)"
 
 
+
           nzMode="multiple"
           nzPlaceHolder="Ajouter des tags ...">
           <ng-container *ngFor="let t of loadedTags">
@@ -172,6 +173,29 @@
     <div class="col col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
       <div class="ui-block">
         <div class="ui-block-title">
+          <h6 class="title">Tags populaires</h6>
+        </div>
+        <div class="ui-block-content" style="padding: 5px 10px 5px">
+          <ul class="tags-display ">
+            <li *ngFor="let tag of loadedTags | slice:0:6">
+              <a (click)="addTag(tag)" class="tag-display tag-list">
+                {{tag?.name}}
+              </a>
+
+            </li>
+
+
+          </ul>
+
+
+          <!-- Widget Recent Topics -->
+
+
+          <!-- ... end Widget Recent Topics -->
+        </div>
+      </div>
+      <div class="ui-block">
+        <div class="ui-block-title">
           <h6 class="title">Featured Topics</h6>
         </div>
         <div class="ui-block-content">
@@ -207,24 +231,7 @@
         </div>
       </div>
 
-      <div class="ui-block">
-        <div class="ui-block-title">
-          <h6 class="title">Tas populaires</h6>
-        </div>
-        <div class="ui-block-content" style="padding: 23px 10px 23px">
-          <ul class="tags-display ">
-            <li *ngFor="let tag of loadedTags "><a href="#" class="tag-display tag-list">{{tag?.name}} </a></li>
 
-
-          </ul>
-
-
-          <!-- Widget Recent Topics -->
-
-
-          <!-- ... end Widget Recent Topics -->
-        </div>
-      </div>
 
     </div>
 

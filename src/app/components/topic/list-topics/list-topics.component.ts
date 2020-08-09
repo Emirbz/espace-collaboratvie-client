@@ -91,4 +91,9 @@ export class ListTopicsComponent implements OnInit {
     this.selectedTags = [];
     this.loadedTopics = this.initialLoadedTopics;
   }
+
+  addTag(tag: Tag) {
+    this.selectedTags.push(tag);
+    this.cdr.detectChanges();
+  }
 }

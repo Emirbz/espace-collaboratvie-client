@@ -1311,7 +1311,7 @@
 																</span>
                       <div [id]="'reaction'+m?.id" #reaction *ngIf="m?.reactions?.length>0 && loadedMessages "
                            [ngClass]="reaction.id == lastReactedId ? ' user-reactions blink': 'user-reactions'">
-                        <ul data-toggle="modal" data-target="#modal-list-rescroactions" (click)="openModalReaction(m)">
+                        <ul data-toggle="modal" data-target="#modal-list-reactions" (click)="openModalReaction(m)">
                           <!-- Reaction buttons container-->
                           <li *ngIf="checkReactionsExists(m,'LIKE')" class="reaction"><img src="assets/img/like.png">
                           </li>

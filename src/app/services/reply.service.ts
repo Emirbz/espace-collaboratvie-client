@@ -17,6 +17,11 @@ export class ReplyService {
     return this.http.post<Reply>(`${this.replyUrl}`, newReply);
   }
 
+  likeReply(replyId): Observable<Reply> {
+
+    return this.http.put<Reply>(`${this.replyUrl}/like/${replyId}`, null);
+  }
+
   getReplies(id): Observable<Reply[]> {
     return this.http.get<Reply[]>(`${this.replyUrl}/topic/${id}`);
   }
