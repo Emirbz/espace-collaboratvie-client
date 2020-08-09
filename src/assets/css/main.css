@@ -3305,6 +3305,10 @@ input, .form-control {
   background-image: none;
 }
 
+ng-select .ng-select-container {
+  height: 60px;
+}
+
 .form-group.with-icon-right .form-control, .form-group.with-icon-right input, .form-group.with-icon-right textarea {
   padding-right: 60px;
 }

@@ -21,7 +21,7 @@
              href="#">{{loadedTopic?.user?.firstName}} {{loadedTopic?.user?.lastName}} </a>
           <div class="post__date">
             <time class="published" datetime="2017-03-24T18:18">
-              - {{loadedTopic?.timestamp * 1000 | timeAgo}}
+              - {{loadedTopic?.timestamp | timeAgo}}
             </time>
           </div>
         </div>
@@ -182,7 +182,7 @@
                 <a class="h6 post__author-name fn" href="#">{{r?.user?.firstName}} {{r?.user?.lastName}}</a>
                 <div class="post__date">
                   <time class="published" datetime="2004-07-24T18:18">
-                    {{r?.timestamp * 1000 | timeAgo}}
+                    {{r?.timestamp  | timeAgo}}
                   </time>
                 </div>
               </div>

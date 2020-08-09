@@ -1,0 +1,29 @@
+.selected {
+  color: #ff5e3a;
+
+}
+
+.selected svg {
+  fill: #ff5e3a;
+}
+
+.scale-up {
+  -webkit-animation: 600ms ease 0s normal forwards 1;
+  animation: 600ms ease 0s normal forwards 1;
+  transform: scale(1.3);
+}
+
+.scale-up-open {
+  -webkit-animation: 600ms ease 0s normal forwards 1;
+  animation: 600ms ease 0s normal forwards 1;
+  transform: scale(1.1);
+}
+
+.selected:hover {
+  color: #ff5e3a;
+}
+
+.bottom-0 {
+  bottom: 0;
+}
+

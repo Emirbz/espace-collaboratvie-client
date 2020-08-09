@@ -150,12 +150,12 @@
               placeholder="Inviter des collaborateurs"
               [(ngModel)]="selectedUsers">
               <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                <div class="ng-value" *ngFor="let item of items | slice:0:2">
+                <div class="ng-value " *ngFor="let item of items | slice:0:2">
                   <span class="ng-value-label"><img class="rounded" [src]="item.image" width="20px" height="20px"><span
                     style="padding: 0.25em"> {{item.firstName}} {{item.lastName}} </span></span>
                   <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
                 </div>
-                <div class="ng-value" *ngIf="items.length > 2">
+                <div class="ng-value " style="padding-top: 8px;" *ngIf="items.length > 2">
                   <span class="ng-value-label">{{items.length - 2}} autres...</span>
                 </div>
               </ng-template>

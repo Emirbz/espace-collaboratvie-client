@@ -114,7 +114,7 @@
                      routerLinkActive="active">{{t?.title}}</a>
                   <p class="text">
                     <time class="entry-date updated" datetime="2017-06-24T18:18"><i
-                      class="fa fa-clock ic-fa"> </i> {{t?.timestamp * 1000| timeAgo}}</time>
+                      class="fa fa-clock ic-fa"> </i> {{t?.timestamp | timeAgo}}</time>
                   </p>
                   <ul class="tags-display">
                     <li *ngFor="let tag of t.tags | slice:0:4"><a href="#" class="tag-display">{{tag?.name}}</a></li>

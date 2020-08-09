@@ -1301,7 +1301,7 @@
                       [id]="'message'+m?.id">
                     <div class="author-thumb">
                       <img class="img-user" [src]="m.user.image" alt="author" [attr.data-toggle]="'tooltip'"
-                           [attr.data-placement]="'top'" [attr.title]="m.timestamp | date: 'yyyy-MM-dd HH:MM'">
+                           [attr.data-placement]="'top'" [attr.title]="m.timestamp*1000 | date: 'yyyy-MM-dd HH:MM'">
                       <!-- @TODO timestamp 1970 -->
                     </div>
                     <!-- Text MEssage -->
