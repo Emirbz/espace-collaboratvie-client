@@ -446,11 +446,11 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
   }
 
   checkUserHasVoted(c: Choix, user?: User) {
-    return c.users.some(item => item.id.includes(user.id));
+    return c.users.some(item => item.id === user.id);
   }
 
   checkUserReacted(m: Message, u: User) {
-    return m.reactions.some(item => item.user.id.includes(u.id));
+    return m.reactions.some(item => item.user.id === u.id);
   }
 
   react(message: Message, type: string) {

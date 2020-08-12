@@ -3,6 +3,10 @@
 
 }
 
+.selected:hover {
+  color: #ff5e3a;
+}
+
 .selected svg {
   fill: #ff5e3a;
 }
@@ -19,9 +23,6 @@
   transform: scale(1.1);
 }
 
-.selected:hover {
-  color: #ff5e3a;
-}
 
 .bottom-0 {
   bottom: 0;

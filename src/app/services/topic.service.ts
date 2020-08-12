@@ -8,13 +8,20 @@ import Topic from '../models/Topic';
 export class TopicService {
 
   topicUrl = environment.apis.topic;
+  url: string;
 
   constructor(private http: HttpClient) {
   }
 
 
-  getTopics(criteria): Observable<Topic[]> {
-    return this.http.post<Topic[]>(`${this.topicUrl}/tag`, criteria);
+  getTopics(criteria, name?): Observable<Topic[]> {
+    if (name) {
+      this.url = `${this.topicUrl}/tag?name=${name}`;
+    } else {
+      this.url = `${this.topicUrl}/tag`;
+    }
+
+    return this.http.post<Topic[]>(this.url, criteria);
   }
 
   addTopic(newTopic): Observable<Topic> {

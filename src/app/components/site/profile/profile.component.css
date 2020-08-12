@@ -1,0 +1,166 @@
+.profile-image {
+  height: 124px;
+  width: 124px;
+
+}
+
+.selected {
+  color: #ff5e3a;
+
+}
+
+.scale-up-open {
+  -webkit-animation: 600ms ease 0s normal forwards 1;
+  animation: 600ms ease 0s normal forwards 1;
+  transform: scale(1.1);
+}
+
+.avatar-margin {
+  margin: 63px 0 6px 7px;
+}
+
+/*------- user stats ----------- */
+.user-stats {
+  position: absolute;
+  top: -17px;
+
+}
+
+.user-stats {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.user-stat.big {
+  padding: 0 30px;
+}
+
+.user-stats .user-stat {
+  position: relative;
+}
+
+.user-stat.big .user-stat-title {
+  font-size: 1.2rem;
+  color: #515365;
+}
+
+.margin-b-8 {
+  margin-bottom: 8px;
+}
+
+.comments-seen {
+  width: 15%;
+  position: relative;
+  left: 86%;
+}
+
+.padding-5 {
+  padding: 5px;
+}
+
+.padding-15-12 {
+  padding: 15px 12px;
+}
+
+.event-item-table th {
+  text-align: center;
+}
+
+.user-stat .user-stat-title {
+  font-size: .875rem;
+}
+
+.user-stat .user-stat-text, .user-stat .user-stat-title {
+  font-weight: 700;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.user-stat.big .user-stat-text {
+  font-size: .75rem;
+}
+
+.user-stat .user-stat-text {
+  margin-top: 6px;
+  color: #adafca;
+  font-size: .6875rem;
+}
+
+.user-stat .user-stat-text, .user-stat .user-stat-title {
+  font-weight: 700;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.cover-photo {
+  object-fit: cover;
+  height: 288px;
+}
+
+/*------- nav bar  ----------- */
+
+.menu-container {
+  width: 10%;
+  margin: 0 auto;
+  position: relative;
+  height: 48px;
+}
+
+.menu-container label {
+  width: 50%;
+  height: 45px;
+  line-height: 48px;
+  text-align: center;
+  color: #333;
+  float: left;
+  cursor: pointer;
+}
+
+.menu-container input[type=radio] {
+  display: none;
+}
+
+.menu-container input[type=radio]:checked + label {
+
+  color: #ff5e3a;
+
+
+}
+
+.menu-container input[type=radio]:checked ~ div {
+  width: auto;
+
+}
+
+.menu-container input[type=radio]#f:checked ~ .menu-border {
+  left: 0;
+  right: 50%;
+}
+
+.menu-container input[type=radio]#s:checked ~ .menu-border {
+  left: 50%;
+  right: 00%;
+}
+
+.menu-border {
+  position: absolute;
+  height: 2px;
+  background-color: #ff5e3a;
+  bottom: 0;
+  left: 0;
+  width: 20%;
+  transition: left .4s ease-out, right .4s ease;
+}
+
+/*------- search bar ------*/
+.search-bar-profile {
+  padding-right: 28px;
+  width: 15%;
+}
+
+.search-bar-profile {
+  transition: all 0.7s ease-in-out;
+
+}

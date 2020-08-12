@@ -3323,7 +3323,7 @@ ng-select .ng-select-container {
 
 }
 
-.tags-select .ant-select-selection {
+.tags-list .ant-select-selection {
   border: unset;
   border-bottom: 1px solid #d9d9d9;
   box-shadow: unset;
@@ -3335,7 +3335,7 @@ ng-select .ng-select-container {
 
 }
 
-.tags-search span {
+.ant-select-arrow {
   padding: 15px;
 }
 

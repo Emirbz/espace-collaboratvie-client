@@ -1,1 +1,645 @@
-<p>profile works!</p>
+<div class="container">
+
+  <div class="row">
+    <div class="col col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+      <div class="ui-block">
+        <div class="top-header">
+          <div class="top-header-thumb">
+            <img src="assets/img/top-header7.jpg" class="cover-photo" alt="nature">
+          </div>
+          <div class="profile-section">
+            <div class="row">
+              <div class="col col-lg-5 col-md-5 col-sm-12 col-12">
+                <ul class="profile-menu">
+                  <li>
+                    <div class="user-stats">
+                      <div class="user-stat big">
+
+                        <p class="margin-b-8  user-stat-title">930</p>
+                        <p class="user-stat-text">Topics</p>
+
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="user-stats">
+                      <div class="user-stat big">
+
+                        <p class="margin-b-8 user-stat-title ">44</p>
+                        <p class="user-stat-text">Reaction</p>
+
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="user-stats">
+                      <div class="user-stat big">
+
+                        <p class="margin-b-8  user-stat-title">80</p>
+                        <p class="user-stat-text">Commentaires</p>
+
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+
+                  </li>
+                </ul>
+              </div>
+              <div class="col col-lg-5 ml-auto col-md-5 col-sm-12 col-12">
+                <ul class="profile-menu">
+                  <li>
+                    <a [ngStyle]="{'color': roomsSelected.length>1 ? '#ff5e3a' : 'inherit'}" [ngClass]="roomsSelected"
+                       (click)="displayRooms()">Groupes de discussions</a>
+                  </li>
+                  <li>
+                    <a [ngStyle]="{'color': topicsSelected.length>1 ? '#ff5e3a' : 'inherit'}" [ngClass]="topicsSelected"
+                       (click)="displayTopics()">Topics</a>
+                  </li>
+
+                </ul>
+              </div>
+            </div>
+
+
+          </div>
+          <div class="top-header-author">
+            <a href="02-ProfilePage.html" class="author-thumb">
+              <img *ngIf="loggedUser" [src]="loggedUser?.image" class="profile-image" alt="author">
+            </a>
+            <div class="author-content">
+              <a href="02-ProfilePage.html"
+                 class="h4 author-name">{{loggedUser?.firstName | titlecase}} {{loggedUser.lastName | titlecase}}</a>
+              <div class="country">San Francisco, CA</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ... end Top Header-Profile -->
+<div class="container">
+  <div class="row">
+
+    <!-- Main Content -->
+    <!-- Left Sidebar -->
+
+    <div class="col col-xl-3 order-xl-1 col-lg-6 order-lg-2 col-md-6 col-sm-6 col-12">
+      <div class="ui-block">
+        <div class="ui-block-title">
+          <h6 class="title">Informations personelles</h6>
+        </div>
+        <div class="ui-block-content">
+
+
+          <!-- W-Personal-Info -->
+
+          <ul class="widget w-personal-info">
+
+            <li>
+              <span class="title">Nom: </span>
+              <span class="text">Ben Zinebn</span>
+            </li>
+            <li>
+              <span class="title">Prenom:</span>
+              <span class="text">Amir</span>
+            </li>
+            <li>
+              <span class="title">Occupation:</span>
+              <span class="text">Stagiaire</span>
+            </li>
+            <li>
+              <span class="title">Rejoint:</span>
+              <span class="text">April 31st, 2014</span>
+            </li>
+
+            <li>
+              <span class="title">Email:</span>
+              <a href="#" class="text">jspiegel@yourmail.com</a>
+            </li>
+
+            <li>
+              <span class="title">Phone Number:</span>
+              <span class="text">(044) 555 - 4369 - 8957</span>
+            </li>
+
+          </ul>
+
+          <!-- ... end W-Personal-Info -->
+
+        </div>
+      </div>
+
+
+      <div class="ui-block">
+        <div class="ui-block-title">
+          <h6 class="title">James’s Badges</h6>
+        </div>
+        <div class="ui-block-content">
+
+          <!-- W-Badges -->
+
+          <ul class="widget w-badges">
+            <li>
+              <a href="24-CommunityBadges.html">
+                <img src="assets/img/badge1.png" alt="author">
+                <div class="label-avatar bg-primary">2</div>
+              </a>
+            </li>
+            <li>
+              <a href="24-CommunityBadges.html">
+                <img src="assets/img/badge4.png" alt="author">
+              </a>
+            </li>
+            <li>
+              <a href="24-CommunityBadges.html">
+                <img src="assets/img/badge3.png" alt="author">
+                <div class="label-avatar bg-blue">4</div>
+              </a>
+            </li>
+            <li>
+              <a href="24-CommunityBadges.html">
+                <img src="assets/img/badge6.png" alt="author">
+              </a>
+            </li>
+            <li>
+              <a href="24-CommunityBadges.html">
+                <img src="assets/img/badge11.png" alt="author">
+              </a>
+            </li>
+            <li>
+              <a href="24-CommunityBadges.html">
+                <img src="assets/img/badge8.png" alt="author">
+              </a>
+            </li>
+            <li>
+              <a href="24-CommunityBadges.html">
+                <img src="assets/img/badge10.png" alt="author">
+              </a>
+            </li>
+            <li>
+              <a href="24-CommunityBadges.html">
+                <img src="assets/img/badge13.png" alt="author">
+                <div class="label-avatar bg-breez">2</div>
+              </a>
+            </li>
+            <li>
+              <a href="24-CommunityBadges.html">
+                <img src="assets/img/badge7.png" alt="author">
+              </a>
+            </li>
+            <li>
+              <a href="24-CommunityBadges.html">
+                <img src="assets/img/badge12.png" alt="author">
+              </a>
+            </li>
+          </ul>
+
+          <!--.. end W-Badges -->
+        </div>
+      </div>
+
+
+    </div>
+
+    <!-- ... end Left Sidebar -->
+
+
+    <div class=" col col-xl-9 order-xl-2 col-lg-12 order-lg-1 col-md-12 col-sm-12 col-12">
+      <div class="ui-block responsive-flex">
+        <div class="ui-block-title">
+
+
+          <form class="w-search search-bar-profile">
+            <div class="form-group with-button">
+              <input class="form-control" type="text" [placeholder]="searchPlaceHolder">
+              <button>
+                <svg class="olymp-magnifying-glass-icon">
+                  <use xlink:href="#olymp-magnifying-glass-icon"></use>
+                </svg>
+              </button>
+            </div>
+          </form>
+          <div class="menu-container">
+            <input type="radio" id="f" checked name="a">
+            <label for="f">{{firstNav}}</label>
+            <input type="radio" id="s" name="a">
+            <label for="s">{{secondNav}}</label>
+
+            <div class="menu-border"></div>
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <!--my Rooms-->
+        <div [ngClass]="roomsClass">
+
+          <div *ngFor="let i of nth_time" class="col col-xl-4 col-lg-6 col-md-6 col-sm-6 col-12">
+            <div class="ui-block">
+
+              <!-- Friend Item -->
+
+              <div class="friend-item">
+                <div class="friend-item-content">
+
+                  <div class="more">
+                    <svg class="olymp-three-dots-icon">
+                      <use xlink:href="#olymp-three-dots-icon"></use>
+                    </svg>
+                    <ul class="more-dropdown">
+                      <li>
+                        <a href="#">Supprimer le groupe</a>
+                      </li>
+
+                    </ul>
+                  </div>
+                  <div class="friend-avatar">
+                    <div class="author-thumb avatar-margin">
+                      <ngx-avatar size="80" name="my room"></ngx-avatar>
+                    </div>
+                    <div class="author-content">
+                      <a href="#" class="h5 author-name">Nicholas Grissom</a>
+                      <div class="country">San Francisco, CA</div>
+                    </div>
+                  </div>
+                  <hr>
+
+                  <div style="padding-bottom: 0;"
+                       class="swiper-container swiper-swiper-unique-id-0 initialized swiper-container-horizontal"
+                       data-slide="fade" id="swiper-unique-id-0">
+                    <div class="swiper-wrapper"
+                         style="width: 784px; transform: translate3d(-196px, 0px, 0px); transition-duration: 0ms;">
+                      <div class="swiper-slide swiper-slide-duplicate swiper-slide-prev swiper-slide-duplicate-next"
+                           data-swiper-slide-index="1" style="width: 196px;">
+
+                        <div class="friend-since" data-swiper-parallax="-100"
+                             style="transform: translate3d(-100px, 0px, 0px); transition-duration: 0ms;">
+                          <span>Friends Since:</span>
+                          <div class="h6">December 2014</div>
+                        </div>
+                      </div>
+                      <div class="swiper-slide swiper-slide-active" data-swiper-slide-index="0" style="width: 196px;">
+                        <div class="friend-count" data-swiper-parallax="-500"
+                             style="transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;">
+                          <a href="#" class="friend-count-item">
+                            <div class="h6">240</div>
+                            <div class="title">Message</div>
+                          </a>
+                          <a href="#" class="friend-count-item">
+                            <div class="h6">16</div>
+                            <div class="title">Utilisateurs</div>
+                          </a>
+                        </div>
+                      </div>
+
+                      <div class="swiper-slide swiper-slide-next swiper-slide-duplicate-prev"
+                           data-swiper-slide-index="1" style="width: 196px;">
+
+
+                        <div class="friend-since" data-swiper-parallax="-100"
+                             style="transform: translate3d(100px, 0px, 0px); transition-duration: 0ms;">
+                          <span>Friends Since:</span>
+                          <div class="h6">December 2014</div>
+                        </div>
+                      </div>
+                      <div class="swiper-slide swiper-slide-duplicate swiper-slide-duplicate-active"
+                           data-swiper-slide-index="0" style="width: 196px;">
+                        <div class="friend-count" data-swiper-parallax="-500"
+                             style="transform: translate3d(500px, 0px, 0px); transition-duration: 0ms;">
+                          <a href="#" class="friend-count-item">
+                            <div class="h6">52</div>
+                            <div class="title">Friends</div>
+                          </a>
+                          <a href="#" class="friend-count-item">
+                            <div class="h6">240</div>
+                            <div class="title">Photos</div>
+                          </a>
+                          <a href="#" class="friend-count-item">
+                            <div class="h6">16</div>
+                            <div class="title">Videos</div>
+                          </a>
+                        </div>
+                        <div class="control-block-button" data-swiper-parallax="-100"
+                             style="transform: translate3d(100px, 0px, 0px); transition-duration: 0ms;">
+                          <a href="#" class="btn btn-control bg-blue">
+                            <svg class="olymp-happy-face-icon">
+                              <use xlink:href="#olymp-happy-face-icon"></use>
+                            </svg>
+                          </a>
+
+                          <a href="#" class="btn btn-control bg-purple">
+                            <svg class="olymp-chat---messages-icon">
+                              <use xlink:href="#olymp-chat---messages-icon"></use>
+                            </svg>
+                          </a>
+
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- If we need pagination -->
+                    <div style="padding-bottom: 5px;"
+                         class="swiper-pagination pagination-swiper-unique-id-0 swiper-pagination-clickable swiper-pagination-bullets">
+                      <span class="swiper-pagination-bullet swiper-pagination-bullet-active"></span><span
+                      class="swiper-pagination-bullet"></span></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ... end Friend Item -->      </div>
+          </div>
+
+
+        </div>
+        <!-- end My rooms-->
+      </div>
+
+
+      <!-- My Topics-->
+      <div [ngClass]="topicsClass">
+        <table class="event-item-table bounceInDown">
+          <thead>
+
+          <tr>
+
+            <th class="forum">
+              Date
+            </th>
+
+            <th class="topics">
+              Titre
+            </th>
+
+            <th class="posts">
+              Description
+            </th>
+
+            <th class="freshness">
+              Reactions
+            </th>
+            <th class="freshness">
+              Actions
+            </th>
+
+          </tr>
+
+          </thead>
+          <tbody>
+
+          <tr class="event-item">
+
+            <td class="padding-15-12 upcoming">
+              <div class="date-event">
+
+                <svg class="olymp-small-calendar-icon">
+                  <use xlink:href="#olymp-small-calendar-icon"></use>
+                </svg>
+
+                <span class="day">28</span>
+                <span class="month">may</span>
+              </div>
+            </td>
+            <td class="padding-15-12 author">
+              <div class="event-author inline-items">
+                <div class="author-date">
+                  <a href="#" class="author-name h6">Green Goo in Gotham</a>
+                  <time class="published" datetime="2017-03-24T18:18">Saturday at 9:00pm</time>
+                </div>
+              </div>
+            </td>
+
+            <td class="padding-15-12 description">
+              <p class="description">We’ll be playing in the Gotham Bar in May. Come and have a great ...</p>
+            </td>
+            <td class="padding-15-12 users">
+              <ul class="friends-harmonic">
+                <li>
+                  <a href="#">
+                    <img src="assets/img/friend-harmonic5.jpg" alt="friend">
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <img src="assets/img/friend-harmonic10.jpg" alt="friend">
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <img src="assets/img/friend-harmonic7.jpg" alt="friend">
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <img src="assets/img/friend-harmonic8.jpg" alt="friend">
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <img src="assets/img/friend-harmonic2.jpg" alt="friend">
+                  </a>
+                </li>
+                <li>
+                  <a href="#" class="all-users bg-breez">+24</a>
+                </li>
+
+                <li class="with-text">
+                  Ont réagi
+                </li>
+              </ul>
+            </td>
+            <td class=" padding-15-12 location " style="padding-right: 0">
+              <div class="place inline-items">
+
+                <a href="#" class="post-add-icon inline-items padding-5">
+                  <svg style="width: 20px;height: 20px" class="olymp-speech-balloon-icon">
+                    <use xlink:href="#olymp-speech-balloon-icon"></use>
+                  </svg>
+                  <span>17</span>
+                </a>
+
+
+              </div>
+
+            </td>
+
+
+          </tr>
+          <tr class="event-item">
+
+            <td class="padding-15-12 upcoming">
+              <div class="date-event">
+
+                <svg class="olymp-small-calendar-icon">
+                  <use xlink:href="#olymp-small-calendar-icon"></use>
+                </svg>
+
+                <span class="day">28</span>
+                <span class="month">may</span>
+              </div>
+            </td>
+            <td class="padding-15-12 author">
+              <div class="event-author inline-items">
+                <div class="author-date">
+                  <a href="#" class="author-name h6">Green Goo in Gotham</a>
+                  <time class="published" datetime="2017-03-24T18:18">Saturday at 9:00pm</time>
+                </div>
+              </div>
+            </td>
+
+            <td class="padding-15-12 description">
+              <p class="description">We’ll be playing in the Gotham Bar in May. Come and have a great ...</p>
+            </td>
+            <td class="padding-15-12 users">
+              <ul class="friends-harmonic">
+                <li>
+                  <a href="#">
+                    <img src="assets/img/friend-harmonic5.jpg" alt="friend">
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <img src="assets/img/friend-harmonic10.jpg" alt="friend">
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <img src="assets/img/friend-harmonic7.jpg" alt="friend">
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <img src="assets/img/friend-harmonic8.jpg" alt="friend">
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <img src="assets/img/friend-harmonic2.jpg" alt="friend">
+                  </a>
+                </li>
+                <li>
+                  <a href="#" class="all-users bg-breez">+24</a>
+                </li>
+
+                <li class="with-text">
+                  Ont réagi
+                </li>
+              </ul>
+            </td>
+            <td class="padding-15-12 location" style="padding-right: 0">
+              <div class="place inline-items">
+
+                <a href="#" class="post-add-icon inline-items padding-5">
+                  <svg class="olymp-speech-balloon-icon">
+                    <use xlink:href="#olymp-speech-balloon-icon"></use>
+                  </svg>
+                  <span>17</span>
+                </a>
+
+
+              </div>
+
+            </td>
+
+
+          </tr>
+          <tr class="event-item">
+
+            <td class="padding-15-12 upcoming">
+              <div class="date-event">
+
+                <svg class="olymp-small-calendar-icon">
+                  <use xlink:href="#olymp-small-calendar-icon"></use>
+                </svg>
+
+                <span class="day">28</span>
+                <span class="month">may</span>
+              </div>
+            </td>
+            <td class="padding-15-12 author">
+              <div class="event-author inline-items">
+                <div class="author-date">
+                  <a href="#" class="author-name h6">Green Goo in Gotham</a>
+                  <time class="published" datetime="2017-03-24T18:18">Saturday at 9:00pm</time>
+                </div>
+              </div>
+            </td>
+
+            <td class="padding-15-12 description">
+              <p class="description">We’ll be playing in the Gotham Bar in May. Come and have a great ...</p>
+            </td>
+            <td class="padding-15-12 users">
+              <ul class="friends-harmonic">
+                <li>
+                  <a href="#">
+                    <img src="assets/img/friend-harmonic5.jpg" alt="friend">
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <img src="assets/img/friend-harmonic10.jpg" alt="friend">
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <img src="assets/img/friend-harmonic7.jpg" alt="friend">
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <img src="assets/img/friend-harmonic8.jpg" alt="friend">
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <img src="assets/img/friend-harmonic2.jpg" alt="friend">
+                  </a>
+                </li>
+                <li>
+                  <a href="#" class="all-users bg-breez">+24</a>
+                </li>
+
+                <li class="with-text">
+                  Ont réagi
+                </li>
+              </ul>
+            </td>
+            <td class="padding-15-12 location" style="padding-right: 0">
+              <div class="place inline-items">
+
+                <a href="#" class="post-add-icon inline-items padding-5">
+                  <svg class="olymp-speech-balloon-icon">
+                    <use xlink:href="#olymp-speech-balloon-icon"></use>
+                  </svg>
+                  <span>17</span>
+                </a>
+
+
+              </div>
+
+            </td>
+
+
+          </tr>
+
+          </tbody>
+        </table>
+        <!-- Post -->
+
+
+        <!-- .. end Post -->
+      </div>
+      <!-- end my topics-->
+
+
+    </div>
+
+
+    <!-- ... end Main Content -->
+
+
+  </div>
+</div>
+
+

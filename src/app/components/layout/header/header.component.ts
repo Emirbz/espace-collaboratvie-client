@@ -3,6 +3,7 @@ import {TitleService} from '../../../services/title.service';
 import User from '../../../models/User';
 import {UserService} from '../../../services/user.service';
 import {SearchService} from '../../../services/search.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -17,7 +18,8 @@ export class HeaderComponent implements OnInit, AfterViewInit {
               private titleService: TitleService,
               private cdr: ChangeDetectorRef,
               private  userService: UserService,
-              private searchService: SearchService) {
+              private searchService: SearchService,
+              private router: Router) {
   }
 
   ngAfterViewInit() {
@@ -40,8 +42,11 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     });
   }
 
- /* onSearchChange(event) {
-    console.log('Header :' + event.target.value);
+  onSearchChange(event) {
     this.searchService.setValue(event.target.value);
-  }*/
+  }
+
+  profile() {
+    this.router.navigate(['/profile']);
+  }
 }

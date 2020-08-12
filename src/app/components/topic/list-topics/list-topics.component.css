@@ -67,6 +67,10 @@
   color: white;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .tag-display:hover::after {
   border-left-color: #38a9ff;
 }

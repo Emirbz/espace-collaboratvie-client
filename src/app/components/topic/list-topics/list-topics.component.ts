@@ -15,12 +15,11 @@ export class ListTopicsComponent implements OnInit {
 
 
   loadedTopics: Topic[];
-  recentTopics: Topic[];
   selectedTags: Tag[] = [];
   initialLoadedTopics: Topic[];
   loadedTags: Tag[];
   tagsSearching = false;
-  searchValue: string;
+  headerSearch: string;
 
   constructor(private topicService: TopicService,
               private titleService: TitleService,
@@ -34,7 +33,7 @@ export class ListTopicsComponent implements OnInit {
     this.loadTags();
     this.setTitle();
     this.loadTopics([]);
-    // this.getSearchInput();
+    this.getSearchInput();
   }
 
   loadTags() {
@@ -45,24 +44,19 @@ export class ListTopicsComponent implements OnInit {
   }
 
   getSearchInput() {
-    this.searchService.getValue().subscribe(appTitle => {
+    this.searchService.getValue().subscribe(name => {
+      this.headerSearch = name;
+      this.topicService.getTopics(this.selectedTags, name).subscribe(topics => {
+        this.loadedTopics = topics;
+      });
 
-      try {
-        this.searchValue = appTitle;
-        console.log(this.searchValue);
-        this.loadedTopics = this.loadedTopics.filter(value => value.title.toLowerCase().match(appTitle.toLowerCase()));
-
-      } catch (e) {
-        console.log(e);
-      }
     });
   }
 
-  loadTopics(criteria) {
-    this.topicService.getTopics(criteria).subscribe(topics => {
+  loadTopics(criteria, name?) {
+    this.topicService.getTopics(criteria, name).subscribe(topics => {
       this.loadedTopics = topics;
       if (criteria.length === 0) {
-        this.recentTopics = topics;
         this.initialLoadedTopics = topics;
       }
       console.log(this.loadedTags);

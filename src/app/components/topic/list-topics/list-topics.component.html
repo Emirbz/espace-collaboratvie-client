@@ -20,14 +20,12 @@
       </div>
     </div>
     <div class="col col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 collapse " id="searchBar">
-      <div class="ui-block responsive-flex tags-select">
+      <div class="ui-block responsive-flex tags-select tags-list">
         <nz-select
           class="full-width padding-nz-select tags-search"
           (nzOnSearch)="onSearchTags($event)"
           [(ngModel)]="selectedTags"
-          (ngModelChange)="loadTopics(selectedTags)"
-
-
+          (ngModelChange)="loadTopics(selectedTags,headerSearch)"
 
           nzMode="multiple"
           nzPlaceHolder="Ajouter des tags ...">
@@ -178,9 +176,10 @@
         <div class="ui-block-content" style="padding: 5px 10px 5px">
           <ul class="tags-display ">
             <li *ngFor="let tag of loadedTags | slice:0:6">
-              <a (click)="addTag(tag)" class="tag-display tag-list">
+              <span (click)="addTag(tag)" class="tag-display tag-list  cursor-pointer">
+<!--                TODO bind tags populaire + design -->
                 {{tag?.name}}
-              </a>
+              </span>
 
             </li>
 
@@ -230,7 +229,6 @@
           <!-- ... end Widget Featured Topics -->
         </div>
       </div>
-
 
 
     </div>
