@@ -17,6 +17,8 @@ export class AppComponent implements OnInit, AfterViewInit {
       this.userService.setUser(value);
       console.log(value);
     });
+    // @ts-ignore
+    $('body').tooltip({selector: '[data-toggle=tooltip]'});
   }
 
   ngAfterViewInit() {

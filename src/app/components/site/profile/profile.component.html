@@ -15,7 +15,7 @@
                     <div class="user-stats">
                       <div class="user-stat big">
 
-                        <p class="margin-b-8  user-stat-title">930</p>
+                        <p class="margin-b-8  user-stat-title">{{myStats?.countTopics}}</p>
                         <p class="user-stat-text">Topics</p>
 
                       </div>
@@ -25,7 +25,7 @@
                     <div class="user-stats">
                       <div class="user-stat big">
 
-                        <p class="margin-b-8 user-stat-title ">44</p>
+                        <p class="margin-b-8 user-stat-title ">{{myStats?.countReactions}}</p>
                         <p class="user-stat-text">Reaction</p>
 
                       </div>
@@ -35,7 +35,7 @@
                     <div class="user-stats">
                       <div class="user-stat big">
 
-                        <p class="margin-b-8  user-stat-title">80</p>
+                        <p class="margin-b-8  user-stat-title">{{myStats?.countReplies}}</p>
                         <p class="user-stat-text">Commentaires</p>
 
                       </div>
@@ -100,11 +100,11 @@
 
             <li>
               <span class="title">Nom: </span>
-              <span class="text">Ben Zinebn</span>
+              <span class="text">{{loggedUser?.firstName}}</span>
             </li>
             <li>
               <span class="title">Prenom:</span>
-              <span class="text">Amir</span>
+              <span class="text">{{loggedUser?.lastName}}</span>
             </li>
             <li>
               <span class="title">Occupation:</span>
@@ -117,7 +117,7 @@
 
             <li>
               <span class="title">Email:</span>
-              <a href="#" class="text">jspiegel@yourmail.com</a>
+              <a href="#" class="text">{{loggedUser?.email}}</a>
             </li>
 
             <li>
@@ -223,10 +223,10 @@
             </div>
           </form>
           <div class="menu-container">
-            <input type="radio" id="f" checked name="a">
-            <label for="f">{{firstNav}}</label>
-            <input type="radio" id="s" name="a">
-            <label for="s">{{secondNav}}</label>
+            <input type="radio" id="f" (change)="firstNav()" checked name="a">
+            <label for="f">{{firstNavName}}</label>
+            <input (change)="secondNav()" id="s" name="a" type="radio">
+            <label for="s">{{secondNavName}}</label>
 
             <div class="menu-border"></div>
           </div>
@@ -236,12 +236,14 @@
         <!--my Rooms-->
         <div [ngClass]="roomsClass">
 
-          <div *ngFor="let i of nth_time" class="col col-xl-4 col-lg-6 col-md-6 col-sm-6 col-12">
-            <div class="ui-block">
+
+          <div *ngFor="let r of myRooms" class="col col-xl-4 col-lg-6 col-md-6 col-sm-6 col-12">
+            <div class="ui-block" data-mh="friend-groups-item">
 
               <!-- Friend Item -->
 
-              <div class="friend-item">
+              <div class="friend-item friend-groups">
+
                 <div class="friend-item-content">
 
                   <div class="more">
@@ -250,101 +252,35 @@
                     </svg>
                     <ul class="more-dropdown">
                       <li>
-                        <a href="#">Supprimer le groupe</a>
+                        <a href="#" data-target="#delete-modal" data-toggle="modal">Supprimer le groupe</a>
                       </li>
 
                     </ul>
                   </div>
                   <div class="friend-avatar">
-                    <div class="author-thumb avatar-margin">
-                      <ngx-avatar size="80" name="my room"></ngx-avatar>
+                    <div class="author-thumb">
+                      <ngx-avatar size="120" [name]="r?.name"></ngx-avatar>
                     </div>
                     <div class="author-content">
-                      <a href="#" class="h5 author-name">Nicholas Grissom</a>
-                      <div class="country">San Francisco, CA</div>
+                      <a href="#" class="h5 author-name">{{r?.name |titlecase}}</a>
+                      <div class="country">{{r?.users.length}} Utilisateurs dans le groupe</div>
                     </div>
                   </div>
-                  <hr>
 
-                  <div style="padding-bottom: 0;"
-                       class="swiper-container swiper-swiper-unique-id-0 initialized swiper-container-horizontal"
-                       data-slide="fade" id="swiper-unique-id-0">
-                    <div class="swiper-wrapper"
-                         style="width: 784px; transform: translate3d(-196px, 0px, 0px); transition-duration: 0ms;">
-                      <div class="swiper-slide swiper-slide-duplicate swiper-slide-prev swiper-slide-duplicate-next"
-                           data-swiper-slide-index="1" style="width: 196px;">
+                  <ul class="friends-harmonic">
+                    <li *ngFor="let u of r?.users">
+                      <a href="#">
+                        <img [src]="u?.image" alt="friend">
+                      </a>
+                    </li>
 
-                        <div class="friend-since" data-swiper-parallax="-100"
-                             style="transform: translate3d(-100px, 0px, 0px); transition-duration: 0ms;">
-                          <span>Friends Since:</span>
-                          <div class="h6">December 2014</div>
-                        </div>
-                      </div>
-                      <div class="swiper-slide swiper-slide-active" data-swiper-slide-index="0" style="width: 196px;">
-                        <div class="friend-count" data-swiper-parallax="-500"
-                             style="transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;">
-                          <a href="#" class="friend-count-item">
-                            <div class="h6">240</div>
-                            <div class="title">Message</div>
-                          </a>
-                          <a href="#" class="friend-count-item">
-                            <div class="h6">16</div>
-                            <div class="title">Utilisateurs</div>
-                          </a>
-                        </div>
-                      </div>
-
-                      <div class="swiper-slide swiper-slide-next swiper-slide-duplicate-prev"
-                           data-swiper-slide-index="1" style="width: 196px;">
+                    <li>
+                      <a data-toggle="modal" data-target="#modal-list-users"
+                         *ngIf="r?.users?.length>6" href="#" class="all-users bg-blue">+{{r?.users.length - 6}}</a>
+                    </li>
+                  </ul>
 
 
-                        <div class="friend-since" data-swiper-parallax="-100"
-                             style="transform: translate3d(100px, 0px, 0px); transition-duration: 0ms;">
-                          <span>Friends Since:</span>
-                          <div class="h6">December 2014</div>
-                        </div>
-                      </div>
-                      <div class="swiper-slide swiper-slide-duplicate swiper-slide-duplicate-active"
-                           data-swiper-slide-index="0" style="width: 196px;">
-                        <div class="friend-count" data-swiper-parallax="-500"
-                             style="transform: translate3d(500px, 0px, 0px); transition-duration: 0ms;">
-                          <a href="#" class="friend-count-item">
-                            <div class="h6">52</div>
-                            <div class="title">Friends</div>
-                          </a>
-                          <a href="#" class="friend-count-item">
-                            <div class="h6">240</div>
-                            <div class="title">Photos</div>
-                          </a>
-                          <a href="#" class="friend-count-item">
-                            <div class="h6">16</div>
-                            <div class="title">Videos</div>
-                          </a>
-                        </div>
-                        <div class="control-block-button" data-swiper-parallax="-100"
-                             style="transform: translate3d(100px, 0px, 0px); transition-duration: 0ms;">
-                          <a href="#" class="btn btn-control bg-blue">
-                            <svg class="olymp-happy-face-icon">
-                              <use xlink:href="#olymp-happy-face-icon"></use>
-                            </svg>
-                          </a>
-
-                          <a href="#" class="btn btn-control bg-purple">
-                            <svg class="olymp-chat---messages-icon">
-                              <use xlink:href="#olymp-chat---messages-icon"></use>
-                            </svg>
-                          </a>
-
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- If we need pagination -->
-                    <div style="padding-bottom: 5px;"
-                         class="swiper-pagination pagination-swiper-unique-id-0 swiper-pagination-clickable swiper-pagination-bullets">
-                      <span class="swiper-pagination-bullet swiper-pagination-bullet-active"></span><span
-                      class="swiper-pagination-bullet"></span></div>
-                  </div>
                 </div>
               </div>
 
@@ -359,7 +295,109 @@
 
       <!-- My Topics-->
       <div [ngClass]="topicsClass">
-        <table class="event-item-table bounceInDown">
+
+        <!-- Replies -->
+        <table [ngClass]="myCommentsClass">
+          <thead>
+
+          <tr>
+
+            <th class="forum">
+              Date
+            </th>
+
+            <th class="topics">
+              Topic
+            </th>
+
+            <th class="posts">
+              Commentaire
+            </th>
+
+            <th class="freshness">
+              Reactions
+            </th>
+            <th class="freshness" style="padding-right: 0">
+              Actions
+            </th>
+
+          </tr>
+
+          </thead>
+          <tbody>
+
+          <tr *ngFor="let r of myReplies" class="event-item">
+
+            <td class="padding-15-12 upcoming">
+              <div class="date-event">
+
+                <svg class="olymp-small-calendar-icon">
+                  <use xlink:href="#olymp-small-calendar-icon"></use>
+                </svg>
+
+                <span class="day">{{r?.timestamp * 1000 | date:'dd'}}</span>
+                <span class="month">{{r?.timestamp * 1000 | date:'MMM'}}</span>
+              </div>
+            </td>
+            <td class="padding-15-12 author">
+              <div class="event-author inline-items">
+                <div class="author-date">
+                  <a href="#" class="author-name h6">{{r?.topic.title.substr(0, 60) | titlecase}}</a>
+                  <time class="published" datetime="2017-03-24T18:18">{{r?.timestamp * 1000 | date}}</time>
+                </div>
+              </div>
+            </td>
+
+            <td class="padding-15-12 description">
+              <p class="description">{{r?.reply.substr(0, 80)}}<span *ngIf="r?.reply.length>80">...</span></p>
+
+            </td>
+            <td class="padding-15-12 users">
+              <ul class="friends-harmonic">
+                <li data-toggle="tooltip" data-placement="top" [attr.title]="u?.firstName+' '+u?.lastName"
+                    *ngFor=" let u of r?.users | slice :0 : 2">
+                  <a href="#">
+                    <img [src]="u?.image" alt="friend">
+                  </a>
+                </li>
+
+                <li *ngIf="r?.users?.length>2">
+                  <a href="#" class="all-users bg-breez">+{{r?.users?.length - 2}}</a>
+                </li>
+                <li *ngIf="r?.users?.length==0">
+                  <span>Aucune reaction</span>
+                </li>
+
+                <li *ngIf="r?.users?.length>1" class="with-text">Ont réagi
+                </li>
+                <li *ngIf="r?.users?.length==1" class="with-text">a réagi
+                </li>
+              </ul>
+            </td>
+            <td class=" padding-15-12 location " style="padding-right: 0">
+              <div class="place inline-items">
+
+                <a data-toggle="modal" (click)="deleteModal('REPLY', r)" data-target="#delete-modal"
+                   class="post-add-icon inline-items padding-5-15">
+                  <svg>
+                    <use xlink:href="#olymp-little-delete"></use>
+                  </svg>
+                </a>
+
+
+              </div>
+
+            </td>
+
+
+          </tr>
+
+          </tbody>
+        </table>
+        <!-- .. end Replies -->
+
+        <!-- Post -->
+        <table [ngClass]="myTopicsClass">
           <thead>
 
           <tr>
@@ -373,13 +411,13 @@
             </th>
 
             <th class="posts">
-              Description
+              Tags
             </th>
 
             <th class="freshness">
-              Reactions
+              Statistiques
             </th>
-            <th class="freshness">
+            <th class="freshness" style="padding-right: 0">
               Actions
             </th>
 
@@ -388,7 +426,7 @@
           </thead>
           <tbody>
 
-          <tr class="event-item">
+          <tr *ngFor="let t of myTopics" class="event-item">
 
             <td class="padding-15-12 upcoming">
               <div class="date-event">
@@ -397,222 +435,89 @@
                   <use xlink:href="#olymp-small-calendar-icon"></use>
                 </svg>
 
-                <span class="day">28</span>
-                <span class="month">may</span>
+                <span class="day">{{t?.timestamp * 1000 | date:'dd'}}</span>
+                <span class="month">{{t?.timestamp * 1000 | date:'MMM'}}</span>
               </div>
             </td>
-            <td class="padding-15-12 author">
+            <td class="padding-15-12 author" style="width: 33%">
               <div class="event-author inline-items">
                 <div class="author-date">
-                  <a href="#" class="author-name h6">Green Goo in Gotham</a>
-                  <time class="published" datetime="2017-03-24T18:18">Saturday at 9:00pm</time>
+                  <a href="#" class="author-name h6">{{t?.title| titlecase}}</a>
                 </div>
               </div>
             </td>
 
             <td class="padding-15-12 description">
-              <p class="description">We’ll be playing in the Gotham Bar in May. Come and have a great ...</p>
-            </td>
-            <td class="padding-15-12 users">
-              <ul class="friends-harmonic">
-                <li>
-                  <a href="#">
-                    <img src="assets/img/friend-harmonic5.jpg" alt="friend">
-                  </a>
+              <ul class="tags-display ">
+                <li *ngFor=" let tags of t?.tags | slice:0:2">
+              <span class="tag-display tag-list  cursor-pointer">
+                {{tags?.name}}
+              </span>
                 </li>
-                <li>
-                  <a href="#">
-                    <img src="assets/img/friend-harmonic10.jpg" alt="friend">
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <img src="assets/img/friend-harmonic7.jpg" alt="friend">
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <img src="assets/img/friend-harmonic8.jpg" alt="friend">
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <img src="assets/img/friend-harmonic2.jpg" alt="friend">
-                  </a>
-                </li>
-                <li>
-                  <a href="#" class="all-users bg-breez">+24</a>
+                <li *ngIf="t?.tags?.length>2">
+              <span class="tag-display tag-list  cursor-pointer">
+                + {{t?.tags.length - 2 }} autres
+              </span>
                 </li>
 
-                <li class="with-text">
-                  Ont réagi
-                </li>
+
               </ul>
+            </td>
+            <td class="padding-15-12 users">
+              <a
+                class="post-add-icon inline-items padding-5-15">
+                {{t?.countReplies}}
+                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+                     width="48" height="48"
+                     viewBox="0 0 48 48"
+                     style=" fill:#000000;">
+                  <path fill="#FFF"
+                        d="M5.93,25.041c0,0,8.06-11.041,18.004-11.041S41.93,25.041,41.93,25.041S33.879,36,23.934,36S5.93,25.041,5.93,25.041z"></path>
+                  <path fill="#CFD8DC"
+                        d="M23.934,14c9.945,0,17.996,11.041,17.996,11.041S33.879,36,23.934,36S5.93,25.041,5.93,25.041S13.989,14,23.934,14 M23.934,12C13.098,12,4.668,23.377,4.314,23.862L3.45,25.046l0.868,1.18C4.672,26.707,13.102,38,23.934,38c10.833,0,19.254-11.294,19.607-11.774l0.867-1.18l-0.862-1.183C43.192,23.378,34.771,12,23.934,12L23.934,12z"></path>
+                  <path fill="#00ACC1"
+                        d="M14.935,24.994c0-4.971,4.034-8.994,9-8.994c4.968,0,9,4.023,9,8.994c0,4.977-4.032,9.006-9,9.006C18.968,34,14.935,29.971,14.935,24.994z"></path>
+                  <path fill="#006064"
+                        d="M19.935,24.999c0-2.213,1.786-3.999,4-3.999c2.204,0,4,1.786,4,3.999c0,2.22-1.796,4.001-4,4.001C21.721,29,19.935,27.219,19.935,24.999z"></path>
+                  <path fill="#90A4AE"
+                        d="M5.959,25c0.524-0.7,8.369-10.96,17.975-10.96c9.605,0,17.442,10.259,17.966,10.959L46.857,25l-1.699-2.322c-0.379-0.517-9.387-12.638-21.224-12.638c-11.837,0-20.853,12.12-21.231,12.636L1,25H5.959z"></path>
+                </svg>
+
+              </a>
+              <a style="padding-left: 0"
+                 class="post-add-icon inline-items padding-5-15">
+                {{t?.seen}}
+                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+                     width="48" height="48"
+                     viewBox="0 0 172 172"
+                     style=" fill:#000000;">
+                  <g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt"
+                     stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0"
+                     font-family="none" font-size="none" t
+                     style="mix-blend-mode: normal">
+                    <path d="M0,172v-172h172v172z" fill="none"></path>
+                    <g>
+                      <path
+                        d="M143.33333,17.91667h-114.66667c-5.93758,0 -10.75,4.81242 -10.75,10.75v125.41667l32.25,-28.66667h93.16667c5.93758,0 10.75,-4.81242 10.75,-10.75v-86c0,-5.93758 -4.81242,-10.75 -10.75,-10.75z"
+                        fill="#00acc1"></path>
+                      <path
+                        d="M53.75,64.5c-3.95804,0 -7.16667,3.20863 -7.16667,7.16667c0,3.95804 3.20863,7.16667 7.16667,7.16667c3.95804,0 7.16667,-3.20863 7.16667,-7.16667c0,-3.95804 -3.20863,-7.16667 -7.16667,-7.16667zM86,64.5c-3.95804,0 -7.16667,3.20863 -7.16667,7.16667c0,3.95804 3.20863,7.16667 7.16667,7.16667c3.95804,0 7.16667,-3.20863 7.16667,-7.16667c0,-3.95804 -3.20863,-7.16667 -7.16667,-7.16667zM118.25,64.5c-3.95804,0 -7.16667,3.20863 -7.16667,7.16667c0,3.95804 3.20863,7.16667 7.16667,7.16667c3.95804,0 7.16667,-3.20863 7.16667,-7.16667c0,-3.95804 -3.20863,-7.16667 -7.16667,-7.16667z"
+                        fill="#ffffff"></path>
+                    </g>
+                  </g>
+                </svg>
+              </a>
+
+
             </td>
             <td class=" padding-15-12 location " style="padding-right: 0">
               <div class="place inline-items">
 
-                <a href="#" class="post-add-icon inline-items padding-5">
-                  <svg style="width: 20px;height: 20px" class="olymp-speech-balloon-icon">
-                    <use xlink:href="#olymp-speech-balloon-icon"></use>
+                <a data-toggle="tooltip" data-placement="top" title="Supprimer le Topic" href="#"
+                   class="post-add-icon inline-items padding-5-15">
+                  <svg>
+                    <use xlink:href="#olymp-little-delete"></use>
                   </svg>
-                  <span>17</span>
-                </a>
-
-
-              </div>
-
-            </td>
-
-
-          </tr>
-          <tr class="event-item">
-
-            <td class="padding-15-12 upcoming">
-              <div class="date-event">
-
-                <svg class="olymp-small-calendar-icon">
-                  <use xlink:href="#olymp-small-calendar-icon"></use>
-                </svg>
-
-                <span class="day">28</span>
-                <span class="month">may</span>
-              </div>
-            </td>
-            <td class="padding-15-12 author">
-              <div class="event-author inline-items">
-                <div class="author-date">
-                  <a href="#" class="author-name h6">Green Goo in Gotham</a>
-                  <time class="published" datetime="2017-03-24T18:18">Saturday at 9:00pm</time>
-                </div>
-              </div>
-            </td>
-
-            <td class="padding-15-12 description">
-              <p class="description">We’ll be playing in the Gotham Bar in May. Come and have a great ...</p>
-            </td>
-            <td class="padding-15-12 users">
-              <ul class="friends-harmonic">
-                <li>
-                  <a href="#">
-                    <img src="assets/img/friend-harmonic5.jpg" alt="friend">
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <img src="assets/img/friend-harmonic10.jpg" alt="friend">
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <img src="assets/img/friend-harmonic7.jpg" alt="friend">
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <img src="assets/img/friend-harmonic8.jpg" alt="friend">
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <img src="assets/img/friend-harmonic2.jpg" alt="friend">
-                  </a>
-                </li>
-                <li>
-                  <a href="#" class="all-users bg-breez">+24</a>
-                </li>
-
-                <li class="with-text">
-                  Ont réagi
-                </li>
-              </ul>
-            </td>
-            <td class="padding-15-12 location" style="padding-right: 0">
-              <div class="place inline-items">
-
-                <a href="#" class="post-add-icon inline-items padding-5">
-                  <svg class="olymp-speech-balloon-icon">
-                    <use xlink:href="#olymp-speech-balloon-icon"></use>
-                  </svg>
-                  <span>17</span>
-                </a>
-
-
-              </div>
-
-            </td>
-
-
-          </tr>
-          <tr class="event-item">
-
-            <td class="padding-15-12 upcoming">
-              <div class="date-event">
-
-                <svg class="olymp-small-calendar-icon">
-                  <use xlink:href="#olymp-small-calendar-icon"></use>
-                </svg>
-
-                <span class="day">28</span>
-                <span class="month">may</span>
-              </div>
-            </td>
-            <td class="padding-15-12 author">
-              <div class="event-author inline-items">
-                <div class="author-date">
-                  <a href="#" class="author-name h6">Green Goo in Gotham</a>
-                  <time class="published" datetime="2017-03-24T18:18">Saturday at 9:00pm</time>
-                </div>
-              </div>
-            </td>
-
-            <td class="padding-15-12 description">
-              <p class="description">We’ll be playing in the Gotham Bar in May. Come and have a great ...</p>
-            </td>
-            <td class="padding-15-12 users">
-              <ul class="friends-harmonic">
-                <li>
-                  <a href="#">
-                    <img src="assets/img/friend-harmonic5.jpg" alt="friend">
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <img src="assets/img/friend-harmonic10.jpg" alt="friend">
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <img src="assets/img/friend-harmonic7.jpg" alt="friend">
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <img src="assets/img/friend-harmonic8.jpg" alt="friend">
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <img src="assets/img/friend-harmonic2.jpg" alt="friend">
-                  </a>
-                </li>
-                <li>
-                  <a href="#" class="all-users bg-breez">+24</a>
-                </li>
-
-                <li class="with-text">
-                  Ont réagi
-                </li>
-              </ul>
-            </td>
-            <td class="padding-15-12 location" style="padding-right: 0">
-              <div class="place inline-items">
-
-                <a href="#" class="post-add-icon inline-items padding-5">
-                  <svg class="olymp-speech-balloon-icon">
-                    <use xlink:href="#olymp-speech-balloon-icon"></use>
-                  </svg>
-                  <span>17</span>
                 </a>
 
 
@@ -625,9 +530,6 @@
 
           </tbody>
         </table>
-        <!-- Post -->
-
-
         <!-- .. end Post -->
       </div>
       <!-- end my topics-->
@@ -641,5 +543,40 @@
 
   </div>
 </div>
+
+<!-- Window-popup Edit Widget Blog Post -->
+<!-- Modal -->
+<div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Confirmation de la suppression</h5>
+        <button type="button" style="padding: 0" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <span>Veuillez confirmer la suppression du {{itemToDelete?.toLowerCase()}}</span>
+      </div>
+      <div class="modal-footer" style="padding: 15px 23px 5px;">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+        <button *ngIf="itemToDelete==='TOPOIC'" (click)="deleteTopic(topicToDelete)" type="button"
+                class="btn btn-primary">Supprimer
+        </button>
+        <button *ngIf="itemToDelete==='ROOM'" (click)="deleteRoom(roomToDelete)" type="button" class="btn btn-primary">
+          Supprimer
+        </button>
+        <button *ngIf="itemToDelete==='REPLY'" (click)="deleteReply(replyToDelete)" type="button"
+                class="btn btn-primary">Supprimer
+        </button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ... end Window-popup Edit Widget Blog Post -->
+
 
 

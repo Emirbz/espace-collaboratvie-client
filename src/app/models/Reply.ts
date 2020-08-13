@@ -1,4 +1,5 @@
 import User from './User';
+import Topic from './Topic';
 
 
 export default class Reply {
@@ -7,6 +8,7 @@ export default class Reply {
   timestamp?: string;
   user?: User;
   users?: User[];
+  topic?: Topic;
 
 
 }

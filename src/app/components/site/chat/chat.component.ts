@@ -86,7 +86,7 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
     this.connectToChat();
     this.SondageFormValidate();
     // @ts-ignore
-    $('body').tooltip({selector: '[data-toggle=tooltip]'});
+
 
   }
 
