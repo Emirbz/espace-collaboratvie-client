@@ -1,5 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {DoBootstrap, NgModule} from '@angular/core';
+import {DoBootstrap, LOCALE_ID, NgModule} from '@angular/core';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -34,11 +34,10 @@ import {en_US, NgZorroAntdModule, NZ_I18N, NZ_ICONS} from 'ng-zorro-antd';
 import * as AllIcons from '@ant-design/icons-angular/icons';
 import {IconDefinition} from '@ant-design/icons-angular';
 import {registerLocaleData} from '@angular/common';
-import en from '@angular/common/locales/en';
 import {SearchService} from './services/search.service';
+import localeFr from '@angular/common/locales/fr';
 
-registerLocaleData(en);
-
+registerLocaleData(localeFr, 'fr');
 
 const keycloakService: KeycloakService = new KeycloakService();
 
@@ -94,6 +93,7 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
       provide: KeycloakService,
       useValue: keycloakService
     },
+    {provide: LOCALE_ID, useValue: 'fr'},
     {provide: NZ_I18N, useValue: en_US},
     {provide: NZ_ICONS, useValue: icons},
 

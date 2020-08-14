@@ -7,6 +7,7 @@ import {TagService} from '../../../services/tag.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {TopicService} from '../../../services/topic.service';
 import {UserService} from '../../../services/user.service';
+import Topic from '../../../models/Topic';
 
 @Component({
   selector: 'app-create-topic',
@@ -22,6 +23,8 @@ export class CreateTopicComponent implements OnInit {
   topicFormGroup: FormGroup;
   loggedUser: User;
   toastSucces = 'alert alert-success d-none full-width';
+  loadedPopularTopics: Topic[];
+  recentTopics: Topic[];
 
 
   constructor(private route: Router,
@@ -38,6 +41,8 @@ export class CreateTopicComponent implements OnInit {
     this.loadTags();
     this.topicFormValidate();
     this.getLoggedUser();
+    this.loadPopularTopics();
+    this.loadRecentTopics();
 
 
   }
@@ -113,4 +118,18 @@ export class CreateTopicComponent implements OnInit {
   }
 
 
+  loadPopularTopics() {
+    this.topicService.getPopularTopics().subscribe(topics => {
+      this.loadedPopularTopics = topics;
+    });
+  }
+
+  loadRecentTopics() {
+    this.topicService.getTopics([]).subscribe(topics => {
+      this.recentTopics = topics;
+
+    });
+
+
+  }
 }

@@ -17,6 +17,10 @@ export class TagService {
     return this.http.get<Tag[]>(`${this.tagUrl}`);
   }
 
+  getPopularTags(): Observable<Tag[]> {
+    return this.http.get<Tag[]>(`${this.tagUrl}/popular`);
+  }
+
   getTagsByName(searchToken): Observable<Tag[]> {
     return this.http.get<Tag[]>(`${this.tagUrl}/${searchToken}`);
   }

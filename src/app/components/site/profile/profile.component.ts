@@ -7,6 +7,7 @@ import Topic from '../../../models/Topic';
 import Reply from '../../../models/Reply';
 import UserStats from '../../../models/userStats';
 import {ReplyService} from '../../../services/reply.service';
+import {TopicService} from '../../../services/topic.service';
 
 @Component({
   selector: 'app-profile',
@@ -32,11 +33,15 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   replyToDelete: Reply;
   topicToDelete: Topic;
   roomToDelete: Room;
+  deletedReply: Reply;
+  deletedTopic: Topic;
+  deletedRoom: Room;
 
   constructor(
     private  userService: UserService,
     private titleService: TitleService,
-    private replyService: ReplyService
+    private replyService: ReplyService,
+    private topicService: TopicService
   ) {
   }
 
@@ -57,6 +62,10 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   }
 
   displayRooms() {
+    this.setRoomClasses();
+  }
+
+  setRoomClasses() {
     this.topicsClass = 'd-none';
     this.roomsClass = 'row  fade-in';
     this.searchPlaceHolder = 'Rechercher parmis vos  groupes de dicsucssion ...';
@@ -72,6 +81,11 @@ export class ProfileComponent implements OnInit, AfterViewInit {
 
 
   displayTopics() {
+    this.setTopicClasses();
+
+  }
+
+  setTopicClasses() {
     this.topicsClass = 'ui-block fade-in';
     this.roomsClass = 'd-none';
     this.searchPlaceHolder = 'Rechercher parmis vos topics ...';
@@ -79,8 +93,6 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     this.roomsSelected = '';
     this.firstNavName = 'Commentaires';
     this.secondNavName = 'Topic';
-
-
   }
 
   loadMyRooms() {
@@ -153,15 +165,31 @@ export class ProfileComponent implements OnInit, AfterViewInit {
 
   deleteReply(reply: Reply) {
     this.replyService.deleteReply(reply.id).subscribe(() => {
-      this.myReplies = this.myReplies.filter(r => r !== reply);
+      this.deletedReply = reply;
+      setTimeout(() => {
+        this.myReplies = this.myReplies.filter(r => r !== reply);
+
+      }, 500);
+      // @ts-ignore
+      $('#delete-modal').modal('toggle');
+      this.myStats.countReplies -= 1;
     });
   }
 
   deleteRoom(roomToDelete: Room) {
-
+    // TODO add user to room attributes to delete room
   }
 
-  deleteTopic(topicToDelete: Topic) {
+  deleteTopic(topic: Topic) {
+    this.topicService.deleteTopic(topic.id).subscribe(() => {
+      this.deletedTopic = topic;
+      setTimeout(() => {
+        this.myTopics = this.myTopics.filter(t => t !== topic);
+      }, 500);
+      // @ts-ignore
+      $('#delete-modal').modal('toggle');
+      this.myStats.countTopics -= 1;
+    });
 
   }
 }

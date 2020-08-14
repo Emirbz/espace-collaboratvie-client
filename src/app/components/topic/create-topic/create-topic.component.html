@@ -97,39 +97,37 @@
     <div class="col col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 animated bounceInDown">
       <div class="ui-block">
         <div class="ui-block-title">
-          <h6 class="title">Topics poulaires</h6>
+          <h6 class="title">Topics Poupulaires</h6>
         </div>
-        <div class="ui-block-content">
 
+        <!-- W-Twitter -->
 
-          <!-- Widget Featured Topics -->
-
-          <ul class="widget w-featured-topics">
-            <li>
-              <i class="icon fa fa-star" aria-hidden="true"></i>
-              <div class="content">
-                <a href="#" class="h6 title">The new Goddess of War trailer was launched at E3!</a>
-                <time class="entry-date updated" datetime="2017-06-24T18:18">2 hours, 16 minutes ago</time>
+        <ul class="widget w-twitter">
+          <li class="twitter-item" *ngFor="let t of loadedPopularTopics | slice:0:3">
+            <div class="author-folder">
+              <img class="rounded" [src]="t?.user?.image" width="35" height="35" alt="avatar">
+              <div class="author">
+                <a *ngIf="t?.title.length<25" [routerLink]="['/topic/',t?.id]"
+                   class="author-name">{{t?.title | titlecase}}</a>
+                <a *ngIf="t?.title.length>25" [routerLink]="['/topic/',t?.id]" href="#"
+                   class="author-name">{{t?.title.substr(0, 25) | titlecase}}...</a>
+                <a href="#" class="group">{{t?.user.firstName}} {{t?.user?.lastName}}</a>
               </div>
-            </li>
-            <li>
-              <i class="icon fa fa-star" aria-hidden="true"></i>
-              <div class="content">
-                <a href="#" class="h6 title">This year’s ComixCon will have the best presentations</a>
-                <time class="entry-date updated" datetime="2017-06-24T18:18">14 hours, 36 minutes ago</time>
-              </div>
-            </li>
-            <li>
-              <i class="icon fa fa-star" aria-hidden="true"></i>
-              <div class="content">
-                <a href="#" class="h6 title">Here are the behind-the-scenes photos of “Vilords”</a>
-                <time class="entry-date updated" datetime="2017-06-24T18:18">9 hours, 8 minutes ago</time>
-              </div>
-            </li>
-          </ul>
+            </div>
+            <p style="margin-bottom: 0">{{t?.description.substr(0, 60)}}...
+            </p>
+            <span class="post__date">
+							<time class="published" datetime="2017-03-24T18:18">
+                <i class="icon fa fa-calendar blue-color"></i>	<b
+                style="padding-left: 5px;">{{t?.timestamp * 1000 | date:' le dd MMM yyyy'}}</b>
+							</time>
+						</span>
+          </li>
 
-          <!-- ... end Widget Featured Topics -->
-        </div>
+        </ul>
+
+
+        <!-- .. end W-Twitter -->
       </div>
 
       <div class="ui-block">
@@ -142,27 +140,17 @@
           <!-- Widget Recent Topics -->
 
           <ul class="widget w-featured-topics">
-            <li>
+            <li *ngFor="let t of recentTopics |slice:0:3">
               <div class="content">
-                <a href="#" class="h6 title">Summer is Coming! Picnic in the east boulevard park</a>
-                <time class="entry-date updated" datetime="2017-06-24T18:18">26 minutes ago</time>
-                <div class="forums">Ouvert par Amir Ben Zineb</div>
+                <a *ngIf="t?.title.length>25" [routerLink]="['/topic/',t?.id]"
+                   class="h6 title">{{t?.title.substr(0, 25) | titlecase}}...</a>
+                <a *ngIf="t?.title.length<25" [routerLink]="['/topic/',t?.id]"
+                   class="h6 title">{{t?.title | titlecase}}</a>
+                <time class="entry-date updated" datetime="2017-06-24T18:18">{{t?.timestamp | timeAgo}}</time>
+                <div class="forums">Ouvert {{t?.user?.firstName}} {{t?.user?.lastName}}</div>
               </div>
             </li>
-            <li>
-              <div class="content">
-                <a href="#" class="h6 title">Kung Fighters released a new video, check it out here!</a>
-                <time class="entry-date updated" datetime="2017-06-24T18:18">44 minutes ago</time>
-                <div class="forums">Ouvert par Amir Ben Zineb</div>
-              </div>
-            </li>
-            <li>
-              <div class="content">
-                <a href="#" class="h6 title">What’s your favourite season?</a>
-                <time class="entry-date updated" datetime="2017-06-24T18:18">59 minutes ago</time>
-                <div class="forums">Ouvert par Amir Ben Zineb</div>
-              </div>
-            </li>
+
           </ul>
 
           <!-- ... end Widget Recent Topics -->

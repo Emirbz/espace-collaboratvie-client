@@ -1247,6 +1247,7 @@
       <div class="ui-block">
         <div class="ui-block-title">
           <h6 class="title">{{loadedRoom?.name | titlecase}}</h6>
+
           <a class="more" [hidden]="videoCallHidden" href="#" data-toggle="modal" data-target="#modal-jitsi">
 
             <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
@@ -1278,6 +1279,17 @@
               </g>
             </svg>
           </a>
+          <div class="more">
+            <svg class="olymp-three-dots-icon">
+              <use xlink:href="#olymp-three-dots-icon"></use>
+            </svg>
+            <ul class="more-dropdown">
+              <li>
+                <a (click)="leavRoom()">Quitter le groupe</a>
+              </li>
+
+            </ul>
+          </div>
         </div>
 
         <div class="row">

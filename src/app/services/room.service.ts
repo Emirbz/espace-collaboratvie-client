@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import Room from '../models/Room';
@@ -9,21 +9,32 @@ export class RoomService {
 
   roomUrl = environment.apis.rooms;
 
-  constructor(private http: HttpClient) { }
-  getRooms(): Observable<Room[]> {
- return  this.http.get<Room[]>(`${this.roomUrl}`);
+  constructor(private http: HttpClient) {
   }
+
+  getRooms(): Observable<Room[]> {
+    return this.http.get<Room[]>(`${this.roomUrl}`);
+  }
+
   addRoom(newRoom): Observable<Room> {
 
     return this.http.post<Room>(`${this.roomUrl}`, newRoom);
   }
+
   deleteProduct(id): Observable<Room> {
     return this.http.delete<Room>(`${this.roomUrl}/${id}`);
   }
-  updateProduct(id, updatedRoom): Observable<Room> {
-    return this.http.put<Room>(`${this.roomUrl}/${id}`, updatedRoom);
+
+  joinRoom(id): Observable<Room> {
+    return this.http.put<Room>(`${this.roomUrl}/join/${id}`, null);
 
   }
+
+  leavRoom(id): Observable<Room> {
+    return this.http.put<Room>(`${this.roomUrl}/leav/${id}`, null);
+
+  }
+
   getRoom(id): Observable<Room> {
     return this.http.get<Room>(`${this.roomUrl}/${id}`);
   }

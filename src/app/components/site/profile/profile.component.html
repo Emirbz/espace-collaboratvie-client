@@ -254,6 +254,9 @@
                       <li>
                         <a href="#" data-target="#delete-modal" data-toggle="modal">Supprimer le groupe</a>
                       </li>
+                      <li>
+                        <a href="#" data-target="#delete-modal" data-toggle="modal">Quitter le groupe</a>
+                      </li>
 
                     </ul>
                   </div>
@@ -285,6 +288,21 @@
               </div>
 
               <!-- ... end Friend Item -->      </div>
+          </div>
+          <div *ngIf="myRooms.length===0" class="ui-block no-results-container container ">
+            <div class="row">
+              <div class="col col-xl-6 col-lg-7 col-md-12 col-sm-12 col-12">
+                <img src="assets/img/no-results.png" alt="error_500">
+              </div>
+              <div class="col col-xl-6 col-lg-5 col-md-12 col-sm-12 col-12">
+                <div class="crumina-module crumina-heading">
+                  <h2 class=" h2 page-500-sup-title">Oops</h2>
+                  <h3 class="h3 heading-title">Pas de groupe trouvé</h3>
+                </div>
+                <a class="btn btn-primary btn-lg" style="color: white" [routerLink]="['/rooms']">Rejoindre un
+                  groupe </a>
+              </div>
+            </div>
           </div>
 
 
@@ -326,7 +344,8 @@
           </thead>
           <tbody>
 
-          <tr *ngFor="let r of myReplies" class="event-item">
+          <tr *ngFor="let r of myReplies" [id]="'reply'+r?.id" #myReplyRow
+              [ngClass]="myReplyRow.id === 'reply'+deletedReply?.id ? 'event-item animated bounceOutUp': 'event-item'">
 
             <td class="padding-15-12 upcoming">
               <div class="date-event">
@@ -392,6 +411,24 @@
 
           </tr>
 
+          <tr *ngIf="myReplies.length === 0">
+            <td colspan="5">
+              <div class="container ">
+                <div class="row">
+                  <div class="col col-xl-6 col-lg-7 col-md-12 col-sm-12 col-12">
+                    <img src="assets/img/no-results.png" alt="error_500">
+                  </div>
+                  <div class="col col-xl-6 col-lg-5 col-md-12 col-sm-12 col-12">
+                    <div class="crumina-module crumina-heading">
+                      <h2 class=" h2 page-500-sup-title">Oops</h2>
+                      <h3 class="h3 heading-title">Vous n'avez pas de commentaire</h3>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+
           </tbody>
         </table>
         <!-- .. end Replies -->
@@ -426,7 +463,8 @@
           </thead>
           <tbody>
 
-          <tr *ngFor="let t of myTopics" class="event-item">
+          <tr *ngFor="let t of myTopics" [id]="'topic'+t?.id" #myTopicRow
+              [ngClass]="myTopicRow.id === 'topic'+deletedTopic?.id ? 'event-item animated bounceOutUp': 'event-item'">
 
             <td class="padding-15-12 upcoming">
               <div class="date-event">
@@ -513,7 +551,7 @@
             <td class=" padding-15-12 location " style="padding-right: 0">
               <div class="place inline-items">
 
-                <a data-toggle="tooltip" data-placement="top" title="Supprimer le Topic" href="#"
+                <a data-toggle="modal" (click)="deleteModal('TOPIC', null,null,t)" data-target="#delete-modal"
                    class="post-add-icon inline-items padding-5-15">
                   <svg>
                     <use xlink:href="#olymp-little-delete"></use>
@@ -526,6 +564,25 @@
             </td>
 
 
+          </tr>
+          <tr *ngIf="myTopics.length === 0">
+            <td colspan="5">
+              <div class="container ">
+                <div class="row">
+                  <div class="col col-xl-6 col-lg-7 col-md-12 col-sm-12 col-12">
+                    <img src="assets/img/no-results.png" alt="error_500">
+                  </div>
+                  <div class="col col-xl-6 col-lg-5 col-md-12 col-sm-12 col-12">
+                    <div class="crumina-module crumina-heading">
+                      <h2 class=" h2 page-500-sup-title">Oops</h2>
+                      <h3 class="h3 heading-title">Vous n'avez crée aucun topic</h3>
+                    </div>
+                    <a class="btn btn-primary btn-lg" style="color: white" [routerLink]="['/topic']">Crée un topic </a>
+
+                  </div>
+                </div>
+              </div>
+            </td>
           </tr>
 
           </tbody>
@@ -561,7 +618,7 @@
       </div>
       <div class="modal-footer" style="padding: 15px 23px 5px;">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-        <button *ngIf="itemToDelete==='TOPOIC'" (click)="deleteTopic(topicToDelete)" type="button"
+        <button *ngIf="itemToDelete==='TOPIC'" (click)="deleteTopic(topicToDelete)" type="button"
                 class="btn btn-primary">Supprimer
         </button>
         <button *ngIf="itemToDelete==='ROOM'" (click)="deleteRoom(roomToDelete)" type="button" class="btn btn-primary">

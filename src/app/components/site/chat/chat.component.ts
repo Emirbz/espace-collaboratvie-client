@@ -3,7 +3,7 @@ import * as JitsiMeetExternalAPI from '../../../../assets/js/Jitsi/external_api'
 import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import Room from '../../../models/Room';
 import Message from '../../../models/Message';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {RoomService} from '../../../services/room.service';
 import {ChatService} from '../../../services/chat.service';
 import Reaction from '../../../models/Reaction';
@@ -71,20 +71,23 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
               private roomService: RoomService,
               private chatService: ChatService,
               private titleService: TitleService,
-              private userService: UserService
+              private userService: UserService,
+              private router: Router,
   ) {
 
 
   }
 
   ngOnInit() {
-    this.loadRoom();
+    this.joinRoom();
+
     this.getLoggedUser();
     this.jitsiFormValidate();
     this.loadRoomMessages();
     this.loadRoomSondages();
     this.connectToChat();
     this.SondageFormValidate();
+
     // @ts-ignore
 
 
@@ -96,13 +99,11 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
     });
   }
 
-  public loadScript(url) {
-    const node = document.createElement('script');
-    node.src = url;
-    node.type = 'text/javascript';
-    document.getElementsByTagName('body')[0].appendChild(node);
-
-
+  joinRoom() {
+    const id = this.route.snapshot.paramMap.get('id');
+    this.roomService.joinRoom(id).subscribe(() => {
+      this.loadRoom();
+    });
   }
 
   setTitle() {
@@ -480,4 +481,11 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
 
   }
 
+  leavRoom() {
+    const id = this.route.snapshot.paramMap.get('id');
+    this.roomService.leavRoom(id).subscribe(() => {
+      this.router.navigate(['rooms']);
+
+    });
+  }
 }

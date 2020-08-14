@@ -33,5 +33,12 @@ export class TopicService {
     return this.http.get<Topic>(`${this.topicUrl}/${id}`);
   }
 
+  deleteTopic(id): Observable<Topic> {
+    return this.http.delete<Topic>(`${this.topicUrl}/${id}`);
+  }
+
+  getPopularTopics(): Observable<Topic[]> {
+    return this.http.get<Topic[]>(`${this.topicUrl}/popular`);
+  }
 
 }

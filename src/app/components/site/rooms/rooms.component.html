@@ -76,8 +76,8 @@
             </div>
 
             <ul class="friends-harmonic">
-              <li *ngFor="let u of r?.users">
-                <a href="#">
+              <li *ngFor="let u of r?.users | slice:0:6">
+                <a data-toggle="tooltip" data-placement="top" [attr.title]="u?.firstName+' '+u?.lastName">
                   <img [src]="u?.image" alt="friend">
                 </a>
               </li>

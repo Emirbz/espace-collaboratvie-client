@@ -34,6 +34,10 @@
   -webkit-transition: color 0.2s;
 }
 
+.popular .tag-display {
+  line-height: 22px;
+}
+
 .tag-display::before {
   background: #fff;
   border-radius: 10px;
@@ -57,6 +61,26 @@
   top: 0;
 }
 
+.popular .tag-display::after {
+  border-bottom: 20px solid transparent;
+  border-left: 35px solid #eee;
+  border-top: 26px solid transparent;
+  right: -16px;
+}
+
+
+.popular .tag-display {
+  height: 46px;
+}
+
+.popular li {
+  padding-right: 15px;
+}
+
+.popular li:hover {
+  padding-right: 9px;
+}
+
 .tag-list:after {
   background: #fff;
 
@@ -72,6 +96,10 @@
 }
 
 .tag-display:hover::after {
+  border-left-color: #38a9ff;
+}
+
+.popular .tag-display:hover::after {
   border-left-color: #38a9ff;
 }
 
@@ -115,3 +143,11 @@
   padding-left: 5px;
 }
 
+/* ----------- popular topics ------------*/
+.blue-color {
+  color: #38a9ff;
+}
+
+.title-hover:hover {
+  color: #38a9ff;
+}

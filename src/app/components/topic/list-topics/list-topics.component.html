@@ -109,7 +109,7 @@
               <div class="forum-item">
 
                 <div class="content">
-                  <a href="#" class="h6 title" [routerLink]="['/topic/',t?.id]"
+                  <a href="#" class="h6 title title-hover" [routerLink]="['/topic/',t?.id]"
                      routerLinkActive="active">{{t?.title}}</a>
                   <p class="text">
                     <time class="entry-date updated" datetime="2017-06-24T18:18"><i
@@ -171,15 +171,17 @@
     <div class="col col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
       <div class="ui-block">
         <div class="ui-block-title">
-          <h6 class="title">Tags populaires</h6>
+          <h6 class="title"> Tags populaires</h6>
         </div>
         <div class="ui-block-content" style="padding: 5px 10px 5px">
-          <ul class="tags-display ">
-            <li *ngFor="let tag of loadedTags | slice:0:6">
+          <ul class="tags-display popular ">
+            <li *ngFor="let tag of loadedPopularTags | slice:0:6">
               <span (click)="addTag(tag)" class="tag-display tag-list  cursor-pointer">
+
 <!--                TODO bind tags populaire + design -->
-                {{tag?.name}}
+                <b>{{tag?.name}} </b> <br> {{tag?.countTopics}} topics
               </span>
+
 
             </li>
 
@@ -195,39 +197,37 @@
       </div>
       <div class="ui-block">
         <div class="ui-block-title">
-          <h6 class="title">Featured Topics</h6>
+          <h6 class="title">Topics Poupulaires</h6>
         </div>
-        <div class="ui-block-content">
 
+        <!-- W-Twitter -->
 
-          <!-- Widget Featured Topics -->
-
-          <ul class="widget w-featured-topics">
-            <li>
-              <i class="icon fa fa-star" aria-hidden="true"></i>
-              <div class="content">
-                <a href="#" class="h6 title">The new Goddess of War trailer was launched at E3!</a>
-                <time class="entry-date updated" datetime="2017-06-24T18:18">2 hours, 16 minutes ago</time>
+        <ul class="widget w-twitter">
+          <li class="twitter-item" *ngFor="let t of loadedPopularTopics | slice:0:3">
+            <div class="author-folder">
+              <img class="rounded" [src]="t?.user?.image" width="35" height="35" alt="avatar">
+              <div class="author">
+                <a *ngIf="t?.title.length<25" [routerLink]="['/topic/',t?.id]"
+                   class="author-name">{{t?.title | titlecase}}</a>
+                <a *ngIf="t?.title.length>25" [routerLink]="['/topic/',t?.id]" href="#"
+                   class="author-name">{{t?.title.substr(0, 25) | titlecase}}...</a>
+                <a href="#" class="group">{{t?.user.firstName}} {{t?.user?.lastName}}</a>
               </div>
-            </li>
-            <li>
-              <i class="icon fa fa-star" aria-hidden="true"></i>
-              <div class="content">
-                <a href="#" class="h6 title">This year’s ComixCon will have the best presentations</a>
-                <time class="entry-date updated" datetime="2017-06-24T18:18">14 hours, 36 minutes ago</time>
-              </div>
-            </li>
-            <li>
-              <i class="icon fa fa-star" aria-hidden="true"></i>
-              <div class="content">
-                <a href="#" class="h6 title">Here are the behind-the-scenes photos of “Vilords”</a>
-                <time class="entry-date updated" datetime="2017-06-24T18:18">9 hours, 8 minutes ago</time>
-              </div>
-            </li>
-          </ul>
+            </div>
+            <p style="margin-bottom: 0">{{t?.description.substr(0, 60)}}...
+            </p>
+            <span class="post__date">
+							<time class="published" datetime="2017-03-24T18:18">
+                <i class="icon fa fa-calendar blue-color"></i>	<b
+                style="padding-left: 5px;">{{t?.timestamp * 1000 | date:'dd - MMM - yy'}}</b>
+							</time>
+						</span>
+          </li>
 
-          <!-- ... end Widget Featured Topics -->
-        </div>
+        </ul>
+
+
+        <!-- .. end W-Twitter -->
       </div>
 
 

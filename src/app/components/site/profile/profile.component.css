@@ -73,6 +73,11 @@
   background-color: #f7f7f7;
 }
 
+.event-item-table tr:nth-child(even) .tag-list:after {
+  background-color: #f7f7f7;
+}
+
+
 .user-stat .user-stat-title {
   font-size: .875rem;
 }
@@ -250,5 +255,12 @@
   background-color: #38a9ff;
   color: white;
 }
+
+/*---- no results container --------- */
+/*-------- no results ---------*/
+.no-results-container {
+  padding: 2% 7%;
+}
+
 
 

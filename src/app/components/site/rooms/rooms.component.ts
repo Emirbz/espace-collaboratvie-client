@@ -34,6 +34,7 @@ export class RoomsComponent implements OnInit, AfterViewInit {
     private titleService: TitleService
   ) {
   }
+
   ngAfterViewInit(): void {
 
 
@@ -45,6 +46,7 @@ export class RoomsComponent implements OnInit, AfterViewInit {
     this.roomFormValidate();
     this.setTitle();
   }
+
   public loadScript(url) {
     const node = document.createElement('script');
     node.src = url;
@@ -121,7 +123,6 @@ export class RoomsComponent implements OnInit, AfterViewInit {
 
   joinRoom(id: number) {
     this.router.navigate(['rooms', id]);
-
 
   }
 

@@ -18,6 +18,8 @@ export class ListTopicsComponent implements OnInit {
   selectedTags: Tag[] = [];
   initialLoadedTopics: Topic[];
   loadedTags: Tag[];
+  loadedPopularTags: Tag[];
+  loadedPopularTopics: Topic[];
   tagsSearching = false;
   headerSearch: string;
 
@@ -31,9 +33,11 @@ export class ListTopicsComponent implements OnInit {
 
   ngOnInit() {
     this.loadTags();
+    this.loadPouoularTags();
     this.setTitle();
     this.loadTopics([]);
     this.getSearchInput();
+    this.loadPopularTopics();
   }
 
   loadTags() {
@@ -89,5 +93,19 @@ export class ListTopicsComponent implements OnInit {
   addTag(tag: Tag) {
     this.selectedTags.push(tag);
     this.cdr.detectChanges();
+  }
+
+  loadPouoularTags() {
+    this.tagService.getPopularTags().subscribe(tags => {
+      this.loadedPopularTags = tags;
+    });
+
+  }
+
+  loadPopularTopics() {
+    this.topicService.getPopularTopics().subscribe(topics => {
+      this.loadedPopularTopics = topics;
+    });
+
   }
 }
