@@ -49,11 +49,12 @@
               <div class="col col-lg-5 ml-auto col-md-5 col-sm-12 col-12">
                 <ul class="profile-menu">
                   <li>
-                    <a [ngStyle]="{'color': roomsSelected.length>1 ? '#ff5e3a' : 'inherit'}" [ngClass]="roomsSelected"
+                    <a [ngStyle]="{'color': roomsSelected?.length>1 ? '#ff5e3a' : 'inherit'}" [ngClass]="roomsSelected"
                        (click)="displayRooms()">Groupes de discussions</a>
                   </li>
                   <li>
-                    <a [ngStyle]="{'color': topicsSelected.length>1 ? '#ff5e3a' : 'inherit'}" [ngClass]="topicsSelected"
+                    <a [ngStyle]="{'color': topicsSelected?.length>1 ? '#ff5e3a' : 'inherit'}"
+                       [ngClass]="topicsSelected"
                        (click)="displayTopics()">Topics</a>
                   </li>
 
@@ -214,7 +215,8 @@
 
           <form class="w-search search-bar-profile">
             <div class="form-group with-button">
-              <input class="form-control" type="text" [placeholder]="searchPlaceHolder">
+              <input #searchInput (input)="searchBar($event)" class="form-control" type="text"
+                     [placeholder]="searchPlaceHolder">
               <button>
                 <svg class="olymp-magnifying-glass-icon">
                   <use xlink:href="#olymp-magnifying-glass-icon"></use>
@@ -266,7 +268,7 @@
                     </div>
                     <div class="author-content">
                       <a href="#" class="h5 author-name">{{r?.name |titlecase}}</a>
-                      <div class="country">{{r?.users.length}} Utilisateurs dans le groupe</div>
+                      <div class="country">{{r?.users?.length}} Utilisateurs dans le groupe</div>
                     </div>
                   </div>
 
@@ -279,7 +281,7 @@
 
                     <li>
                       <a data-toggle="modal" data-target="#modal-list-users"
-                         *ngIf="r?.users?.length>6" href="#" class="all-users bg-blue">+{{r?.users.length - 6}}</a>
+                         *ngIf="r?.users?.length>6" href="#" class="all-users bg-blue">+{{r?.users?.length - 6}}</a>
                     </li>
                   </ul>
 
@@ -289,7 +291,7 @@
 
               <!-- ... end Friend Item -->      </div>
           </div>
-          <div *ngIf="myRooms.length===0" class="ui-block no-results-container container ">
+          <div *ngIf="myRooms?.length===0" class="ui-block no-results-container container ">
             <div class="row">
               <div class="col col-xl-6 col-lg-7 col-md-12 col-sm-12 col-12">
                 <img src="assets/img/no-results.png" alt="error_500">
@@ -368,7 +370,7 @@
             </td>
 
             <td class="padding-15-12 description">
-              <p class="description">{{r?.reply.substr(0, 80)}}<span *ngIf="r?.reply.length>80">...</span></p>
+              <p class="description">{{r?.reply.substr(0, 80)}}<span *ngIf="r?.reply?.length>80">...</span></p>
 
             </td>
             <td class="padding-15-12 users">
@@ -411,7 +413,7 @@
 
           </tr>
 
-          <tr *ngIf="myReplies.length === 0">
+          <tr *ngIf="myReplies?.length === 0">
             <td colspan="5">
               <div class="container ">
                 <div class="row">
@@ -565,7 +567,7 @@
 
 
           </tr>
-          <tr *ngIf="myTopics.length === 0">
+          <tr *ngIf="myTopics?.length === 0">
             <td colspan="5">
               <div class="container ">
                 <div class="row">

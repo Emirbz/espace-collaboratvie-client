@@ -114,14 +114,15 @@
                 <a href="#" class="group">{{t?.user.firstName}} {{t?.user?.lastName}}</a>
               </div>
             </div>
-            <p style="margin-bottom: 0">{{t?.description.substr(0, 60)}}...
-            </p>
             <span class="post__date">
 							<time class="published" datetime="2017-03-24T18:18">
                 <i class="icon fa fa-calendar blue-color"></i>	<b
                 style="padding-left: 5px;">{{t?.timestamp * 1000 | date:' le dd MMM yyyy'}}</b>
 							</time>
 						</span>
+            <p style="margin-bottom: 0;margin-top: 5px">{{t?.description.substr(0, 60)}}...
+            </p>
+
           </li>
 
         </ul>

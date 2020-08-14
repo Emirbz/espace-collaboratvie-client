@@ -12,6 +12,7 @@ import Reply from '../models/Reply';
 export class UserService {
 
   userUrl = environment.apis.user;
+  url: string;
 
   private user = new BehaviorSubject<User>({});
   private user$ = this.user.asObservable();
@@ -35,12 +36,22 @@ export class UserService {
     return this.http.get<Room[]>(`${this.userUrl}/room`);
   }
 
-  getUserTopics(): Observable<Topic[]> {
-    return this.http.get<Topic[]>(`${this.userUrl}/topic`);
+  getUserTopics(name?: string): Observable<Topic[]> {
+    if (name) {
+      this.url = `${this.userUrl}/topic?name=${name}`;
+    } else {
+      this.url = `${this.userUrl}/topic`;
+    }
+    return this.http.get<Topic[]>(this.url);
   }
 
-  getUserReplies(): Observable<Reply[]> {
-    return this.http.get<Reply[]>(`${this.userUrl}/reply`);
+  getUserReplies(name?: string): Observable<Reply[]> {
+    if (name) {
+      this.url = `${this.userUrl}/reply?name=${name}`;
+    } else {
+      this.url = `${this.userUrl}/reply`;
+    }
+    return this.http.get<Reply[]>(this.url);
   }
 
 

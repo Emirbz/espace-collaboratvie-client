@@ -117,7 +117,7 @@
                   </p>
                   <ul class="tags-display">
                     <li *ngFor="let tag of t.tags | slice:0:4"><a href="#" class="tag-display">{{tag?.name}}</a></li>
-                    <li *ngIf="t?.tags.length>4"><a href="#" class="tag-display">{{t?.tags?.length - 4}} autres ..</a>
+                    <li *ngIf="t?.tags?.length>4"><a href="#" class="tag-display">{{t?.tags?.length - 4}} autres ..</a>
                     </li>
 
 
@@ -174,19 +174,14 @@
           <h6 class="title"> Tags populaires</h6>
         </div>
         <div class="ui-block-content" style="padding: 5px 10px 5px">
-          <ul class="tags-display popular ">
-            <li *ngFor="let tag of loadedPopularTags | slice:0:6">
-              <span (click)="addTag(tag)" class="tag-display tag-list  cursor-pointer">
+          <div class="md-chips">
+            <div *ngFor="let t of loadedPopularTags | slice:0:8 ; let i= index" class="md-chip ">
+              <div class="md-chip-icon">x{{t?.countTopics}}</div>
 
-<!--                TODO bind tags populaire + design -->
-                <b>{{tag?.name}} </b> <br> {{tag?.countTopics}} topics
-              </span>
+              {{t?.name}}
+            </div>
 
-
-            </li>
-
-
-          </ul>
+          </div>
 
 
           <!-- Widget Recent Topics -->
@@ -207,21 +202,22 @@
             <div class="author-folder">
               <img class="rounded" [src]="t?.user?.image" width="35" height="35" alt="avatar">
               <div class="author">
-                <a *ngIf="t?.title.length<25" [routerLink]="['/topic/',t?.id]"
+                <a *ngIf="t?.title?.length<25" [routerLink]="['/topic/',t?.id]"
                    class="author-name">{{t?.title | titlecase}}</a>
-                <a *ngIf="t?.title.length>25" [routerLink]="['/topic/',t?.id]" href="#"
+                <a *ngIf="t?.title?.length>25" [routerLink]="['/topic/',t?.id]" href="#"
                    class="author-name">{{t?.title.substr(0, 25) | titlecase}}...</a>
                 <a href="#" class="group">{{t?.user.firstName}} {{t?.user?.lastName}}</a>
               </div>
             </div>
-            <p style="margin-bottom: 0">{{t?.description.substr(0, 60)}}...
-            </p>
             <span class="post__date">
 							<time class="published" datetime="2017-03-24T18:18">
                 <i class="icon fa fa-calendar blue-color"></i>	<b
-                style="padding-left: 5px;">{{t?.timestamp * 1000 | date:'dd - MMM - yy'}}</b>
+                style="padding-left: 5px;">{{t?.timestamp * 1000 | date:'dd - MMM - yyyy'}}</b>
 							</time>
 						</span>
+            <p style="margin-bottom: 0;margin-top: 5px">{{t?.description.substr(0, 60)}}...
+            </p>
+
           </li>
 
         </ul>

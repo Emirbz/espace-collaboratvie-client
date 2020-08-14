@@ -3378,6 +3378,7 @@ select.form-control {
   top: 0;
   left: 50px; }
 
+
 .form-group.with-icon i, .form-group.with-icon svg {
   display: block;
   position: absolute;
@@ -3445,25 +3446,70 @@ select.form-control {
   font-size: 9px;
   text-transform: uppercase;
   font-weight: 500;
-  border: 1px solid #3f4257 !important; }
+  border: 1px solid #3f4257 !important;
+}
 
 .tooltip-secondary .tooltip-inner {
-  background-color: #3f4257; }
+  background-color: #3f4257;
+}
 
 .tooltip-primary .tooltip-inner {
-  background-color: #ff5e3a; }
+  background-color: #ff5e3a;
+}
 
 .tooltip-completed .tooltip-inner {
-  background-color: #08ddc1; }
+  background-color: #08ddc1;
+}
+
+/* --------- md chips -------------*/
+.md-chip {
+  display: inline-block;
+  background: #e0e0e0;
+  padding: 0 12px;
+  border-radius: 32px;
+  font-size: 13px;
+}
+
+.md-chip:hover {
+  cursor: pointer;
+  background: #38a9ff;
+  color: white;
+}
+
+.md-chip, .md-chip-icon {
+  height: 32px;
+  line-height: 32px;
+}
+
+.md-chip-icon {
+  display: block;
+  float: left;
+  background: #949494;
+  width: 32px;
+  border-radius: 50%;
+  text-align: center;
+  color: white;
+  margin: 0 8px 0 -12px;
+}
+
+.md-chips {
+  padding: 12px 0;
+}
+
+.md-chips .md-chip {
+  margin: 0 5px 10px 0;
+}
+
 
 /*------------- Toggle Button --------------*/
 .togglebutton {
   vertical-align: middle;
-  margin-bottom: 20px; }
+  margin-bottom: 20px;
+}
 
 .togglebutton, .togglebutton label, .togglebutton input, .togglebutton .toggle {
   -webkit-user-select: none;
-     -moz-user-select: none;
+  -moz-user-select: none;
       -ms-user-select: none;
           user-select: none; }
 

@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {UserService} from '../../../services/user.service';
 import User from '../../../models/User';
 import {TitleService} from '../../../services/title.service';
@@ -15,9 +15,10 @@ import {TopicService} from '../../../services/topic.service';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit, AfterViewInit {
+  @ViewChild('searchInput', {static: false}) searchInput: ElementRef;
   loggedUser: User;
   topicsClass = 'd-none';
-  searchPlaceHolder = 'Rechercher parmis vos topics ...';
+  searchPlaceHolder = 'Rechercher parmis vos groupes de discussion ...';
   roomsClass = 'row  fade-in';
   topicsSelected = '';
   roomsSelected = ' selected scale-up-open';
@@ -28,6 +29,8 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   myRooms: Room[];
   myTopics: Topic[];
   myReplies: Reply[];
+  myTopicsInitial: Topic[];
+  myRepliesInitial: Reply[];
   myStats: UserStats;
   itemToDelete: string;
   replyToDelete: Reply;
@@ -36,6 +39,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   deletedReply: Reply;
   deletedTopic: Topic;
   deletedRoom: Room;
+  activeNav: string;
 
   constructor(
     private  userService: UserService,
@@ -66,6 +70,8 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   }
 
   setRoomClasses() {
+    this.searchInput.nativeElement.value = '';
+
     this.topicsClass = 'd-none';
     this.roomsClass = 'row  fade-in';
     this.searchPlaceHolder = 'Rechercher parmis vos  groupes de dicsucssion ...';
@@ -86,9 +92,13 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   }
 
   setTopicClasses() {
+    this.myTopics = this.myTopicsInitial;
+    this.myReplies = this.myRepliesInitial;
+    this.searchInput.nativeElement.value = '';
     this.topicsClass = 'ui-block fade-in';
     this.roomsClass = 'd-none';
-    this.searchPlaceHolder = 'Rechercher parmis vos topics ...';
+    this.searchPlaceHolder = 'Rechercher parmis vos commentaires ...';
+    this.activeNav = 'reply';
     this.topicsSelected = 'selected scale-up-open';
     this.roomsSelected = '';
     this.firstNavName = 'Commentaires';
@@ -105,6 +115,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   loadMyTopics() {
     this.userService.getUserTopics().subscribe(topic => {
       this.myTopics = topic;
+      this.myTopicsInitial = topic;
 
     });
   }
@@ -112,6 +123,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   loadMyReplies() {
     this.userService.getUserReplies().subscribe(reply => {
       this.myReplies = reply;
+      this.myRepliesInitial = reply;
 
     });
   }
@@ -130,9 +142,12 @@ export class ProfileComponent implements OnInit, AfterViewInit {
 
   firstNav() {
     if (this.firstNavName === 'Commentaires') {
-      this.searchPlaceHolder = 'Rechercher parmis vos topics ...';
+      this.searchInput.nativeElement.value = '';
+      this.myReplies = this.myRepliesInitial;
+      this.searchPlaceHolder = 'Rechercher parmis vos commentaires ...';
       this.myCommentsClass = 'event-item-table animated bounceInDown';
       this.myTopicsClass = 'd-none';
+      this.activeNav = 'reply';
     }
 
   }
@@ -140,7 +155,10 @@ export class ProfileComponent implements OnInit, AfterViewInit {
 
   secondNav() {
     if (this.secondNavName === 'Topic') {
-      this.searchPlaceHolder = 'Rechercher parmis vos commentaires ...';
+      this.myTopics = this.myTopicsInitial;
+      this.searchInput.nativeElement.value = '';
+      this.searchPlaceHolder = 'Rechercher parmis vos topics ...';
+      this.activeNav = 'topic';
       this.myTopicsClass = 'event-item-table animated bounceInDown';
       this.myCommentsClass = 'd-none';
     }
@@ -190,6 +208,21 @@ export class ProfileComponent implements OnInit, AfterViewInit {
       $('#delete-modal').modal('toggle');
       this.myStats.countTopics -= 1;
     });
+
+  }
+
+  searchBar(event) {
+    console.log(event.target.value);
+    if (this.activeNav === 'reply') {
+      this.userService.getUserReplies(event.target.value).subscribe(reply => {
+        this.myReplies = reply;
+      });
+    } else if (this.activeNav === 'topic') {
+      this.userService.getUserTopics(event.target.value).subscribe(topics => {
+        this.myTopics = topics;
+      });
+    }
+
 
   }
 }
