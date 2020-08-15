@@ -239,7 +239,8 @@
         <div [ngClass]="roomsClass">
 
 
-          <div *ngFor="let r of myRooms" class="col col-xl-4 col-lg-6 col-md-6 col-sm-6 col-12">
+          <div *ngFor="let r of myRooms" [id]="'room'+r?.id" #myRoomDiv
+               [ngClass]="myRoomDiv.id === 'room'+leftRoom?.id? 'col col-xl-4 col-lg-6 col-md-6 col-sm-6 col-12 animated bounceOutUp' : 'col col-xl-4 col-lg-6 col-md-6 col-sm-6 col-12'">
             <div class="ui-block" data-mh="friend-groups-item">
 
               <!-- Friend Item -->
@@ -257,7 +258,7 @@
                         <a href="#" data-target="#delete-modal" data-toggle="modal">Supprimer le groupe</a>
                       </li>
                       <li>
-                        <a href="#" data-target="#delete-modal" data-toggle="modal">Quitter le groupe</a>
+                        <a (click)="leavRoom(r)" style="color: #515365">Quitter le groupe</a>
                       </li>
 
                     </ul>

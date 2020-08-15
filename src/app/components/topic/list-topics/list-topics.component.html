@@ -175,8 +175,9 @@
         </div>
         <div class="ui-block-content" style="padding: 5px 10px 5px">
           <div class="md-chips">
-            <div *ngFor="let t of loadedPopularTags | slice:0:8 ; let i= index" class="md-chip ">
-              <div class="md-chip-icon">x{{t?.countTopics}}</div>
+            <div data-toggle="tooltip" data-placemenet="top" [attr.title]="t?.countTopics+' Topics'"
+                 *ngFor="let t of loadedPopularTags | slice:0:8 ; let i= index" class="md-chip ">
+
 
               {{t?.name}}
             </div>

@@ -168,7 +168,7 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
       setTimeout(() => {
         this.rightBarClass = 'col col-xl-6 order-xl-2 col-lg-9 order-lg-2 col-md-12 order-md-1 col-sm-12 col-12 margin-540';
         setTimeout(() => {
-          // tslint:disable-next-line:max-line-length
+            // tslint:disable-next-line:max-line-length
             this.loaderClass += 'flexbox col col-xl-3 order-xl-3 col-lg-9 order-lg-2 col-md-12 order-md-1 col-sm-12 col-12 animated bounceInDown';
           //  this.loaderHidden = false;
           }, 600
@@ -332,6 +332,9 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
       this.removeOldReaction(reactedMessage, reaction.user);
     }
     reactedMessage.reactions.push(reaction);
+    setTimeout(() => {
+      this.lastReactedId = '';
+    }, 900);
   }
 
   removeOldReaction(votedMessage: Message, user: User) {

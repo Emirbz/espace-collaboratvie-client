@@ -3379,6 +3379,7 @@ select.form-control {
   left: 50px; }
 
 
+
 .form-group.with-icon i, .form-group.with-icon svg {
   display: block;
   position: absolute;
@@ -3480,25 +3481,23 @@ select.form-control {
   height: 32px;
   line-height: 32px;
 }
-
 .md-chip-icon {
   display: block;
   float: left;
-  background: #949494;
+  background: #38a9ff;
   width: 32px;
   border-radius: 50%;
   text-align: center;
   color: white;
   margin: 0 8px 0 -12px;
 }
-
 .md-chips {
   padding: 12px 0;
 }
-
 .md-chips .md-chip {
   margin: 0 5px 10px 0;
 }
+
 
 
 /*------------- Toggle Button --------------*/
@@ -3510,8 +3509,9 @@ select.form-control {
 .togglebutton, .togglebutton label, .togglebutton input, .togglebutton .toggle {
   -webkit-user-select: none;
   -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none; }
+  -ms-user-select: none;
+  user-select: none;
+}
 
 .togglebutton label {
   cursor: pointer;

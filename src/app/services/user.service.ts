@@ -32,8 +32,13 @@ export class UserService {
     return this.http.get<UserStats>(`${this.userUrl}/stats`);
   }
 
-  getUserRooms(): Observable<Room[]> {
-    return this.http.get<Room[]>(`${this.userUrl}/room`);
+  getUserRooms(name?: string): Observable<Room[]> {
+    if (name) {
+      this.url = `${this.userUrl}/room?name=${name}`;
+    } else {
+      this.url = `${this.userUrl}/room`;
+    }
+    return this.http.get<Room[]>(this.url);
   }
 
   getUserTopics(name?: string): Observable<Topic[]> {

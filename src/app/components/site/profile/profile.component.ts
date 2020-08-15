@@ -8,6 +8,7 @@ import Reply from '../../../models/Reply';
 import UserStats from '../../../models/userStats';
 import {ReplyService} from '../../../services/reply.service';
 import {TopicService} from '../../../services/topic.service';
+import {RoomService} from '../../../services/room.service';
 
 @Component({
   selector: 'app-profile',
@@ -31,6 +32,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   myReplies: Reply[];
   myTopicsInitial: Topic[];
   myRepliesInitial: Reply[];
+  myRoomsInitial: Room[];
   myStats: UserStats;
   itemToDelete: string;
   replyToDelete: Reply;
@@ -39,13 +41,15 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   deletedReply: Reply;
   deletedTopic: Topic;
   deletedRoom: Room;
-  activeNav: string;
+  activeNav = 'room';
+  leftRoom: Room;
 
   constructor(
     private  userService: UserService,
     private titleService: TitleService,
     private replyService: ReplyService,
-    private topicService: TopicService
+    private topicService: TopicService,
+    private roomService: RoomService
   ) {
   }
 
@@ -71,7 +75,8 @@ export class ProfileComponent implements OnInit, AfterViewInit {
 
   setRoomClasses() {
     this.searchInput.nativeElement.value = '';
-
+    this.activeNav = 'room';
+    this.myRooms = this.myRoomsInitial;
     this.topicsClass = 'd-none';
     this.roomsClass = 'row  fade-in';
     this.searchPlaceHolder = 'Rechercher parmis vos  groupes de dicsucssion ...';
@@ -79,6 +84,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     this.topicsSelected = '';
     this.firstNavName = 'Mes groupes';
     this.secondNavName = 'Groupes crées';
+
   }
 
   ngAfterViewInit() {
@@ -108,6 +114,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   loadMyRooms() {
     this.userService.getUserRooms().subscribe(room => {
       this.myRooms = room;
+      this.myRoomsInitial = room;
 
     });
   }
@@ -213,16 +220,34 @@ export class ProfileComponent implements OnInit, AfterViewInit {
 
   searchBar(event) {
     console.log(event.target.value);
-    if (this.activeNav === 'reply') {
-      this.userService.getUserReplies(event.target.value).subscribe(reply => {
-        this.myReplies = reply;
-      });
-    } else if (this.activeNav === 'topic') {
-      this.userService.getUserTopics(event.target.value).subscribe(topics => {
-        this.myTopics = topics;
-      });
+    switch (this.activeNav) {
+      case 'reply':
+        this.userService.getUserReplies(event.target.value).subscribe(reply => {
+          this.myReplies = reply;
+        });
+        break;
+      case 'topic':
+        this.userService.getUserTopics(event.target.value).subscribe(topics => {
+          this.myTopics = topics;
+        });
+        break;
+      case 'room':
+        this.userService.getUserRooms(event.target.value).subscribe(room => {
+          this.myRooms = room;
+        });
+        break;
     }
 
 
+  }
+
+  leavRoom(r: Room) {
+    this.roomService.leavRoom(r.id).subscribe(() => {
+      this.leftRoom = r;
+      setTimeout(() => {
+        this.myRooms = this.myRooms.filter(room => room.id !== r.id);
+      }, 600);
+
+    });
   }
 }
