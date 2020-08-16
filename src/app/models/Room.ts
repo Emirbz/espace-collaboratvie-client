@@ -6,8 +6,10 @@ export default class Room {
   subject?: string;
   image?: string;
   users?: User[];
+  owner: User;
 
   constructor(id: number) {
     this.id = id;
   }
 }
+

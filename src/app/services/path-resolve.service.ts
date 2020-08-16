@@ -1,9 +1,12 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
+import {BehaviorSubject, Observable} from 'rxjs';
 
 
 @Injectable()
 export class PathResolveService implements Resolve<string | null> {
+  private status = new BehaviorSubject<number>(0);
+  private status$ = this.status.asObservable();
 
   resolve(
     route: ActivatedRouteSnapshot,
@@ -91,5 +94,15 @@ export class PathResolveService implements Resolve<string | null> {
     }
 
     return matrix[b.length][a.length];
+  }
+
+  setStatus(status: number) {
+    this.status.next(status);
+
+
+  }
+
+  getStatus(): Observable<number> {
+    return this.status$;
   }
 }

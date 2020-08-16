@@ -1,5 +1,6 @@
 import {AfterViewInit, Component, ElementRef, OnInit} from '@angular/core';
 import {UserService} from './services/user.service';
+import {PathResolveService} from './services/path-resolve.service';
 
 @Component({
   selector: 'app-root',
@@ -7,12 +8,15 @@ import {UserService} from './services/user.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit, AfterViewInit {
+  status: number;
 
   constructor(private elementRef: ElementRef,
-              private userService: UserService) {
+              private userService: UserService,
+              private pathResolveService: PathResolveService) {
   }
 
   ngOnInit(): void {
+    this.getStatus();
     this.userService.getLoggedUser().subscribe(value => {
       this.userService.setUser(value);
       console.log(value);
@@ -33,6 +37,12 @@ export class AppComponent implements OnInit, AfterViewInit {
     document.getElementsByTagName('body')[0].appendChild(node);
 
 
+  }
+
+  getStatus() {
+    this.pathResolveService.getStatus().subscribe(value => {
+      this.status = value;
+    });
   }
 }
 

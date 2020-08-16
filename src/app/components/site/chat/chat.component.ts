@@ -79,6 +79,7 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
   }
 
   ngOnInit() {
+
     this.joinRoom();
 
     this.getLoggedUser();
@@ -103,6 +104,10 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
     const id = this.route.snapshot.paramMap.get('id');
     this.roomService.joinRoom(id).subscribe(() => {
       this.loadRoom();
+    }, error => {
+      if (error.status === 404) {
+        this.router.navigate(['/rooms']);
+      }
     });
   }
 
@@ -449,9 +454,6 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
 
   }
 
-  checkUserHasVoted(c: Choix, user?: User) {
-    return c.users.some(item => item.id === user.id);
-  }
 
   checkUserReacted(m: Message, u: User) {
     return m.reactions.some(item => item.user.id === u.id);
@@ -461,6 +463,10 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
     this.dataReaction = {type, message, user: this.loggedUser};
     this.publishMessage('REACTION', type, message, null);
 
+  }
+
+  checkUserHasVoted(c: Choix, user?: User) {
+    return c.users.some(item => item.id === user.id);
   }
 
   private appendVote(sondageArray: Message[], choixId: number, user: User, messageId: any) {
@@ -474,6 +480,7 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
       }
     });
   }
+
 
   private removeOldVote(c: Choix, user: User) {
     c.users.forEach((u, index) => {

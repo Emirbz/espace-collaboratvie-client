@@ -16,11 +16,11 @@
             </p>
 
           </div>
-          <p *ngIf="path.length>0" class="heading-text">
+          <p *ngIf="path?.length>0" class="heading-text">
             Voulez Vous Dire ?
 
           </p>
-          <a *ngIf="path.length>0" href="#" class="btn btn-primary btn-lg" [routerLink]="'/'+path"
+          <a *ngIf="path?.length>0" href="#" class="btn btn-primary btn-lg" [routerLink]="'/'+path"
              routerLinkActive="active">{{path}}</a>
         </div>
       </div>
