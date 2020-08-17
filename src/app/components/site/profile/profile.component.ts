@@ -5,7 +5,7 @@ import {TitleService} from '../../../services/title.service';
 import Room from '../../../models/Room';
 import Topic from '../../../models/Topic';
 import Reply from '../../../models/Reply';
-import UserStats from '../../../models/userStats';
+import UserStats from '../../../models/UserStats';
 import {ReplyService} from '../../../services/reply.service';
 import {TopicService} from '../../../services/topic.service';
 import {RoomService} from '../../../services/room.service';

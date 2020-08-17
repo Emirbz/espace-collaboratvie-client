@@ -3,7 +3,7 @@ import {environment} from '../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject, Observable} from 'rxjs';
 import User from '../models/User';
-import UserStats from '../models/userStats';
+import UserStats from '../models/UserStats';
 import Room from '../models/Room';
 import Topic from '../models/Topic';
 import Reply from '../models/Reply';

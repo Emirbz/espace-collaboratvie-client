@@ -392,6 +392,109 @@
   color: #656565;
 }
 
+/* --------- Check Reply */
+.label__checkbox {
+  display: none;
+}
+
+.label__check {
+  font-family: 'Lato', monospace;
+  font-size: calc(15px);
+  display: inline-block;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  background: white;
+  vertical-align: middle;
+  margin-right: 20px;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  transition: border .3s ease;
+}
+
+.label__check i.icon {
+  opacity: 0.2;
+  font-size: calc(18px);
+  color: transparent;
+  transition: opacity .3s .1s ease;
+  -webkit-text-stroke: 3px rgba(0, 0, 0, 0.5);
+}
+
+.label__check:hover {
+  border: 2px solid rgba(0, 0, 0, 0.2);
+}
+
+.label__checkbox:checked + .label__text .label__check {
+  animation: check 0.5s cubic-bezier(0.895, 0.03, 0.685, 0.22) forwards;
+  margin-right: 17px;
+}
+
+.label__checkbox:checked + .label__text .label__check .icon {
+  opacity: 1;
+  transform: scale(0);
+  color: white;
+  animation: icon 0.3s cubic-bezier(1, 0.008, 0.565, 1.65) 0.1s 1 forwards;
+  margin-left: 4px;
+  margin-top: 9px;
+}
+
+.center {
+  position: absolute;
+  top: 25%;
+  right: 0;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes icon {
+  from {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes check {
+  0% {
+    width: 1.5em;
+    height: 1.5em;
+    border-width: 5px;
+  }
+  10% {
+    width: 1.5em;
+    height: 1.5em;
+    opacity: 0.1;
+    background: rgba(0, 0, 0, 0.2);
+    border-width: 15px;
+  }
+  12% {
+    width: 1.5em;
+    height: 1.5em;
+    opacity: 0.4;
+    background: rgba(0, 0, 0, 0.1);
+    border-width: 0;
+  }
+  50% {
+    width: 2em;
+    height: 2em;
+    background: #07ac00;
+    border: 0;
+    opacity: 0.6;
+  }
+  100% {
+    width: 2em;
+    height: 2em;
+    background: #07ac00;
+    border: 0;
+    opacity: 1;
+  }
+}
+
+
 
 
 

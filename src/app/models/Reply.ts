@@ -9,6 +9,7 @@ export default class Reply {
   user?: User;
   users?: User[];
   topic?: Topic;
+  useful?: boolean;
 
 
 }

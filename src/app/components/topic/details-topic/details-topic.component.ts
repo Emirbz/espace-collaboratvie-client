@@ -123,4 +123,11 @@ export class DetailsTopicComponent implements OnInit, AfterViewInit {
     return r.users.some(item => item.id === u.id);
   }
 
+  setUseful(r: Reply, i: number) {
+    this.replyService.setUseful(r).subscribe(reply => {
+      this.loadedReplies[i] = reply;
+      console.log(reply);
+    });
+
+  }
 }

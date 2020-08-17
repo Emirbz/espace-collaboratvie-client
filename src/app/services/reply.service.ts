@@ -30,4 +30,7 @@ export class ReplyService {
     return this.http.delete<Reply>(`${this.replyUrl}/${id}`);
   }
 
+  setUseful(r: Reply): Observable<Reply> {
+    return this.http.put<Reply>(`${this.replyUrl}/${r.id}`, null);
+  }
 }
