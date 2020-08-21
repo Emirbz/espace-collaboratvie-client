@@ -13,15 +13,22 @@ import {SearchService} from '../../../services/search.service';
 })
 export class ListTopicsComponent implements OnInit {
 
-
+  /* ---------- Loaded services -------*/
   loadedTopics: Topic[];
   selectedTags: Tag[] = [];
   initialLoadedTopics: Topic[];
   loadedTags: Tag[];
   loadedPopularTags: Tag[];
   loadedPopularTopics: Topic[];
+  /*-------- search Tags -----*/
   tagsSearching = false;
   headerSearch: string;
+  /*----- Loader --------- */
+  topicsHasBeenLoaded = false;
+  tagsHasBeenLoaded = false;
+  popularTagsHasBeenLoaded = false;
+  popularTopicsHasBeenLoaded = false;
+
 
   constructor(private topicService: TopicService,
               private titleService: TitleService,
@@ -42,6 +49,7 @@ export class ListTopicsComponent implements OnInit {
 
   loadTags() {
     this.tagService.getTags().subscribe(tags => {
+      this.tagsHasBeenLoaded = true;
       this.loadedTags = tags;
     });
 
@@ -59,6 +67,7 @@ export class ListTopicsComponent implements OnInit {
 
   loadTopics(criteria, name?) {
     this.topicService.getTopics(criteria, name).subscribe(topics => {
+      this.topicsHasBeenLoaded = true;
       this.loadedTopics = topics;
       if (criteria.length === 0) {
         this.initialLoadedTopics = topics;
@@ -92,11 +101,12 @@ export class ListTopicsComponent implements OnInit {
 
   addTag(tag: Tag) {
     this.selectedTags.push(tag);
-    this.cdr.detectChanges();
+    console.log(this.selectedTags);
   }
 
   loadPouoularTags() {
     this.tagService.getPopularTags().subscribe(tags => {
+      this.popularTagsHasBeenLoaded = true;
       this.loadedPopularTags = tags;
     });
 
@@ -105,6 +115,7 @@ export class ListTopicsComponent implements OnInit {
   loadPopularTopics() {
     this.topicService.getPopularTopics().subscribe(topics => {
       this.loadedPopularTopics = topics;
+      this.popularTopicsHasBeenLoaded = true;
     });
 
   }

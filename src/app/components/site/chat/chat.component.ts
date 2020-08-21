@@ -21,40 +21,45 @@ import * as EventBus from 'vertx3-eventbus-client';
   styleUrls: ['./chat.component.css']
 })
 export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
+
   @ViewChild('msgInput', {static: false}) msgInput: ElementRef;
   @ViewChild('scrollMe', {static: true}) private myScrollContainer: ElementRef;
-  loaderHidden = true;
+  /* -------- NgClasses ---------- */
   leftBarClass = 'col col-xl-3 order-xl-1 col-lg-3 order-lg-1 col-md-12 order-md-2 col-sm-12 col-12 responsive-display-none';
   rightBarClass = 'col col-xl-9 order-xl-2 col-lg-9 order-lg-2 col-md-12 order-md-1 col-sm-12 col-12';
   toastSucces = 'alert alert-success d-none';
-  contrainerClass = 'container';
+  jitsiClass = 'col col-xl-6 order-xl-3 col-lg-9 order-lg-2 col-md-12 order-md-1 col-sm-12 col-12';
+  loaderClass = 'flexbox col col-xl-3 order-xl-3 col-lg-9 order-lg-2 col-md-12 order-md-1 col-sm-12 col-12 d-none';
+  /* ------- Jitsi ------- */
   title = 'app';
   domain = 'meet.jit.si';
   options: any;
   apiJitsi: any;
   divJitsiHidden = true;
-  jitsiClass = 'col col-xl-6 order-xl-3 col-lg-9 order-lg-2 col-md-12 order-md-1 col-sm-12 col-12';
-  loaderClass = 'flexbox col col-xl-3 order-xl-3 col-lg-9 order-lg-2 col-md-12 order-md-1 col-sm-12 col-12 d-none';
-
   videoCallHidden = false;
   jitsiFormGroup: FormGroup;
+  connected = false;
+  private eventBus;
+  /* ------ Loaded Services -------- */
   loadedRoom: Room;
   loadedMessages: Message[] = [];
   loadedSondages: Message[] = [];
   loadedImages: Message[] = [];
   selectedMessage: Message;
   selectedUsers: User[] = [];
-  messagesHasbeenLoaded = false;
   loggedUser: User;
-  connected = false;
-  private eventBus;
+  /* -------- Post Data ------ */
   // tslint:disable-next-line:max-line-length
   bodyData: { body?: string, file?: string, room_id: number, user_id: string, type: string, message_id?: number, choix_id?: number };
   dataSondage: { body: string, type: string, user: User, room: Room, choix: Choix[] };
   dataReaction: { type: string, user: User, message: Message };
   sondageFormGroup: FormGroup;
   lastReactedId: string;
-
+  /* ----- Loader ----- */
+  messagesHasbeenLoaded = false;
+  loaderHidden = true;
+  sondagesHasBeenLoaded = false;
+  allReactionChecked = false;
 
   ngAfterViewInit() {
 
@@ -232,8 +237,8 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
     this.loadedSondages = [];
     const id = this.route.snapshot.paramMap.get('id');
     this.chatService.getSondagesByRoom(id).subscribe(msg => {
+      this.sondagesHasBeenLoaded = true;
       this.loadedSondages = msg;
-
 
     });
   }
@@ -243,6 +248,7 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
   }
 
   openModalReaction(m: Message) {
+    this.allReactionChecked = true;
     this.selectedMessage = m;
 
   }
@@ -497,5 +503,10 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
       this.router.navigate(['rooms']);
 
     });
+  }
+
+  resetAllReaction() {
+    this.allReactionChecked = false;
+
   }
 }

@@ -63,7 +63,7 @@ export class CreateTopicComponent implements OnInit {
     this.reformSelectedTag();
     const {title, description} = this.topicFormGroup.value;
     const dataTopic = {title, description, tags: this.selectedTags, user: this.loggedUser};
-    this.topicService.addTopic(dataTopic).subscribe(value => {
+    this.topicService.addTopic(dataTopic).subscribe(() => {
       this.showSucces();
     });
   }

@@ -34,6 +34,7 @@
               "src/styles.css",
               "src/assets/Bootstrap/dist/css/bootstrap.css",
               "src/assets/css/main.css",
+              "src/assets/css/espace_collaborative_animations.css",
               "src/assets/css/fonts.min.css",
               "node_modules/aos/dist/aos.css"
             ],

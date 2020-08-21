@@ -17,10 +17,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.getStatus();
-    this.userService.getLoggedUser().subscribe(value => {
-      this.userService.setUser(value);
-      console.log(value);
-    });
+    this.getLoggedUser();
     // @ts-ignore
     $('body').tooltip({selector: '[data-toggle=tooltip]'});
   }
@@ -40,8 +37,22 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   getStatus() {
-    this.pathResolveService.getStatus().subscribe(value => {
-      this.status = value;
+    this.pathResolveService.getStatus().subscribe(status => {
+      this.status = status;
+    });
+  }
+
+  getLoggedUser() {
+    this.userService.getLoggedUser().subscribe(user => {
+      this.userService.setUser(user);
+    });
+  }
+
+  hideChromeScrollWarning() {
+    document.addEventListener('wheel', e => {
+      e.preventDefault(); // does nothing since the listener is passive
+    }, {
+      passive: true
     });
   }
 }

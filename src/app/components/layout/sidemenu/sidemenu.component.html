@@ -81,21 +81,27 @@
 
       </ul>
 
-      <div class="profile-completion position-absolute bottom-0">
+      <div class="profile-completion position-absolute bottom-0 ">
+        <div class="position-absolute author-thumb">
+          <img style="border-radius: 0" loading="lazy" [src]="backUrl+'/'+ loadedBages[loggedUser?.badge?.id]?.icon_s"
+               alt="author">
+        </div>
 
-        <div class="skills-item">
+        <div class="skills-item padding-l-45 ">
+
           <div class="skills-item-info">
-            <span class="skills-item-title">Profile Completion</span>
-            <span class="skills-item-count"><span class="count-animate" data-speed="1000" data-refresh-interval="50"
-                                                  data-to="76" data-from="0"></span><span
-              class="units">76%</span></span>
+            <span class="skills-item-title"><b>{{loadedBages[loggedUser?.badge?.id]?.name}}</b></span>
+
           </div>
           <div class="skills-item-meter">
-            <span class="skills-item-meter-active bg-primary" style="width: 76%"></span>
+
+            <span class="skills-item-meter-active bg-primary skills-animate"
+                  [ngStyle]="{'width':loadedStats?.progress+'%'}" style="opacity: 1;"></span>
+
           </div>
         </div>
 
-        <span>Complete <a href="#">your profile</a> so people can know more about you!</span>
+        <span class="full-width">{{loadedBages[loggedUser?.badge?.id]?.description}} pour atteindre ce badge</span>
 
       </div>
     </div>

@@ -151,3 +151,13 @@
 .title-hover:hover {
   color: #38a9ff;
 }
+
+/* --------- Loader ---------- */
+.flexbox > div {
+  left: 0;
+  bottom: 0;
+}
+
+.mesh-loader .circle {
+  background: #38a9ff;
+}

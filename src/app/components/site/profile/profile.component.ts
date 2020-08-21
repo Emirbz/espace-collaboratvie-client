@@ -9,6 +9,9 @@ import UserStats from '../../../models/UserStats';
 import {ReplyService} from '../../../services/reply.service';
 import {TopicService} from '../../../services/topic.service';
 import {RoomService} from '../../../services/room.service';
+import {environment} from '../../../../environments/environment';
+import {BadgeService} from '../../../services/badge.service';
+import Badge from '../../../models/Badge';
 
 @Component({
   selector: 'app-profile',
@@ -17,39 +20,56 @@ import {RoomService} from '../../../services/room.service';
 })
 export class ProfileComponent implements OnInit, AfterViewInit {
   @ViewChild('searchInput', {static: false}) searchInput: ElementRef;
-  loggedUser: User;
+  /* ----- Containers Classes */
   topicsClass = 'd-none';
   searchPlaceHolder = 'Rechercher parmis vos groupes de discussion ...';
-  roomsClass = 'row  fade-in';
+  myroomsClass = 'row  fade-in';
+  myCreatedRoomsClass = 'd-none';
   topicsSelected = '';
   roomsSelected = ' selected scale-up-open';
-  firstNavName = 'Mes groupes';
-  secondNavName = 'Groupes crées';
-  myCommentsClass = 'event-item-table';
+  badgesSelected = '';
+
+  myCommentsClass = 'd-none';
   myTopicsClass = 'd-none';
+  badgeClass = 'd-none';
+  /* --------- Loaded Services --------- */
+  loggedUser: User;
   myRooms: Room[];
   myTopics: Topic[];
   myReplies: Reply[];
   myTopicsInitial: Topic[];
   myRepliesInitial: Reply[];
   myRoomsInitial: Room[];
-  myStats: UserStats;
+  myCreatedRoomsInitial: Room[];
+  myCreatedRooms: Room[];
+  loadedStats: UserStats;
+  loadedBadges: Badge[];
+  myBadges: Badge[];
+
+  /*------- Delete Items------ */
   itemToDelete: string;
   replyToDelete: Reply;
   topicToDelete: Topic;
   roomToDelete: Room;
   deletedReply: Reply;
   deletedTopic: Topic;
-  deletedRoom: Room;
-  activeNav = 'room';
   leftRoom: Room;
+  deletedRoom: Room;
+  /* ----- Navigation */
+  activeNav = 'myRooms';
+  firstNavName = 'Mes groupes';
+  secondNavName = 'Groupes crées';
+  firstNavChecked = true;
+  /* --- Back Url for badge images--- */
+  backUrl = environment.apis.backUrl;
 
   constructor(
     private  userService: UserService,
     private titleService: TitleService,
     private replyService: ReplyService,
     private topicService: TopicService,
-    private roomService: RoomService
+    private roomService: RoomService,
+    private badgeService: BadgeService
   ) {
   }
 
@@ -60,6 +80,9 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     this.loadMyRooms();
     this.loadMyTopics();
     this.loadMyStats();
+    this.loadMyCreatedRooms();
+    this.loadBadges();
+    this.loadMyBadges();
 
   }
 
@@ -69,18 +92,32 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     });
   }
 
+  displayBadges() {
+    this.badgesSelected = 'selected scale-up-open';
+    this.roomsSelected = '';
+    this.topicsSelected = '';
+    this.myroomsClass = 'd-none';
+    this.topicsClass = 'd-none';
+    this.badgeClass = 'ui-block fade-in';
+
+  }
+
   displayRooms() {
+    this.firstNavChecked = true;
     this.setRoomClasses();
   }
 
   setRoomClasses() {
     this.searchInput.nativeElement.value = '';
-    this.activeNav = 'room';
+    this.activeNav = 'myRooms';
     this.myRooms = this.myRoomsInitial;
+    this.myCreatedRooms = this.myCreatedRoomsInitial;
     this.topicsClass = 'd-none';
-    this.roomsClass = 'row  fade-in';
+    this.badgeClass = 'd-none';
+    this.myroomsClass = 'row  fade-in';
     this.searchPlaceHolder = 'Rechercher parmis vos  groupes de dicsucssion ...';
     this.roomsSelected = 'selected scale-up-open';
+    this.badgesSelected = '';
     this.topicsSelected = '';
     this.firstNavName = 'Mes groupes';
     this.secondNavName = 'Groupes crées';
@@ -93,6 +130,8 @@ export class ProfileComponent implements OnInit, AfterViewInit {
 
 
   displayTopics() {
+
+    this.firstNavChecked = true;
     this.setTopicClasses();
 
   }
@@ -102,42 +141,64 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     this.myReplies = this.myRepliesInitial;
     this.searchInput.nativeElement.value = '';
     this.topicsClass = 'ui-block fade-in';
-    this.roomsClass = 'd-none';
+    this.myroomsClass = 'd-none';
+    this.badgeClass = 'd-none';
+    this.myCommentsClass = ' event-item-table animated bounceInDown';
+    this.myTopicsClass = 'd-none';
+    this.myCreatedRoomsClass = 'd-none';
     this.searchPlaceHolder = 'Rechercher parmis vos commentaires ...';
     this.activeNav = 'reply';
     this.topicsSelected = 'selected scale-up-open';
+    this.badgesSelected = '';
     this.roomsSelected = '';
     this.firstNavName = 'Commentaires';
     this.secondNavName = 'Topic';
   }
 
-  loadMyRooms() {
-    this.userService.getUserRooms().subscribe(room => {
+  loadMyRooms(searchToken?: string) {
+    this.userService.getUserRooms(searchToken).subscribe(room => {
+      if (!searchToken) {
+        this.myRoomsInitial = room;
+      }
       this.myRooms = room;
-      this.myRoomsInitial = room;
+
 
     });
   }
 
-  loadMyTopics() {
-    this.userService.getUserTopics().subscribe(topic => {
+  loadMyCreatedRooms(searchToken?: string) {
+    this.userService.getCreatedUserRooms(searchToken).subscribe(room => {
+      if (!searchToken) {
+        this.myCreatedRoomsInitial = room;
+      }
+      this.myCreatedRooms = room;
+
+    });
+  }
+
+  loadMyTopics(searchToken?: string) {
+    this.userService.getUserTopics(searchToken).subscribe(topic => {
+      if (!searchToken) {
+        this.myTopicsInitial = topic;
+      }
       this.myTopics = topic;
-      this.myTopicsInitial = topic;
 
     });
   }
 
-  loadMyReplies() {
-    this.userService.getUserReplies().subscribe(reply => {
+  loadMyReplies(searchToken?: string) {
+    this.userService.getUserReplies(searchToken).subscribe(reply => {
+      if (!searchToken) {
+        this.myRepliesInitial = reply;
+      }
       this.myReplies = reply;
-      this.myRepliesInitial = reply;
 
     });
   }
 
   loadMyStats() {
     this.userService.getUserStats().subscribe(stats => {
-      this.myStats = stats;
+      this.loadedStats = stats;
 
     });
   }
@@ -148,26 +209,27 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   }
 
   firstNav() {
-    if (this.firstNavName === 'Commentaires') {
-      this.searchInput.nativeElement.value = '';
-      this.myReplies = this.myRepliesInitial;
-      this.searchPlaceHolder = 'Rechercher parmis vos commentaires ...';
-      this.myCommentsClass = 'event-item-table animated bounceInDown';
-      this.myTopicsClass = 'd-none';
-      this.activeNav = 'reply';
+    switch (this.firstNavName) {
+      case 'Commentaires':
+        this.setMyRepliesClass();
+        break;
+      case 'Mes groupes':
+        this.setMyRoomsClass();
+        break;
     }
 
   }
 
 
   secondNav() {
-    if (this.secondNavName === 'Topic') {
-      this.myTopics = this.myTopicsInitial;
-      this.searchInput.nativeElement.value = '';
-      this.searchPlaceHolder = 'Rechercher parmis vos topics ...';
-      this.activeNav = 'topic';
-      this.myTopicsClass = 'event-item-table animated bounceInDown';
-      this.myCommentsClass = 'd-none';
+    this.firstNavChecked = false;
+    switch (this.secondNavName) {
+      case 'Topic':
+        this.setMyTopicClass();
+        break;
+      case 'Groupes crées':
+        this.setMyCreatedRoomClass();
+        break;
     }
 
   }
@@ -193,16 +255,31 @@ export class ProfileComponent implements OnInit, AfterViewInit {
       this.deletedReply = reply;
       setTimeout(() => {
         this.myReplies = this.myReplies.filter(r => r !== reply);
+        this.myRepliesInitial = this.myRepliesInitial.filter(r => r !== reply);
 
       }, 500);
       // @ts-ignore
       $('#delete-modal').modal('toggle');
-      this.myStats.countReplies -= 1;
     });
   }
 
   deleteRoom(roomToDelete: Room) {
-    // TODO add user to room attributes to delete room
+    this.roomService.deleteRoom(roomToDelete.id).subscribe(() => {
+      this.deletedRoom = roomToDelete;
+      console.log(roomToDelete);
+      setTimeout(() => {
+        this.filterDeletedRoom(roomToDelete);
+      }, 500);
+      // @ts-ignore
+      $('#delete-modal').modal('toggle');
+    });
+  }
+
+  filterDeletedRoom(roomToDelete: Room) {
+    this.myRooms = this.myRooms.filter(r => r !== roomToDelete);
+    this.myRoomsInitial = this.myRoomsInitial.filter(r => r !== roomToDelete);
+    this.myCreatedRooms = this.myCreatedRooms.filter(r => r !== roomToDelete);
+    this.myCreatedRoomsInitial = this.myCreatedRoomsInitial.filter(r => r !== roomToDelete);
   }
 
   deleteTopic(topic: Topic) {
@@ -210,31 +287,29 @@ export class ProfileComponent implements OnInit, AfterViewInit {
       this.deletedTopic = topic;
       setTimeout(() => {
         this.myTopics = this.myTopics.filter(t => t !== topic);
+        this.myTopicsInitial = this.myTopicsInitial.filter(t => t !== topic);
       }, 500);
       // @ts-ignore
       $('#delete-modal').modal('toggle');
-      this.myStats.countTopics -= 1;
+      this.loadedStats.countTopics -= 1;
     });
 
   }
 
   searchBar(event) {
-    console.log(event.target.value);
+    const searchToken = event.target.value;
     switch (this.activeNav) {
       case 'reply':
-        this.userService.getUserReplies(event.target.value).subscribe(reply => {
-          this.myReplies = reply;
-        });
+        this.loadMyReplies(searchToken);
         break;
       case 'topic':
-        this.userService.getUserTopics(event.target.value).subscribe(topics => {
-          this.myTopics = topics;
-        });
+        this.loadMyTopics(searchToken);
         break;
-      case 'room':
-        this.userService.getUserRooms(event.target.value).subscribe(room => {
-          this.myRooms = room;
-        });
+      case 'myRooms':
+        this.loadMyRooms(searchToken);
+        break;
+      case 'myCreatedRooms':
+        this.loadMyCreatedRooms(searchToken);
         break;
     }
 
@@ -249,5 +324,56 @@ export class ProfileComponent implements OnInit, AfterViewInit {
       }, 600);
 
     });
+  }
+
+  setMyRepliesClass() {
+    this.searchInput.nativeElement.value = '';
+    this.myReplies = this.myRepliesInitial;
+    this.searchPlaceHolder = 'Rechercher parmis vos commentaires ...';
+    this.myCommentsClass = 'event-item-table animated bounceInDown';
+    this.myTopicsClass = 'd-none';
+    this.activeNav = 'reply';
+  }
+
+  setMyTopicClass() {
+    this.myTopics = this.myTopicsInitial;
+    this.searchInput.nativeElement.value = '';
+    this.searchPlaceHolder = 'Rechercher parmis vos topics ...';
+    this.activeNav = 'topic';
+    this.myTopicsClass = 'event-item-table animated bounceInDown';
+    this.myCommentsClass = 'd-none';
+  }
+
+  setMyRoomsClass() {
+    this.searchInput.nativeElement.value = '';
+    this.searchPlaceHolder = 'Rechercher parmis vos groupes crées ...';
+    this.activeNav = 'myRooms';
+    this.myroomsClass = 'row fade-in';
+    this.myCreatedRoomsClass = 'd-none';
+
+
+  }
+
+  setMyCreatedRoomClass() {
+    this.searchInput.nativeElement.value = '';
+    this.searchPlaceHolder = 'Rechercher parmis vos groupes de discussion ...';
+    this.activeNav = 'myCreatedRooms';
+    this.myCreatedRoomsClass = 'row fade-in';
+    this.myroomsClass = 'd-none';
+
+
+  }
+
+  loadMyBadges() {
+    this.userService.getUserBadges().subscribe(badges => {
+      this.myBadges = badges;
+    });
+  }
+
+  loadBadges() {
+    this.badgeService.getAllBadges().subscribe(badges => {
+      this.loadedBadges = badges;
+    });
+
   }
 }

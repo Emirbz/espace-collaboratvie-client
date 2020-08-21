@@ -17,14 +17,19 @@ import {TitleService} from '../../../services/title.service';
 export class DetailsTopicComponent implements OnInit, AfterViewInit {
   @ViewChild('commentInput', {static: false}) commentInput: ElementRef;
 
+  /* ----- Loaded Services --------*/
   loadedTopic: Topic;
   loadedReplies: Reply[];
   loggedUser: User;
+  /* ------- Post Data --------- */
   dataReply: { reply: string, user: User, topic: Topic };
+  /* ------ Animation values ------- */
   lastCommentId: string;
   pageOfItems: Reply[];
-  nbrLikes = 9;
   lastLikedId: string;
+  /* ----- Loader ------ */
+  repliesHasBeenLoaded = false;
+  topicHasBeenLoaded = false;
 
 
   constructor(private route: ActivatedRoute,
@@ -36,7 +41,7 @@ export class DetailsTopicComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.loadsigneTopic();
+    this.loadsingleTopic();
     this.loadReplies();
     this.getLoggedUser();
     AOS.init();
@@ -52,18 +57,10 @@ export class DetailsTopicComponent implements OnInit, AfterViewInit {
   }
 
 
-  public loadScript(url) {
-    const node = document.createElement('script');
-    node.src = url;
-    node.type = 'text/javascript';
-    document.getElementsByTagName('head')[0].appendChild(node);
-
-
-  }
-
-  loadsigneTopic() {
+  loadsingleTopic() {
     const id = this.route.snapshot.paramMap.get('id');
     this.topicService.getTopic(id).subscribe(topic => {
+      this.topicHasBeenLoaded = true;
       this.loadedTopic = topic;
       this.setTitle(topic.title);
     });
@@ -73,6 +70,7 @@ export class DetailsTopicComponent implements OnInit, AfterViewInit {
     const id = this.route.snapshot.paramMap.get('id');
 
     this.replyService.getReplies(id).subscribe(replies => {
+      this.repliesHasBeenLoaded = true;
       this.loadedReplies = replies;
 
     });

@@ -36,6 +36,7 @@ import {IconDefinition} from '@ant-design/icons-angular';
 import {registerLocaleData} from '@angular/common';
 import {SearchService} from './services/search.service';
 import localeFr from '@angular/common/locales/fr';
+import {BadgeService} from './services/badge.service';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -82,6 +83,7 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
     ReplyService,
     SearchService,
     PathResolveService,
+    BadgeService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

@@ -1,4 +1,24 @@
-<div class="container padding-t-40 animated slideDown">
+<div *ngIf="!popularTopicsHasBeenLoaded || !popularTagsHasBeenLoaded || !tagsHasBeenLoaded || !topicsHasBeenLoaded "
+     class="flexbox">
+  <div>
+    <div class="mesh-loader">
+      <div class="set-one">
+        <div class="circle"></div>
+        <div class="circle"></div>
+      </div>
+      <div class="set-two">
+        <div class="circle"></div>
+        <div class="circle"></div>
+      </div>
+    </div>
+
+
+  </div>
+
+</div>
+
+<div *ngIf="popularTopicsHasBeenLoaded && popularTagsHasBeenLoaded && tagsHasBeenLoaded  && topicsHasBeenLoaded "
+     class="container padding-t-40 fade-in">
   <div class="row">
     <div class="col col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
       <div class="ui-block responsive-flex">
@@ -14,19 +34,19 @@
 
 
             <a href="#" class="btn btn-blue btn-md tag" style="color: white" routerLink="/topic/create"
-               routerLinkActive="active">Create New Topic</a>
+               routerLinkActive="active">Nouveau topic</a>
           </div>
         </div>
       </div>
     </div>
-    <div class="col col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 collapse " id="searchBar">
+    <div class="col col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 collapse "
+         [ngClass]="selectedTags.length>0?'show':''" id="searchBar">
       <div class="ui-block responsive-flex tags-select tags-list">
         <nz-select
           class="full-width padding-nz-select tags-search"
           (nzOnSearch)="onSearchTags($event)"
           [(ngModel)]="selectedTags"
           (ngModelChange)="loadTopics(selectedTags,headerSearch)"
-
           nzMode="multiple"
           nzPlaceHolder="Ajouter des tags ...">
           <ng-container *ngFor="let t of loadedTags">
@@ -68,7 +88,8 @@
 </div>
 
 
-<div class="container animated slideDown">
+<div *ngIf="popularTopicsHasBeenLoaded && popularTagsHasBeenLoaded && tagsHasBeenLoaded  && topicsHasBeenLoaded "
+     class="container animated fade-in">
   <div class="row">
     <div class="col col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
 
@@ -109,7 +130,9 @@
               <div class="forum-item">
 
                 <div class="content">
-                  <a href="#" class="h6 title title-hover" [routerLink]="['/topic/',t?.id]"
+                  <a *ngIf="t?.title.length>79" class="h6 title title-hover" [routerLink]="['/topic/',t?.id]"
+                     routerLinkActive="active">{{t?.title.substr(0, 80)}}...</a>
+                  <a *ngIf="t?.title.length<=79" class="h6 title title-hover" [routerLink]="['/topic/',t?.id]"
                      routerLinkActive="active">{{t?.title}}</a>
                   <p class="text">
                     <time class="entry-date updated" datetime="2017-06-24T18:18"><i
@@ -175,7 +198,7 @@
         </div>
         <div class="ui-block-content" style="padding: 5px 10px 5px">
           <div class="md-chips">
-            <div data-toggle="tooltip" data-placemenet="top" [attr.title]="t?.countTopics+' Topics'"
+            <div (click)="addTag(t)" data-toggle="tooltip" data-placemenet="top" [attr.title]="t?.countTopics+' Topics'"
                  *ngFor="let t of loadedPopularTags | slice:0:8 ; let i= index" class="md-chip ">
 
 

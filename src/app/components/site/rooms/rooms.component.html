@@ -24,7 +24,24 @@
 <!-- Main Content Groups -->
 
 <div class="container">
-  <div class="row">
+  <div *ngIf="!roomsHaveBeenLoaded" [ngClass]="roomsHaveBeenLoaded? 'flexbox animated bounceOutUp' : 'flexbox' ">
+    <div>
+      <div class="mesh-loader">
+        <div class="set-one">
+          <div class="circle"></div>
+          <div class="circle"></div>
+        </div>
+        <div class="set-two">
+          <div class="circle"></div>
+          <div class="circle"></div>
+        </div>
+      </div>
+
+
+    </div>
+
+  </div>
+  <div *ngIf="roomsHaveBeenLoaded" class="row fade-in">
     <div class="col col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12">
 
       <!-- Friend Item -->
@@ -53,24 +70,46 @@
 
 
     <div *ngFor="let r of loadedRooms" class="col col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12">
-      <div class="ui-block" data-mh="friend-groups-item">
+      <div class="ui-block"
+           data-mh="friend-groups-item">
 
         <!-- Friend Item -->
 
         <div class="friend-item friend-groups">
+          <div *ngIf="r?.isPrivate" style="  right: 10px; top: 10px; z-index: 999" class=" more float-right "
+               data-toggle="tooltip" data-placement="top"
+               title="Groupe privée">
+            <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+                 width="35" height="35"
+                 viewBox="0 0 172 172"
+                 style=" fill:#000000;">
+              <g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt"
+                 stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0"
+                 font-family="none" font-size="none"
+                 style="mix-blend-mode: normal">
+                <path d="M0,172v-172h172v172z" fill="none"></path>
+                <g fill="#e67e22">
+                  <path
+                    d="M86,0.33594c-6.81464,0 -12.96896,3.23752 -21.49328,7.71984c-10.97704,5.77232 -26.0229,13.67938 -51.48578,19.26938l-2.70094,0.59125v2.76812c0,104.7996 73.49243,139.94022 74.23547,140.28078l1.51844,0.69875l1.48485,-0.75922c0.74304,-0.3784 74.12125,-38.91231 74.12125,-140.22031v-2.76812l-2.70094,-0.59125c-25.46288,-5.59 -40.50874,-13.49705 -51.48578,-19.26937c-8.52432,-4.48232 -14.67864,-7.71984 -21.49328,-7.71984zM86,37.84c11.352,0 20.64,9.62931 20.64,21.32531v6.19469h3.78265c3.784,0 6.53735,3.09735 6.53735,6.53735v35.08531c0,3.44 -3.09735,6.53735 -6.53735,6.53735h-48.84531c-3.784,0 -6.53735,-3.096 -6.53735,-6.88v-34.74265c0,-3.44 2.75335,-6.53735 6.53735,-6.53735h3.78265v-6.19469c0,-11.696 9.288,-21.32531 20.64,-21.32531zM86,44.72c-7.568,0 -13.76,6.53331 -13.76,14.44531v6.19469h27.52v-6.19469c0,-7.912 -6.192,-14.44531 -13.76,-14.44531zM86,82.56c-2.752,0 -4.81735,2.06535 -4.81735,4.81735c0,1.376 0.688,2.408 1.72,3.44v4.46797c0,1.72 1.37735,3.09734 3.09735,3.09734c1.72,0 3.09735,-1.37734 3.09735,-3.09734v-4.46797c1.032,-1.032 1.72,-2.064 1.72,-3.44c0,-2.752 -2.06535,-4.81735 -4.81735,-4.81735z"></path>
+                </g>
+              </g>
+            </svg>
+
+          </div>
 
           <div class="friend-item-content">
 
-            <div class="more">
-
-
-            </div>
             <div class="friend-avatar">
+              <img alt="owner " data-toggle="tooltip" data-placement="right"
+                   [attr.title]="'Crée par '+r?.user?.firstName +' '+r?.user?.lastName" [src]="r?.user?.image"
+                   class="rounded-circle room-owner">
               <div class="author-thumb">
                 <ngx-avatar size="120" [name]="r?.name"></ngx-avatar>
+
               </div>
               <div class="author-content">
                 <a href="#" class="h5 author-name">{{r?.name |titlecase}}</a>
+                <div class="country">{{r?.subject}} </div>
                 <div class="country">{{r?.users.length}} Utilisateurs dans le groupe</div>
               </div>
             </div>
@@ -89,10 +128,20 @@
             </ul>
 
             <div class="control-block-button">
-              <a (click)="joinRoom(r.id)"
+              <a *ngIf="!r?.isPrivate" (click)="joinRoom(r.id)"
                  class="  btn btn-control bg-blue hover-color">
                 <svg class="olymp-chat---messages-icon">
                   <use xlink:href="#olymp-chat---messages-icon"></use>
+                </svg>
+
+              </a>
+              <a *ngIf="r.isPrivate" (click)="joinRoomRequest(r?.id)" data-toggle="tooltip" data-placement="top"
+                 title="Demander de rejoindre le groupe"
+                 class="  btn btn-control bg-blue hover-color" style="background-color: #ff9700">
+                <svg class="olymp-chat---messages-icon">
+                  <svg>
+                    <use xlink:href="#olymp-happy-faces-icon"></use>
+                  </svg>
                 </svg>
 
               </a>
@@ -147,6 +196,7 @@
 
             <ng-select
               formControlName="users"
+
               [items]="loadedUsers"
               [multiple]="true"
               bindValue="id"

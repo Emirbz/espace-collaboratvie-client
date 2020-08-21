@@ -27,7 +27,9 @@ export const environment = {
     topic: backURL + '/topic',
     tag: backURL + '/tag',
     reply: backURL + '/reply',
-    keycloak: keycloakConfig
+    keycloak: keycloakConfig,
+    backUrl: backURL,
+    badge: backURL + '/badge'
   },
 };
 

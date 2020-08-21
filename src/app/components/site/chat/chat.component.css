@@ -1,40 +1,4 @@
 @import url('https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css');
-
-/* --- JITSI ANIMATION ----- */
-.row [class*='col-'] {
-  transition: all 0.7s ease-in-out;
-
-
-}
-
-.margin-540 {
-  margin-left: -540px;
-
-
-
-
-}
-.margin-218{
-  margin-left: -218px;
-
-}
-#jitsi {
-  -webkit-animation: 2s ease 0s normal forwards 1 fadein;
-  animation: 2s ease 0s normal forwards 1 fadein;
-}
-@keyframes fadein{
-  0% { opacity:0; }
-  66% { opacity:0; }
-  100% { opacity:1; }
-}
-
-@-webkit-keyframes fadein{
-  0% { opacity:0; }
-  66% { opacity:0; }
-  100% { opacity:1; }
-}
-
-
 /* ------------- Reaction ----------------- */
 .text-desc, [class*="reaction-"], .field-reactions, .field-reactions:checked:focus ~ .text-desc {
   clip: rect(1px, 1px, 1px, 1px);
@@ -82,6 +46,7 @@
   margin-left: 3px;
 
 }
+
 .sender .box {
   float: right;
   margin-left: 0;
@@ -192,8 +157,6 @@
 }
 
 
-
-
 .field-reactions:checked ~ [class*="reaction-"] {
   transform: scale(0.8) translateY(-40px);
 }
@@ -291,254 +254,42 @@
   bottom: 1px;
   left: 51px;
 }
-.sender .user-reactions
-{
+
+.sender .user-reactions {
   right: 46px;
   left: unset;
 }
 
-.reaction { list-style-type: none; cursor: pointer; display: table-cell; position: relative; text-align: center; padding-left: 5px; padding-right: 5px; }
+.reaction {
+  list-style-type: none;
+  cursor: pointer;
+  display: table-cell;
+  position: relative;
+  text-align: center;
+  padding-left: 5px;
+  padding-right: 5px;
+}
 
 
-.reaction .count-reaction
-{
+.reaction .count-reaction {
   font-size: 12px;
   font-weight: bold;
   padding: 1px;
 }
+
 .user-reactions .reaction {
   padding: 0;
 }
-.margin-auto
-{
+
+.margin-auto {
   margin-left: auto;
   margin-right: auto;
 }
 
-.margin-unset{
+.margin-unset {
   margin-left: unset;
   margin-right: unset;
 
-}
-
-
-/* ----------------- Jitsi Loader ---------------- */
-
-.flexbox {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
-}
-
-.flexbox > div {
-  left: 325px;
-  top: 250px;
-  width: 300px;
-  height: 300px;
-  -webkit-box-flex: 0;
-  -ms-flex: 0 0 25%;
-  flex:  25%;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  margin: 0;
-  position: relative;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  overflow: hidden;
-}
-
-
-
-
-.mesh-loader {
-  overflow: hidden;
-  height: inherit;
-  width: inherit;
-}
-.mesh-loader .circle {
-  width: 30px;
-  height: 30px;
-  position: absolute;
-  background: #07D8BB;
-  border-radius: 50%;
-  margin: -15px;
-  -webkit-animation: mesh 3s ease-in-out infinite -1.5s;
-  animation: mesh 3s ease-in-out infinite -1.5s;
-}
-
-.mesh-loader > div .circle:last-child {
-  -webkit-animation-delay: 0s;
-  animation-delay: 0s;
-}
-
-.mesh-loader > div {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-}
-
-.mesh-loader > div:last-child {
-  -webkit-transform: rotate(90deg);
-  -ms-transform: rotate(90deg);
-  transform: rotate(90deg);
-}
-
-
-
-
-
-
-
-@keyframes mesh {
-  0% {
-    -webkit-transform-origin: 50% -100%;
-    transform-origin: 50% -100%;
-    -webkit-transform: rotate(0);
-    transform: rotate(0);
-  }
-  50% {
-    -webkit-transform-origin: 50% -100%;
-    transform-origin: 50% -100%;
-    -webkit-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-  50.1% {
-    -webkit-transform-origin: 50% 200%;
-    transform-origin: 50% 200%;
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform-origin: 50% 200%;
-    transform-origin: 50% 200%;
-    -webkit-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-}
-
-@media only screen and (max-width: 968px) {
-  .flexbox > div {
-    -webkit-box-flex: 0;
-    -ms-flex: 0 0 33.3333333%;
-    flex: 0 0 33.3333333%;
-  }
-}
-
-@media only screen and (max-width: 768px) {
-  .flexbox > div {
-    -webkit-box-flex: 0;
-    -ms-flex: 0 0 50%;
-    flex: 0 0 50%;
-  }
-}
-
-@media only screen and (max-width: 568px) {
-  .flexbox > div {
-    -webkit-box-flex: 0;
-    -ms-flex: 0 0 100%;
-    flex: 0 0 100%;
-  }
-}
-
-/* common */
-.loading {
-  font-size: 22px;
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 800;
-  text-align: center;
-  bottom: 0;
-}
-
-.loading span {
-  display: inline-block;
-  margin: 0 -0.05em;
-}
-
-/* code #7 */
-.loading07 span {
-  position: relative;
-  color: rgba(94, 94, 94, 0.2);
-}
-
-.loading07 span::after {
-
-  position: absolute;
-  top: 0;
-  left: 0;
-  content: attr(data-text);
-  color: #07D8BB;
-  opacity: 0;
-  transform: scale(1.5);
-  animation: loading07 3s infinite;
-}
-
-.loading07 span:nth-child(2)::after {
-  animation-delay: 0.1s;
-}
-
-.loading07 span:nth-child(3)::after {
-  animation-delay: 0.2s;
-}
-
-.loading07 span:nth-child(4)::after {
-  animation-delay: 0.3s;
-}
-
-.loading07 span:nth-child(5)::after {
-  animation-delay: 0.4s;
-}
-
-.loading07 span:nth-child(6)::after {
-  animation-delay: 0.5s;
-}
-
-.loading07 span:nth-child(7)::after {
-  animation-delay: 0.6s;
-}
-
-.loading07 span:nth-child(8)::after {
-  animation-delay: 0.7s;
-}
-
-.loading07 span:nth-child(9)::after {
-  animation-delay: 0.8s;
-}
-
-.loading07 span:nth-child(10)::after {
-  animation-delay: 0.9s;
-}
-
-.loading07 span:nth-child(11)::after {
-  animation-delay: 1s;
-}
-
-.loading07 span:nth-child(12)::after {
-  animation-delay: 1.1s;
-}
-
-.loading07 span:nth-child(13)::after {
-  animation-delay: 1.2s;
-}
-
-@keyframes loading07 {
-  0%, 75%, 100% {
-    transform: scale(1.5);
-    opacity: 0;
-  }
-  25%, 50% {
-    transform: scale(1);
-    opacity: 1;
-  }
 }
 
 
@@ -584,7 +335,6 @@
 .clearfix:after {
   clear: both;
 }
-
 
 
 h1 {
@@ -1001,8 +751,26 @@ label .fa {
   }
 }
 
+/* --------- Loader ---------- */
+.flexbox > div {
+  left: 0;
+  top: 0;
+}
 
-/*-------- Tooltip ------------- */
+.flexbox > .jitsiLoader {
+  left: 325px;
+  top: 250px;
+}
+
+.mesh-loader .circle {
+  background: #00c4aa;
+}
+
+/* ----- locked icon*/
+.padding-t-9 {
+
+}
+
 
 
 

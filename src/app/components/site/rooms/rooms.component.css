@@ -16,3 +16,28 @@
 .height-50 {
   height: 50px;
 }
+
+/* ---------- loader ---------------*/
+.flexbox > div {
+  left: 0;
+  top: 0;
+}
+
+.mesh-loader .circle {
+  background: #38a9ff;
+}
+
+/* --- image room owner  -------- */
+.room-owner {
+  width: 30px;
+  height: 30px;
+  z-index: 999;
+  top: 127px;
+  left: 34px;
+
+  position: relative;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 1);
+}
+
+/* -------- checkbox slider*/
+

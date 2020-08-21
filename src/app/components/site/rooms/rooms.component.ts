@@ -16,14 +16,18 @@ import {TitleService} from '../../../services/title.service';
 
 })
 export class RoomsComponent implements OnInit, AfterViewInit {
+  /* ------- LOADED SERVICES--------------*/
   loadedRooms: Room[];
-  selectedUsers: any;
   loadedUsers: User[];
+  loggedUser: User;
+  selectedUsersModal: User[];
+  /* ---- Select dropdown USers*/
+  selectedUsers: any;
+  /* --------- Loader Post room --------*/
   roomCreated = false;
   toastSucces = 'alert alert-success d-none';
   roomFormGroup: FormGroup;
-  formError: 'form-group label-floating';
-  selectedUsersModal: User[];
+  roomsHaveBeenLoaded = false;
 
 
   constructor(
@@ -45,6 +49,7 @@ export class RoomsComponent implements OnInit, AfterViewInit {
     this.loadUsers();
     this.roomFormValidate();
     this.setTitle();
+    this.getLoggedUser();
   }
 
   public loadScript(url) {
@@ -69,6 +74,7 @@ export class RoomsComponent implements OnInit, AfterViewInit {
 
   loadRooms() {
     this.roomService.getRooms().subscribe(r => {
+      this.roomsHaveBeenLoaded = true;
       this.loadedRooms = r;
     });
   }
@@ -97,27 +103,27 @@ export class RoomsComponent implements OnInit, AfterViewInit {
   }
 
   addRoom() {
-    if (this.roomFormGroup.valid) {
-      this.roomCreated = true;
-
-      const {name, subject} = this.roomFormGroup.value;
-      const usertoPersist: User[] = [];
-      this.selectedUsers.forEach(value => {
-        const u = new User(value, null, null, null);
-      });
-      const dataRoom = {
-        name,
-        subject,
-        users: usertoPersist
-      };
-      this.roomService.addRoom(dataRoom).subscribe(room => {
-        this.loadedRooms.push(room);
-
-        this.showSucces();
-        this.loadRooms();
-
-      });
+    if (!this.roomFormGroup.valid) {
+      return;
     }
+    this.roomCreated = true;
+    const {name, subject} = this.roomFormGroup.value;
+    const usertoPersist: User[] = [];
+    this.selectedUsers.forEach(idUser => {
+      const u = new User(idUser, null, null, null);
+      usertoPersist.push(u);
+    });
+    const dataRoom = {
+      name,
+      subject,
+      users: usertoPersist,
+      user: this.loggedUser
+    };
+    this.roomService.addRoom(dataRoom).subscribe(room => {
+      this.showSucces();
+      this.loadRooms();
+
+    });
   }
 
 
@@ -131,4 +137,16 @@ export class RoomsComponent implements OnInit, AfterViewInit {
   }
 
 
+  joinRoomRequest(id: number) {
+
+    // TODO request join room
+
+  }
+
+  getLoggedUser() {
+    this.userService.getUser().subscribe(user => {
+      this.loggedUser = user;
+    });
+
+  }
 }

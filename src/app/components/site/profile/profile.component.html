@@ -15,7 +15,7 @@
                     <div class="user-stats">
                       <div class="user-stat big">
 
-                        <p class="margin-b-8  user-stat-title">{{myStats?.countTopics}}</p>
+                        <p class="margin-b-8  user-stat-title">{{loadedStats?.countTopics}}</p>
                         <p class="user-stat-text">Topics</p>
 
                       </div>
@@ -25,7 +25,7 @@
                     <div class="user-stats">
                       <div class="user-stat big">
 
-                        <p class="margin-b-8 user-stat-title ">{{myStats?.countReactions}}</p>
+                        <p class="margin-b-8 user-stat-title ">{{loadedStats?.countLikes}}</p>
                         <p class="user-stat-text">Reaction</p>
 
                       </div>
@@ -35,7 +35,7 @@
                     <div class="user-stats">
                       <div class="user-stat big">
 
-                        <p class="margin-b-8  user-stat-title">{{myStats?.countReplies}}</p>
+                        <p class="margin-b-8  user-stat-title">{{loadedStats?.countReplies}}</p>
                         <p class="user-stat-text">Commentaires</p>
 
                       </div>
@@ -57,6 +57,11 @@
                        [ngClass]="topicsSelected"
                        (click)="displayTopics()">Topics</a>
                   </li>
+                  <li>
+                    <a [ngStyle]="{'color': badgesSelected?.length>1 ? '#ff5e3a' : 'inherit'}"
+                       [ngClass]="badgesSelected"
+                       (click)="displayBadges()">Badges</a>
+                  </li>
 
                 </ul>
               </div>
@@ -65,12 +70,15 @@
 
           </div>
           <div class="top-header-author">
-            <a href="02-ProfilePage.html" class="author-thumb">
+            <a class="author-thumb">
               <img *ngIf="loggedUser" [src]="loggedUser?.image" class="profile-image" alt="author">
+              <img *ngIf="loggedUser" [src]="backUrl+'/'+loggedUser?.badge?.icon_b" alt="author">
             </a>
+
+            <img *ngIf="loggedUser" [src]="backUrl+'/'+loggedUser?.badge?.icon_b" class="user-badge-big" alt="author">
             <div class="author-content">
-              <a href="02-ProfilePage.html"
-                 class="h4 author-name">{{loggedUser?.firstName | titlecase}} {{loggedUser.lastName | titlecase}}</a>
+              <a
+                class="h4 author-name">{{loggedUser?.firstName | titlecase}} {{loggedUser.lastName | titlecase}}</a>
               <div class="country">San Francisco, CA</div>
             </div>
           </div>
@@ -136,66 +144,19 @@
 
       <div class="ui-block">
         <div class="ui-block-title">
-          <h6 class="title">James’s Badges</h6>
+          <h6 class="title">Mes Badges</h6>
         </div>
         <div class="ui-block-content">
 
           <!-- W-Badges -->
 
-          <ul class="widget w-badges">
-            <li>
-              <a href="24-CommunityBadges.html">
-                <img src="assets/img/badge1.png" alt="author">
-                <div class="label-avatar bg-primary">2</div>
-              </a>
+          <ul class="badge">
+            <li *ngFor="let b of myBadges" data-toggle="tooltip" data-placement="top"
+                [attr.title]="b?.name +': '+b?.description">
+              <img *ngIf="myBadges" [src]="backUrl+'/'+b?.icon_b" alt="author">
+              <!-- <div class="label-avatar bg-primary">2</div>-->
             </li>
-            <li>
-              <a href="24-CommunityBadges.html">
-                <img src="assets/img/badge4.png" alt="author">
-              </a>
-            </li>
-            <li>
-              <a href="24-CommunityBadges.html">
-                <img src="assets/img/badge3.png" alt="author">
-                <div class="label-avatar bg-blue">4</div>
-              </a>
-            </li>
-            <li>
-              <a href="24-CommunityBadges.html">
-                <img src="assets/img/badge6.png" alt="author">
-              </a>
-            </li>
-            <li>
-              <a href="24-CommunityBadges.html">
-                <img src="assets/img/badge11.png" alt="author">
-              </a>
-            </li>
-            <li>
-              <a href="24-CommunityBadges.html">
-                <img src="assets/img/badge8.png" alt="author">
-              </a>
-            </li>
-            <li>
-              <a href="24-CommunityBadges.html">
-                <img src="assets/img/badge10.png" alt="author">
-              </a>
-            </li>
-            <li>
-              <a href="24-CommunityBadges.html">
-                <img src="assets/img/badge13.png" alt="author">
-                <div class="label-avatar bg-breez">2</div>
-              </a>
-            </li>
-            <li>
-              <a href="24-CommunityBadges.html">
-                <img src="assets/img/badge7.png" alt="author">
-              </a>
-            </li>
-            <li>
-              <a href="24-CommunityBadges.html">
-                <img src="assets/img/badge12.png" alt="author">
-              </a>
-            </li>
+
           </ul>
 
           <!--.. end W-Badges -->
@@ -209,7 +170,45 @@
 
 
     <div class=" col col-xl-9 order-xl-2 col-lg-12 order-lg-1 col-md-12 col-sm-12 col-12">
-      <div class="ui-block responsive-flex">
+
+
+      <div *ngFor="let b of loadedBadges ; let i =index" [ngClass]="badgeClass">
+
+
+        <div class="birthday-item inline-items badges">
+          <div class="author-thumb">
+            <img *ngIf="loadedBadges" style="border-radius: 0" loading="lazy" [src]="backUrl+'/'+b?.icon_s"
+                 alt="author">
+          </div>
+          <div class="birthday-author-name">
+            <span class="h6 author-name">{{b?.name}}</span>
+            <div class="birthday-date">{{b?.description}}</div>
+          </div>
+
+          <div class="skills-item">
+            <span class="skills-item-count progress-bar-badge">
+
+										<span *ngIf="loggedUser?.badge?.id >= b?.id" class="units">100 % </span>
+										<span *ngIf="loggedUser?.badge?.id==i" class="units">{{loadedStats?.progress}} % </span>
+										<span *ngIf="(loggedUser?.badge?.id+1)<b?.id" class="units"> 0 % </span>
+									</span>
+
+            <div class="skills-item-meter">
+              <span *ngIf="loggedUser?.badge?.id >= b?.id" class="skills-item-meter-active bg-primary skills-animate"
+                    style="width: 100%;opacity: 1"></span>
+              <span *ngIf="loggedUser?.badge?.id==i" class="skills-item-meter-active bg-primary skills-animate"
+                    [ngStyle]="{'width':loadedStats?.progress+'%'}" style="opacity: 1;"></span>
+              <span class="skills-item-meter-active bg-primary skills-animate" *ngIf="(loggedUser?.badge?.id+1)<b?.id"
+                    style="width: 0;opacity: 1"></span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- search bar-->
+      <div [ngStyle]="{'display': badgesSelected.length>1 ? 'none' : ''}" class="ui-block responsive-flex">
         <div class="ui-block-title">
 
 
@@ -225,7 +224,7 @@
             </div>
           </form>
           <div class="menu-container">
-            <input type="radio" id="f" (change)="firstNav()" checked name="a">
+            <input [checked]="firstNavChecked" type="radio" id="f" (change)="firstNav()" checked name="a">
             <label for="f">{{firstNavName}}</label>
             <input (change)="secondNav()" id="s" name="a" type="radio">
             <label for="s">{{secondNavName}}</label>
@@ -234,13 +233,14 @@
           </div>
         </div>
       </div>
+      <!--search bar-->
+
+      <!-- my Rooms / created rooms-->
       <div class="container">
-        <!--my Rooms-->
-        <div [ngClass]="roomsClass">
-
-
+        <!--Joined Rooms-->
+        <div [ngClass]="myroomsClass">
           <div *ngFor="let r of myRooms" [id]="'room'+r?.id" #myRoomDiv
-               [ngClass]="myRoomDiv.id === 'room'+leftRoom?.id? 'col col-xl-4 col-lg-6 col-md-6 col-sm-6 col-12 animated bounceOutUp' : 'col col-xl-4 col-lg-6 col-md-6 col-sm-6 col-12'">
+               [ngClass]="myRoomDiv.id === 'room'+leftRoom?.id ? 'col col-xl-4 col-lg-6 col-md-6 col-sm-6 col-12 animated bounceOutUp' : 'col col-xl-4 col-lg-6 col-md-6 col-sm-6 col-12 '">
             <div class="ui-block" data-mh="friend-groups-item">
 
               <!-- Friend Item -->
@@ -255,10 +255,86 @@
                     </svg>
                     <ul class="more-dropdown">
                       <li>
-                        <a href="#" data-target="#delete-modal" data-toggle="modal">Supprimer le groupe</a>
-                      </li>
-                      <li>
                         <a (click)="leavRoom(r)" style="color: #515365">Quitter le groupe</a>
+                      </li>
+
+                    </ul>
+                  </div>
+                  <div class="friend-avatar">
+                    <img alt="owner " data-toggle="tooltip" data-placement="right" *ngIf="myRooms"
+                         [attr.title]="'Crée par '+r?.user.firstName +' '+r?.user.lastName" [src]="r?.user.image"
+                         class="rounded-circle room-owner">
+                    <div class="author-thumb">
+                      <ngx-avatar size="120" [name]="r?.name"></ngx-avatar>
+                    </div>
+                    <div class="author-content">
+                      <a href="#" class="h5 author-name">{{r?.name |titlecase}}</a>
+                      <div class="country">{{r?.users?.length}} Utilisateurs dans le groupe</div>
+                    </div>
+                  </div>
+
+                  <ul class="friends-harmonic">
+                    <li *ngFor="let u of r?.users">
+                      <a href="#">
+                        <img *ngIf="myRooms" [src]="u?.image" alt="friend">
+                      </a>
+                    </li>
+
+                    <li>
+                      <a data-toggle="modal" data-target="#modal-list-users"
+                         *ngIf="r?.users?.length>6" href="#" class="all-users bg-blue">+{{r?.users?.length - 6}}</a>
+                    </li>
+                  </ul>
+
+
+                </div>
+              </div>
+
+              <!-- ... end Friend Item -->      </div>
+          </div>
+
+          <!-- No Results rooms-->
+          <div *ngIf="myRooms?.length===0" class="ui-block no-results-container container ">
+            <div class="row">
+              <div class="col col-xl-6 col-lg-7 col-md-12 col-sm-12 col-12">
+                <img src="assets/img/no-results.png" alt="error_500">
+              </div>
+              <div class="col col-xl-6 col-lg-5 col-md-12 col-sm-12 col-12">
+                <div class="crumina-module crumina-heading">
+                  <h2 class=" h2 page-500-sup-title">Oops</h2>
+                  <h3 class="h3 heading-title">Pas de groupe trouvé</h3>
+                </div>
+                <a class="btn btn-primary btn-lg" style="color: white" [routerLink]="['/rooms']">Rejoindre un
+                  groupe </a>
+              </div>
+            </div>
+          </div>
+          <!-- No Results rooms end-->
+
+
+        </div>
+        <!-- end Joined ROoms-->
+
+        <!--Created Rooms-->
+        <div [ngClass]="myCreatedRoomsClass">
+          <div *ngFor="let r of myCreatedRooms" [id]="'roomCreated'+r?.id" #myCreatedRoomDiv
+               [ngClass]="myCreatedRoomDiv.id === 'roomCreated'+deletedRoom?.id? 'col col-xl-4 col-lg-6 col-md-6 col-sm-6 col-12 animated bounceOutUp' : 'col col-xl-4 col-lg-6 col-md-6 col-sm-6 col-12 '">
+            <div class="ui-block" data-mh="friend-groups-item">
+
+              <!-- Friend Item -->
+
+              <div class="friend-item friend-groups">
+
+                <div class="friend-item-content">
+
+                  <div class="more">
+                    <svg class="olymp-three-dots-icon">
+                      <use xlink:href="#olymp-three-dots-icon"></use>
+                    </svg>
+                    <ul class="more-dropdown">
+                      <li>
+                        <a (click)="deleteModal('ROOM', null,r,null)" style="color: #515365" data-target="#delete-modal"
+                           data-toggle="modal">Supprimer le groupe</a>
                       </li>
 
                     </ul>
@@ -276,7 +352,7 @@
                   <ul class="friends-harmonic">
                     <li *ngFor="let u of r?.users">
                       <a href="#">
-                        <img [src]="u?.image" alt="friend">
+                        <img *ngIf="myCreatedRooms" [src]="u?.image" alt="friend">
                       </a>
                     </li>
 
@@ -292,7 +368,9 @@
 
               <!-- ... end Friend Item -->      </div>
           </div>
-          <div *ngIf="myRooms?.length===0" class="ui-block no-results-container container ">
+
+          <!-- No Results rooms-->
+          <div *ngIf="myCreatedRooms?.length===0" class="ui-block no-results-container container ">
             <div class="row">
               <div class="col col-xl-6 col-lg-7 col-md-12 col-sm-12 col-12">
                 <img src="assets/img/no-results.png" alt="error_500">
@@ -302,19 +380,21 @@
                   <h2 class=" h2 page-500-sup-title">Oops</h2>
                   <h3 class="h3 heading-title">Pas de groupe trouvé</h3>
                 </div>
-                <a class="btn btn-primary btn-lg" style="color: white" [routerLink]="['/rooms']">Rejoindre un
+                <a class="btn btn-primary btn-lg" style="color: white" [routerLink]="['/rooms']">Créer un
                   groupe </a>
               </div>
             </div>
           </div>
+          <!-- No Results rooms end-->
 
 
         </div>
-        <!-- end My rooms-->
+        <!-- end Created ROoms-->
       </div>
+      <!-- end my rooms / created rooms -->
 
 
-      <!-- My Topics-->
+      <!-- My Topics && replies-->
       <div [ngClass]="topicsClass">
 
         <!-- Replies -->
@@ -379,7 +459,7 @@
                 <li data-toggle="tooltip" data-placement="top" [attr.title]="u?.firstName+' '+u?.lastName"
                     *ngFor=" let u of r?.users | slice :0 : 2">
                   <a href="#">
-                    <img [src]="u?.image" alt="friend">
+                    <img *ngIf="u?.image" [src]="u?.image" alt="friend">
                   </a>
                 </li>
 
@@ -580,7 +660,7 @@
                       <h2 class=" h2 page-500-sup-title">Oops</h2>
                       <h3 class="h3 heading-title">Vous n'avez crée aucun topic</h3>
                     </div>
-                    <a class="btn btn-primary btn-lg" style="color: white" [routerLink]="['/topic']">Crée un topic </a>
+                    <a class="btn btn-primary btn-lg" style="color: white" [routerLink]="['/topic']">Créer un topic </a>
 
                   </div>
                 </div>
@@ -592,7 +672,7 @@
         </table>
         <!-- .. end Post -->
       </div>
-      <!-- end my topics-->
+      <!-- end my topics && replies-->
 
 
     </div>

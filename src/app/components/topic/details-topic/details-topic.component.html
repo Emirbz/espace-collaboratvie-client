@@ -1,5 +1,24 @@
 <div class="container margin-t-40 ">
-  <div class="col col-xl-12 m-auto col-lg-12 col-md-12 col-sm-12 col-12">
+  <div *ngIf="!topicHasBeenLoaded ||!repliesHasBeenLoaded" class="flexbox">
+    <div>
+      <div class="mesh-loader">
+        <div class="set-one">
+          <div class="circle"></div>
+          <div class="circle"></div>
+        </div>
+        <div class="set-two">
+          <div class="circle"></div>
+          <div class="circle"></div>
+        </div>
+      </div>
+
+
+    </div>
+
+  </div>
+
+  <div *ngIf="topicHasBeenLoaded && repliesHasBeenLoaded"
+       class="col col-xl-12 m-auto col-lg-12 col-md-12 col-sm-12 col-12">
     <div class="ui-block">
 
 
@@ -116,19 +135,11 @@
       </div>
       <ul class="comments-list style-3  margin-t-0 ">
         <li *ngFor="let r of loadedReplies ; let i = index" #comment [id]="'comment'+r?.id" class="comment-item"
-            [ngStyle]="{'background-color': r?.useful ? '#08d40029' : 'inherit'}"
+            [ngStyle]="{'background-color': r?.useful ? '#08d40029' : ''}"
             [ngClass]="comment.id == lastCommentId ? 'comment-item padding-25 fade-in-slow': 'comment-item padding-25'"
             data-aos="fade-right" data-aos-easing="ease-in-sine" data-aos-once="true">
-          <div class="center" *ngIf="((loadedTopic?.user?.id === loggedUser?.id ) && (r?.user?.id !== loggedUser?.id))">
-            <label class="label">
-              <input [checked]="r?.useful" (change)="setUseful(r,i)" class="label__checkbox" type="checkbox"/>
-              <span class="label__text">
-      <span class="label__check">
-        <i style="width: 22px;" class="fa fa-check icon"></i>
-      </span>
-    </span>
-            </label>
-          </div>
+
+
           <div class="post__author-thumb">
 
             <img style="width: 37px;height: 37px" [src]="r?.user?.image" alt="author">
@@ -192,6 +203,22 @@
 
 
               <div class="author-date">
+                <div class="more"
+                     *ngIf="((loadedTopic?.user?.id === loggedUser?.id ) && (r?.user?.id !== loggedUser?.id))">
+                  <svg class="olymp-three-dots-icon">
+                    <use xlink:href="#olymp-three-dots-icon"></use>
+                  </svg>
+                  <ul class="more-dropdown">
+
+                    <li *ngIf="!r?.useful">
+                      <a (click)="setUseful(r,i)">Marquer comme utile</a>
+                    </li>
+                    <li *ngIf="r?.useful">
+                      <a (click)="setUseful(r,i)">Marquer comme non utile</a>
+                    </li>
+
+                  </ul>
+                </div>
                 <a class="h6 post__author-name fn" href="#">{{r?.user?.firstName}} {{r?.user?.lastName}}</a>
                 <div class="post__date">
                   <time class="published" datetime="2004-07-24T18:18">
@@ -248,7 +275,8 @@
           </div>
         </div>
 
-        <button class="btn btn-md-2  btn-sky-blue" (click)="postComment(commentInput.value)">Valider</button>
+        <button class="btn btn-md-2  btn-sky-blue" (click)="postComment(commentInput.value)">Ajouter le commentaire
+        </button>
 
 
       </form>

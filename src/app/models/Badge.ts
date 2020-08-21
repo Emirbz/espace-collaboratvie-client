@@ -1,5 +1,5 @@
-export default class User {
-  id?: string;
+export default class Badge {
+  id?: number;
   name?: string;
   description?: string;
   // tslint:disable-next-line:variable-name

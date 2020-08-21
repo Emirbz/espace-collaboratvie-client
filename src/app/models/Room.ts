@@ -6,7 +6,8 @@ export default class Room {
   subject?: string;
   image?: string;
   users?: User[];
-  owner: User;
+  user?: User;
+  isPrivate: boolean;
 
   constructor(id: number) {
     this.id = id;

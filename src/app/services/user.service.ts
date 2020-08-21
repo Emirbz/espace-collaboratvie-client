@@ -7,6 +7,7 @@ import UserStats from '../models/UserStats';
 import Room from '../models/Room';
 import Topic from '../models/Topic';
 import Reply from '../models/Reply';
+import Badge from '../models/Badge';
 
 @Injectable()
 export class UserService {
@@ -32,11 +33,24 @@ export class UserService {
     return this.http.get<UserStats>(`${this.userUrl}/stats`);
   }
 
+  getUserBadges(): Observable<Badge[]> {
+    return this.http.get<Badge[]>(`${this.userUrl}/badge`);
+  }
+
   getUserRooms(name?: string): Observable<Room[]> {
     if (name) {
       this.url = `${this.userUrl}/room?name=${name}`;
     } else {
       this.url = `${this.userUrl}/room`;
+    }
+    return this.http.get<Room[]>(this.url);
+  }
+
+  getCreatedUserRooms(name?: string): Observable<Room[]> {
+    if (name) {
+      this.url = `${this.userUrl}/room/created?name=${name}`;
+    } else {
+      this.url = `${this.userUrl}/room/created`;
     }
     return this.http.get<Room[]>(this.url);
   }
