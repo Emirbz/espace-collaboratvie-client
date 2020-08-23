@@ -4,6 +4,8 @@ import User from '../../../models/User';
 import {UserService} from '../../../services/user.service';
 import {SearchService} from '../../../services/search.service';
 import {Router} from '@angular/router';
+import {RoomRequestService} from '../../../services/room-request.service';
+import RoomRequest from '../../../models/RoomRequest';
 
 @Component({
   selector: 'app-header',
@@ -13,12 +15,14 @@ import {Router} from '@angular/router';
 export class HeaderComponent implements OnInit, AfterViewInit {
   title: string;
   loggedUser: User;
+  loadedRoomRequests: RoomRequest[];
 
   constructor(private elementRef: ElementRef,
               private titleService: TitleService,
               private cdr: ChangeDetectorRef,
               private  userService: UserService,
               private searchService: SearchService,
+              private roomRequestService: RoomRequestService,
               private router: Router) {
   }
 
@@ -28,12 +32,9 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.titleService.getTitle().subscribe(appTitle => {
-      this.title = appTitle;
-      this.cdr.detectChanges();
-
-    });
+    this.getTitle();
     this.getLoggedUser();
+    this.loadMyRoomRequests();
 
   }
 
@@ -49,5 +50,21 @@ export class HeaderComponent implements OnInit, AfterViewInit {
 
   profile() {
     this.router.navigate(['/profile']);
+  }
+
+  getTitle() {
+    this.titleService.getTitle().subscribe(appTitle => {
+      this.title = appTitle;
+      this.cdr.detectChanges();
+
+    });
+
+  }
+
+  private loadMyRoomRequests() {
+    this.roomRequestService.getMyRooMRequests().subscribe(roomRequests => {
+      this.loadedRoomRequests = roomRequests;
+    });
+
   }
 }

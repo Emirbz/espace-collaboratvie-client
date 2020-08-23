@@ -33,7 +33,6 @@ export class SidemenuComponent implements OnInit {
 
   loadUSerStats() {
     this.userService.getUserStats().subscribe(stats => {
-      console.log(stats);
       this.loadedStats = stats;
 
     });

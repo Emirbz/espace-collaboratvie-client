@@ -31,7 +31,7 @@
 .room-owner {
   width: 30px;
   height: 30px;
-  z-index: 999;
+  z-index: 1;
   top: 127px;
   left: 34px;
 
@@ -41,3 +41,6 @@
 
 /* -------- checkbox slider*/
 
+.hover-blocked:hover {
+  cursor: not-allowed;
+}

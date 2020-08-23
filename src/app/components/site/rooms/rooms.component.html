@@ -69,14 +69,15 @@
       <!-- ... end Friend Item -->    </div>
 
 
-    <div *ngFor="let r of loadedRooms" class="col col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12">
-      <div class="ui-block"
+    <div *ngFor="let r of loadedRooms" #roomRow [id]="'room'+r?.id"
+         class="col col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12">
+      <div [ngClass]="roomRow.id === 'room'+requestedRoom?.id ?'ui-block animated flipInX':'ui-block'"
            data-mh="friend-groups-item">
 
         <!-- Friend Item -->
 
         <div class="friend-item friend-groups">
-          <div *ngIf="r?.isPrivate" style="  right: 10px; top: 10px; z-index: 999" class=" more float-right "
+          <div *ngIf="r?.isPrivate" style="  right: 10px; top: 10px; z-index: 1" class=" more float-right "
                data-toggle="tooltip" data-placement="top"
                title="Groupe privée">
             <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
@@ -128,19 +129,31 @@
             </ul>
 
             <div class="control-block-button">
-              <a *ngIf="!r?.isPrivate" (click)="joinRoom(r.id)"
+              <a *ngIf="!r?.isPrivate || (r?.isPrivate && r.requestStatus ==='ACCEPTED')" (click)="joinRoom(r.id)"
                  class="  btn btn-control bg-blue hover-color">
                 <svg class="olymp-chat---messages-icon">
                   <use xlink:href="#olymp-chat---messages-icon"></use>
                 </svg>
 
               </a>
-              <a *ngIf="r.isPrivate" (click)="joinRoomRequest(r?.id)" data-toggle="tooltip" data-placement="top"
+              <a *ngIf="r.isPrivate && r.requestStatus === null" (click)="joinRoomRequest(r)" data-toggle="tooltip"
+                 data-placement="top"
                  title="Demander de rejoindre le groupe"
-                 class="  btn btn-control bg-blue hover-color" style="background-color: #ff9700">
+                 class="  btn btn-control bg-blue hover-color" style="background-color: #cbc4c4">
                 <svg class="olymp-chat---messages-icon">
                   <svg>
-                    <use xlink:href="#olymp-happy-faces-icon"></use>
+                    <use xlink:href="#olymp-info-icon"></use>
+                  </svg>
+                </svg>
+
+              </a>
+              <a *ngIf="r.isPrivate && r.requestStatus === 'PENDING'" (click)="joinRoomRequest(r)" data-toggle="tooltip"
+                 data-placement="top"
+                 title="Votre demande est en cours de validation"
+                 class=" btn btn-control bg-blue hover-color hover-blocked" style="background-color: #ff9552">
+                <svg class="olymp-chat---messages-icon">
+                  <svg>
+                    <use xlink:href="#olymp-weather-refresh-icon"></use>
                   </svg>
                 </svg>
 

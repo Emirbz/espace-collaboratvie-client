@@ -28,7 +28,8 @@ export class RoomsComponent implements OnInit, AfterViewInit {
   toastSucces = 'alert alert-success d-none';
   roomFormGroup: FormGroup;
   roomsHaveBeenLoaded = false;
-
+  /*---- Room request class ---- */
+  requestedRoom: Room;
 
   constructor(
     private roomService: RoomService,
@@ -122,22 +123,31 @@ export class RoomsComponent implements OnInit, AfterViewInit {
     this.roomService.addRoom(dataRoom).subscribe(room => {
       this.showSucces();
       this.loadRooms();
+      this.roomFormGroup.reset();
 
     });
   }
 
 
   joinRoom(id: number) {
+
     this.router.navigate(['rooms', id]);
 
   }
+
 
   openModalAllUsers(users: User[]) {
     this.selectedUsersModal = users;
   }
 
 
-  joinRoomRequest(id: number) {
+  joinRoomRequest(room: Room) {
+    if (room.requestStatus === null) {
+      this.roomService.joinRoom(room.id).subscribe(() => {
+        room.requestStatus = 'PENDING';
+        this.requestedRoom = room;
+      });
+    }
 
     // TODO request join room
 

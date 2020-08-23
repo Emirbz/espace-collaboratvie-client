@@ -85,9 +85,8 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
 
   ngOnInit() {
 
-    this.joinRoom();
-
     this.getLoggedUser();
+    this.joinRoom();
     this.jitsiFormValidate();
     this.loadRoomMessages();
     this.loadRoomSondages();
@@ -203,6 +202,9 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
     this.roomService.getRoom(id).subscribe(room => {
       this.loadedRoom = room;
       this.setTitle();
+      if (!room.users.some(item => item.id === this.loggedUser.id)) {
+        this.router.navigate(['rooms']);
+      }
     });
   }
 
@@ -428,6 +430,7 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
     this.showSucces();
 
     this.publishMessage('SONDAGE', null, null, this.dataSondage);
+    this.sondageFormGroup.reset();
 
 
   }

@@ -8,6 +8,7 @@ export default class Room {
   users?: User[];
   user?: User;
   isPrivate: boolean;
+  requestStatus: string;
 
   constructor(id: number) {
     this.id = id;

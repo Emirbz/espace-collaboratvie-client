@@ -24,129 +24,59 @@
     <div class="control-block">
 
       <div class="control-icon more has-items">
-        <svg class="olymp-happy-face-icon"><use xlink:href="#olymp-happy-face-icon"></use></svg>
-        <div class="label-avatar bg-blue">6</div>
+        <svg class="olymp-happy-face-icon">
+          <use xlink:href="#olymp-happy-face-icon"></use>
+        </svg>
+        <div class="label-avatar bg-blue">{{loadedRoomRequests?.length}}</div>
 
-        <div class="more-dropdown more-with-triangle triangle-top-center">
+        <div class="more-dropdown more-with-triangle triangle-top-center" style="padding-bottom: 15px">
           <div class="ui-block-title ui-block-title-small">
-            <h6 class="title">FRIEND REQUESTS</h6>
-            <a href="#">Find Friends</a>
-            <a href="#">Settings</a>
+            <h6 class="title">Demandes de participation aux groupes de discussion</h6>
+
           </div>
 
           <div class="mCustomScrollbar" data-mcs-theme="dark">
             <ul class="notification-list friend-requests">
-              <li>
+
+              <li *ngFor="let rr of loadedRoomRequests">
                 <div class="author-thumb">
-                  <img src="assets/img/avatar55-sm.jpg" alt="author">
+                  <img [src]="rr?.user?.image" width="34" height="34" alt="author">
                 </div>
                 <div class="notification-event">
-                  <a href="#" class="h6 notification-friend">Tamara Romanoff</a>
-                  <span class="chat-message-item">Mutual Friend: Sarah Hetfield</span>
+                  <a href="#" class="h6 notification-friend">{{rr?.user?.firstName}} {{rr?.user?.lastName}}</a>
+                  <span class="chat-message-item">a demandé de rejoindre <b>{{rr?.room.name| titlecase}}</b></span>
                 </div>
                 <span class="notification-icon">
-									<a href="#" class="accept-request">
-										<span class="icon-add without-text">
-											<svg class="olymp-happy-face-icon"><use xlink:href="#olymp-happy-face-icon"></use></svg>
-										</span>
-									</a>
-
 									<a href="#" class="accept-request request-del">
-										<span class="icon-minus">
-											<svg class="olymp-happy-face-icon"><use xlink:href="#olymp-happy-face-icon"></use></svg>
-										</span>
+											<svg><use xlink:href="#olymp-little-delete"></use></svg>
+
 									</a>
-
-								</span>
-
-                <div class="more">
-                  <svg class="olymp-three-dots-icon"><use xlink:href="#olymp-three-dots-icon"></use></svg>
-                </div>
-              </li>
-
-              <li>
-                <div class="author-thumb">
-                  <img src="assets/img/avatar56-sm.jpg" alt="author">
-                </div>
-                <div class="notification-event">
-                  <a href="#" class="h6 notification-friend">Tony Stevens</a>
-                  <span class="chat-message-item">4 Friends in Common</span>
-                </div>
-                <span class="notification-icon">
 									<a href="#" class="accept-request">
-										<span class="icon-add without-text">
-											<svg class="olymp-happy-face-icon"><use xlink:href="#olymp-happy-face-icon"></use></svg>
-										</span>
-									</a>
+                <svg><use xlink:href="#olymp-dropdown-arrow-icon"></use></svg>
 
-									<a href="#" class="accept-request request-del">
-										<span class="icon-minus">
-											<svg class="olymp-happy-face-icon"><use xlink:href="#olymp-happy-face-icon"></use></svg>
-										</span>
 									</a>
 
 								</span>
 
-                <div class="more">
-                  <svg class="olymp-three-dots-icon"><use xlink:href="#olymp-three-dots-icon"></use></svg>
-                </div>
               </li>
-
-              <li class="accepted">
-                <div class="author-thumb">
-                  <img src="assets/img/avatar57-sm.jpg" alt="author">
-                </div>
+              <li *ngIf="loadedRoomRequests?.length===0">
                 <div class="notification-event">
-                  You and <a href="#" class="h6 notification-friend">Mary Jane Stark</a> just became friends. Write on <a href="#" class="notification-link">her wall</a>.
-                </div>
-                <span class="notification-icon">
-									<svg class="olymp-happy-face-icon"><use xlink:href="#olymp-happy-face-icon"></use></svg>
-								</span>
 
-                <div class="more">
-                  <svg class="olymp-three-dots-icon"><use xlink:href="#olymp-three-dots-icon"></use></svg>
-                  <svg class="olymp-little-delete"><use xlink:href="#olymp-little-delete"></use></svg>
+                  <span class="chat-message-item">Vous avez 0 demandes</span>
                 </div>
               </li>
-
-              <li>
-                <div class="author-thumb">
-                  <img src="assets/img/avatar58-sm.jpg" alt="author">
-                </div>
-                <div class="notification-event">
-                  <a href="#" class="h6 notification-friend">Stagg Clothing</a>
-                  <span class="chat-message-item">9 Friends in Common</span>
-                </div>
-                <span class="notification-icon">
-									<a href="#" class="accept-request">
-										<span class="icon-add without-text">
-											<svg class="olymp-happy-face-icon"><use xlink:href="#olymp-happy-face-icon"></use></svg>
-										</span>
-									</a>
-
-									<a href="#" class="accept-request request-del">
-										<span class="icon-minus">
-											<svg class="olymp-happy-face-icon"><use xlink:href="#olymp-happy-face-icon"></use></svg>
-										</span>
-									</a>
-
-								</span>
-
-                <div class="more">
-                  <svg class="olymp-three-dots-icon"><use xlink:href="#olymp-three-dots-icon"></use></svg>
-                </div>
-              </li>
-
             </ul>
           </div>
 
-          <a href="#" class="view-all bg-blue">Check all your Events</a>
+
         </div>
       </div>
 
 
       <div class="control-icon more has-items">
-        <svg class="olymp-thunder-icon"><use xlink:href="#olymp-thunder-icon"></use></svg>
+        <svg class="olymp-thunder-icon">
+          <use xlink:href="#olymp-thunder-icon"></use>
+        </svg>
 
         <div class="label-avatar bg-primary">8</div>
 
@@ -164,7 +94,10 @@
                   <img src="assets/img/avatar62-sm.jpg" alt="author">
                 </div>
                 <div class="notification-event">
-                  <div><a href="#" class="h6 notification-friend">Mathilda Brinker</a> commented on your new <a href="#" class="notification-link">profile status</a>.</div>
+                  <div><a href="#" class="h6 notification-friend">Mathilda Brinker</a> commented on your new <a href="#"
+                                                                                                                class="notification-link">profile
+                    status</a>.
+                  </div>
                   <span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">4 hours ago</time></span>
                 </div>
                 <span class="notification-icon">
@@ -172,8 +105,12 @@
 									</span>
 
                 <div class="more">
-                  <svg class="olymp-three-dots-icon"><use xlink:href="#olymp-three-dots-icon"></use></svg>
-                  <svg class="olymp-little-delete"><use xlink:href="#olymp-little-delete"></use></svg>
+                  <svg class="olymp-three-dots-icon">
+                    <use xlink:href="#olymp-three-dots-icon"></use>
+                  </svg>
+                  <svg class="olymp-little-delete">
+                    <use xlink:href="#olymp-little-delete"></use>
+                  </svg>
                 </div>
               </li>
 
@@ -182,7 +119,9 @@
                   <img src="assets/img/avatar63-sm.jpg" alt="author">
                 </div>
                 <div class="notification-event">
-                  <div>You and <a href="#" class="h6 notification-friend">Nicholas Grissom</a> just became friends. Write on <a href="#" class="notification-link">his wall</a>.</div>
+                  <div>You and <a href="#" class="h6 notification-friend">Nicholas Grissom</a> just became friends.
+                    Write on <a href="#" class="notification-link">his wall</a>.
+                  </div>
                   <span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">9 hours ago</time></span>
                 </div>
                 <span class="notification-icon">
@@ -190,8 +129,12 @@
 									</span>
 
                 <div class="more">
-                  <svg class="olymp-three-dots-icon"><use xlink:href="#olymp-three-dots-icon"></use></svg>
-                  <svg class="olymp-little-delete"><use xlink:href="#olymp-little-delete"></use></svg>
+                  <svg class="olymp-three-dots-icon">
+                    <use xlink:href="#olymp-three-dots-icon"></use>
+                  </svg>
+                  <svg class="olymp-little-delete">
+                    <use xlink:href="#olymp-little-delete"></use>
+                  </svg>
                 </div>
               </li>
 
@@ -200,7 +143,9 @@
                   <img src="assets/img/avatar64-sm.jpg" alt="author">
                 </div>
                 <div class="notification-event">
-                  <div><a href="#" class="h6 notification-friend">Sarah Hetfield</a> commented on your <a href="#" class="notification-link">photo</a>.</div>
+                  <div><a href="#" class="h6 notification-friend">Sarah Hetfield</a> commented on your <a href="#"
+                                                                                                          class="notification-link">photo</a>.
+                  </div>
                   <span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">Yesterday at 5:32am</time></span>
                 </div>
                 <span class="notification-icon">
@@ -213,8 +158,12 @@
                 </div>
 
                 <div class="more">
-                  <svg class="olymp-three-dots-icon"><use xlink:href="#olymp-three-dots-icon"></use></svg>
-                  <svg class="olymp-little-delete"><use xlink:href="#olymp-little-delete"></use></svg>
+                  <svg class="olymp-three-dots-icon">
+                    <use xlink:href="#olymp-three-dots-icon"></use>
+                  </svg>
+                  <svg class="olymp-little-delete">
+                    <use xlink:href="#olymp-little-delete"></use>
+                  </svg>
                 </div>
               </li>
 
@@ -223,7 +172,9 @@
                   <img src="assets/img/avatar65-sm.jpg" alt="author">
                 </div>
                 <div class="notification-event">
-                  <div><a href="#" class="h6 notification-friend">Green Goo Rock</a> invited you to attend to his event Goo in <a href="#" class="notification-link">Gotham Bar</a>.</div>
+                  <div><a href="#" class="h6 notification-friend">Green Goo Rock</a> invited you to attend to his event
+                    Goo in <a href="#" class="notification-link">Gotham Bar</a>.
+                  </div>
                   <span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">March 5th at 6:43pm</time></span>
                 </div>
                 <span class="notification-icon">
@@ -231,8 +182,12 @@
 									</span>
 
                 <div class="more">
-                  <svg class="olymp-three-dots-icon"><use xlink:href="#olymp-three-dots-icon"></use></svg>
-                  <svg class="olymp-little-delete"><use xlink:href="#olymp-little-delete"></use></svg>
+                  <svg class="olymp-three-dots-icon">
+                    <use xlink:href="#olymp-three-dots-icon"></use>
+                  </svg>
+                  <svg class="olymp-little-delete">
+                    <use xlink:href="#olymp-little-delete"></use>
+                  </svg>
                 </div>
               </li>
 
@@ -241,7 +196,10 @@
                   <img src="assets/img/avatar66-sm.jpg" alt="author">
                 </div>
                 <div class="notification-event">
-                  <div><a href="#" class="h6 notification-friend">James Summers</a> commented on your new <a href="#" class="notification-link">profile status</a>.</div>
+                  <div><a href="#" class="h6 notification-friend">James Summers</a> commented on your new <a href="#"
+                                                                                                             class="notification-link">profile
+                    status</a>.
+                  </div>
                   <span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">March 2nd at 8:29pm</time></span>
                 </div>
                 <span class="notification-icon">
@@ -249,8 +207,12 @@
 									</span>
 
                 <div class="more">
-                  <svg class="olymp-three-dots-icon"><use xlink:href="#olymp-three-dots-icon"></use></svg>
-                  <svg class="olymp-little-delete"><use xlink:href="#olymp-little-delete"></use></svg>
+                  <svg class="olymp-three-dots-icon">
+                    <use xlink:href="#olymp-three-dots-icon"></use>
+                  </svg>
+                  <svg class="olymp-little-delete">
+                    <use xlink:href="#olymp-little-delete"></use>
+                  </svg>
                 </div>
               </li>
             </ul>
@@ -284,7 +246,9 @@
 
                 <li>
                   <a href="#">
-                    <svg class="olymp-logout-icon"><use xlink:href="#olymp-logout-icon"></use></svg>
+                    <svg class="olymp-logout-icon">
+                      <use xlink:href="#olymp-logout-icon"></use>
+                    </svg>
 
                     <span>Log Out</span>
                   </a>

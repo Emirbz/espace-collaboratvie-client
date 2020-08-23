@@ -37,6 +37,8 @@ import {registerLocaleData} from '@angular/common';
 import {SearchService} from './services/search.service';
 import localeFr from '@angular/common/locales/fr';
 import {BadgeService} from './services/badge.service';
+import {JitsiFloatComponent} from './components/site/jitsi-float/jitsi-float.component';
+import {RoomRequestService} from './services/room-request.service';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -61,6 +63,7 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
     DetailsTopicComponent,
     CreateTopicComponent,
     ProfileComponent,
+    JitsiFloatComponent,
   ],
   imports: [
     BrowserModule,
@@ -82,6 +85,7 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
     TagService,
     ReplyService,
     SearchService,
+    RoomRequestService,
     PathResolveService,
     BadgeService,
     {

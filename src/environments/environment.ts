@@ -29,7 +29,8 @@ export const environment = {
     reply: backURL + '/reply',
     keycloak: keycloakConfig,
     backUrl: backURL,
-    badge: backURL + '/badge'
+    badge: backURL + '/badge',
+    roomRequest: backURL + '/roomrequest'
   },
 };
 
