@@ -264,6 +264,7 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
   }
 
   loadRoomImages() {
+    // TODO
     const id = this.route.snapshot.paramMap.get('id');
     this.chatService.getImagesByRoom(id).subscribe(images => {
       this.loadedImages = images;

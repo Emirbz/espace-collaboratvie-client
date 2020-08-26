@@ -38,20 +38,21 @@
           <div class="mCustomScrollbar" data-mcs-theme="dark">
             <ul class="notification-list friend-requests">
 
-              <li *ngFor="let rr of loadedRoomRequests">
+              <li *ngFor="let rr of loadedRoomRequests" [id]="'request'+rr?.id" #requestRow
+                  [ngClass]="requestRow?.id ==='request'+acceptedRequest?.id? 'animated bounceOutUp':''">
                 <div class="author-thumb">
                   <img [src]="rr?.user?.image" width="34" height="34" alt="author">
                 </div>
                 <div class="notification-event">
                   <a href="#" class="h6 notification-friend">{{rr?.user?.firstName}} {{rr?.user?.lastName}}</a>
-                  <span class="chat-message-item">a demandé de rejoindre <b>{{rr?.room.name| titlecase}}</b></span>
+                  <span class="chat-message-item">a demandé de rejoindre <b>{{rr?.room?.name| titlecase}}</b></span>
                 </div>
                 <span class="notification-icon">
-									<a href="#" class="accept-request request-del">
+									<a (click)="rejectRequest(rr)" class="accept-request request-del">
 											<svg><use xlink:href="#olymp-little-delete"></use></svg>
 
 									</a>
-									<a href="#" class="accept-request">
+									<a (click)="acceptRequest(rr)" class="accept-request">
                 <svg><use xlink:href="#olymp-dropdown-arrow-icon"></use></svg>
 
 									</a>
@@ -262,6 +263,8 @@
         </div>
         <a href="02-ProfilePage.html" class="author-name fn">
           <div class="author-title">
+            <fa name="cog" animation="spin"></fa>
+
             {{loggedUser?.firstName}} {{loggedUser?.lastName}}
             <svg class="olymp-dropdown-arrow-icon">
               <use xlink:href="#olymp-dropdown-arrow-icon"></use>

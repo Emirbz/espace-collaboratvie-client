@@ -6,6 +6,7 @@ import {UserService} from '../../../services/user.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {TitleService} from '../../../services/title.service';
+import {ToastBootsrapService} from '../../../services/toast-bootsrap.service';
 
 
 @Component({
@@ -36,7 +37,8 @@ export class RoomsComponent implements OnInit, AfterViewInit {
     private userService: UserService,
     private formBuilder: FormBuilder,
     private router: Router,
-    private titleService: TitleService
+    private titleService: TitleService,
+    private toastBootsrapService: ToastBootsrapService
   ) {
   }
 
@@ -46,6 +48,7 @@ export class RoomsComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+
     this.loadRooms();
     this.loadUsers();
     this.roomFormValidate();
@@ -53,12 +56,6 @@ export class RoomsComponent implements OnInit, AfterViewInit {
     this.getLoggedUser();
   }
 
-  public loadScript(url) {
-    const node = document.createElement('script');
-    node.src = url;
-    node.type = 'text/javascript';
-    document.getElementsByTagName('body')[0].appendChild(node);
-  }
 
   roomFormValidate() {
     this.roomFormGroup = this.formBuilder.group({
@@ -158,5 +155,10 @@ export class RoomsComponent implements OnInit, AfterViewInit {
       this.loggedUser = user;
     });
 
+  }
+
+  showToast() {
+    const id = Date.now();
+    this.toastBootsrapService.show(id, 'titre', 'Welcomee to your friends groups! Do you wanna know what ', {timestamp: 'tawa tawa'});
   }
 }

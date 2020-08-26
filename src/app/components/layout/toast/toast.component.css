@@ -1,0 +1,8 @@
+.toast {
+
+  position: fixed;
+  top: 8%;
+  right: 1%;
+  z-index: 99;
+  max-width: 460px;
+}

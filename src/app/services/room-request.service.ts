@@ -15,5 +15,15 @@ export class RoomRequestService {
   getMyRooMRequests(): Observable<RoomRequest[]> {
     return this.http.get<RoomRequest[]>(`${this.roomRequestUrl}`);
   }
-  
+
+  acceptRequest(id): Observable<RoomRequest> {
+    return this.http.put<RoomRequest>(`${this.roomRequestUrl}/accept/${id}`, null);
+
+  }
+
+  rejectRequest(id): Observable<RoomRequest> {
+    return this.http.put<RoomRequest>(`${this.roomRequestUrl}/reject/${id}`, null);
+
+  }
+
 }

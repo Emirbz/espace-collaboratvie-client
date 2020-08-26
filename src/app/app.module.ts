@@ -39,6 +39,8 @@ import localeFr from '@angular/common/locales/fr';
 import {BadgeService} from './services/badge.service';
 import {JitsiFloatComponent} from './components/site/jitsi-float/jitsi-float.component';
 import {RoomRequestService} from './services/room-request.service';
+import {ToastComponent} from './components/layout/toast/toast.component';
+import {ToastBootsrapService} from './services/toast-bootsrap.service';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -64,6 +66,7 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
     CreateTopicComponent,
     ProfileComponent,
     JitsiFloatComponent,
+    ToastComponent,
   ],
   imports: [
     BrowserModule,
@@ -87,6 +90,7 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
     SearchService,
     RoomRequestService,
     PathResolveService,
+    ToastBootsrapService,
     BadgeService,
     {
       provide: HTTP_INTERCEPTORS,

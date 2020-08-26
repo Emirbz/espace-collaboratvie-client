@@ -1,0 +1,18 @@
+<div *ngFor="let t of loadedToasts ; let i = index" [id]="t.id" #toastRow
+     [ngClass]="toastRow.id==deletedToast? 'toast show animated bounceOutUp':'toast show animated bounceInDown'"
+     role="alert" aria-live="assertive" aria-atomic="true" [ngStyle]="{'top':i*90+80+'px'}" data-autohide="true"
+     data-delay="500"
+>
+  <div class="toast-header">
+    <img width="28" height="28" [src]="t.image" class="rounded mr-2" alt="...">
+    <strong class="mr-auto ">{{t.title}}</strong>
+    <small class="text-muted">{{t.timestamp}}</small>
+    <button (click)="removeToast(t)" aria-label="Close" class="ml-2 mb-1 close" data-dismiss="toast" type="button">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="toast-body">
+    {{t.description}}
+  </div>
+</div>
+

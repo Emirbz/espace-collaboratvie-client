@@ -14,8 +14,12 @@ import RoomRequest from '../../../models/RoomRequest';
 })
 export class HeaderComponent implements OnInit, AfterViewInit {
   title: string;
+
+  /*------ Loaded services ------- */
   loggedUser: User;
   loadedRoomRequests: RoomRequest[];
+  /*------ Accept reject request animation --------- */
+  acceptedRequest: RoomRequest;
 
   constructor(private elementRef: ElementRef,
               private titleService: TitleService,
@@ -62,8 +66,28 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   }
 
   private loadMyRoomRequests() {
+
     this.roomRequestService.getMyRooMRequests().subscribe(roomRequests => {
       this.loadedRoomRequests = roomRequests;
+    });
+  }
+
+  rejectRequest(roomRequest: RoomRequest) {
+    this.roomRequestService.rejectRequest(roomRequest.id).subscribe(() => {
+      this.acceptedRequest = roomRequest;
+      setTimeout(() => {
+        this.loadedRoomRequests = this.loadedRoomRequests.filter(rr => rr !== roomRequest);
+      }, 500);
+    });
+
+  }
+
+  acceptRequest(roomRequest: RoomRequest) {
+    this.roomRequestService.acceptRequest(roomRequest.id).subscribe(() => {
+      this.acceptedRequest = roomRequest;
+      setTimeout(() => {
+        this.loadedRoomRequests = this.loadedRoomRequests.filter(rr => rr !== roomRequest);
+      }, 500);
     });
 
   }

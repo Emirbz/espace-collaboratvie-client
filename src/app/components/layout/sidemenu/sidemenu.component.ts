@@ -32,10 +32,14 @@ export class SidemenuComponent implements OnInit {
   }
 
   loadUSerStats() {
-    this.userService.getUserStats().subscribe(stats => {
-      this.loadedStats = stats;
 
-    });
+    setTimeout(() => {
+      this.userService.getUserStats().subscribe(stats => {
+        this.loadedStats = stats;
+
+      });
+    }, 500);
+
   }
 
   getLoggedUser() {
