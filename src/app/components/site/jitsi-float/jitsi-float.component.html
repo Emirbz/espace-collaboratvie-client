@@ -1,1 +1,35 @@
-<div style="float: right;z-index: 999" id="jitsi"></div>
+<input type="file" (change)="uploadFile($event)">
+
+<div class="skills-item" style="width: 25%">
+  <div class="skills-item-meter">
+
+    <span class="skills-item-meter-active bg-primary skills-animate"
+          [ngStyle]="{'width':uploadProgress+'%'}"
+          style=" opacity: 1;">{{uploadProgress}}%</span>
+
+  </div>
+</div>
+
+
+<div class="ui-block features-video" style="width: 30%">
+  <div class="video-player">
+    <img src="assets/img/video9.jpg" alt="photo">
+    <a
+      href="http://localhost:9000/documents/8324305f-200f-4c9a-9b2b-20822e637ccc-EspaceCollaborative-GoogleChrome2020-08-1919-06-00.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=espace_collaborative%2F20200830%2F%2Fs3%2Faws4_request&X-Amz-Date=20200830T190539Z&X-Amz-Expires=432000&X-Amz-SignedHeaders=host&X-Amz-Signature=50d2c0e72c24485f108f67869298ec071abcfa3371465668abc2f61c9e4da101"
+      class="play-video">
+      <svg class="olymp-play-icon">
+        <use xlink:href="#olymp-play-icon"></use>
+      </svg>
+    </a>
+
+    <div class="video-content">
+      <div class="h4 title">Rock Garden Festival - Day 3</div>
+      <time class="published" datetime="2017-03-24T18:18">12:06</time>
+    </div>
+
+    <div class="overlay"></div>
+  </div>
+
+</div>
+
+

@@ -18,8 +18,8 @@ export class AppComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.getStatus();
     this.getLoggedUser();
-    // @ts-ignore
-    $('body').tooltip({selector: '[data-toggle=tooltip]'});
+    this.initBootstrapToolTip();
+
   }
 
   ngAfterViewInit() {
@@ -53,6 +53,17 @@ export class AppComponent implements OnInit, AfterViewInit {
       e.preventDefault(); // does nothing since the listener is passive
     }, {
       passive: true
+    });
+  }
+
+  private initBootstrapToolTip() {
+    // @ts-ignore
+    $('body').tooltip({selector: '[data-toggle=tooltip]'}).click(() => {
+      // @ts-ignore
+      $('.tooltip').fadeOut('fast', () => {
+        // @ts-ignore
+        $('.tooltip').remove();
+      });
     });
   }
 }

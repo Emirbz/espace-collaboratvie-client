@@ -1,4 +1,4 @@
-import {AfterViewChecked, AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import * as JitsiMeetExternalAPI from '../../../../assets/js/Jitsi/external_api';
 import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import Room from '../../../models/Room';
@@ -13,6 +13,9 @@ import User from '../../../models/User';
 import {UserService} from '../../../services/user.service';
 import {environment} from '../../../../environments/environment';
 import * as EventBus from 'vertx3-eventbus-client';
+import {Duration, Icon, ToastBootsrapService} from '../../../services/toast-bootsrap.service';
+import {Lightbox} from 'ngx-lightbox';
+import {FileService} from '../../../services/file.service';
 
 
 @Component({
@@ -20,7 +23,7 @@ import * as EventBus from 'vertx3-eventbus-client';
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css']
 })
-export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
+export class ChatComponent implements OnInit {
 
   @ViewChild('msgInput', {static: false}) msgInput: ElementRef;
   @ViewChild('scrollMe', {static: true}) private myScrollContainer: ElementRef;
@@ -47,6 +50,7 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
   loadedImages: Message[] = [];
   selectedMessage: Message;
   selectedUsers: User[] = [];
+  loadedUsers: User[];
   loggedUser: User;
   /* -------- Post Data ------ */
   // tslint:disable-next-line:max-line-length
@@ -60,16 +64,16 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
   loaderHidden = true;
   sondagesHasBeenLoaded = false;
   allReactionChecked = false;
-
-  ngAfterViewInit() {
-
-
-  }
-
-
-  ngAfterViewChecked() {
-
-  }
+  /* ---- Photo upload --- */
+  photoToUpload = false;
+  photoChoosen = false;
+  presignedUrlForUpload: {};
+  imageUplaodProgress = 0;
+  imageUrl;
+  albums = [];
+  /*----- Invite Users ------ */
+  usersFormGroup: FormGroup;
+  selectedUsersToInvite: User[];
 
   constructor(private formBuilder: FormBuilder,
               private route: ActivatedRoute,
@@ -78,14 +82,38 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
               private titleService: TitleService,
               private userService: UserService,
               private router: Router,
+              private toastBootsrapService: ToastBootsrapService,
+              private lightBox: Lightbox,
+              private fileService: FileService
   ) {
+    for (let i = 1; i <= 4; i++) {
+      const src = 'https://themyth92.com/project/ngx-lightbox/demo/img/image' + i + '.jpg';
+      const caption = 'Image ' + i + ' caption here';
+      const thumb = 'https://themyth92.com/project/ngx-lightbox/demo/img/image' + i + '-thumb.jpg';
+      const album = {
+        src,
+        caption,
+        thumb
+      };
 
+      this.albums.push(album);
+    }
+  }
 
+  open(index: number): void {
+    console.log(index);
+    this.lightBox.open(this.albums, index);
+  }
+
+  close(): void {
+    // close lightbox programmatically
+    this.lightBox.close();
   }
 
   ngOnInit() {
-
     this.getLoggedUser();
+    this.loadUsersToInvite();
+    this.usersFormGroupValidate();
     this.joinRoom();
     this.jitsiFormValidate();
     this.loadRoomMessages();
@@ -93,8 +121,45 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
     this.connectToChat();
     this.SondageFormValidate();
 
-    // @ts-ignore
 
+  }
+
+  loadUsersToInvite() {
+    const id = this.route.snapshot.paramMap.get('id');
+    this.userService.getUsersToInvite(id).subscribe(u => {
+      this.loadedUsers = u;
+
+
+    });
+
+  }
+
+  inviteUsers() {
+    const id = this.route.snapshot.paramMap.get('id');
+    const usersToPersist: User[] = [];
+    this.usersFormGroup.value.users.forEach(idUser => {
+      const u = new User(idUser, null, null, null);
+      usersToPersist.push(u);
+    });
+
+    this.roomService.addUsers(id, usersToPersist).subscribe(room => {
+      this.usersFormGroup.reset();
+      this.loadRoom();
+      this.loadUsersToInvite();
+      // @ts-ignore
+      $('#modal-invite-users').modal('toggle');
+      // tslint:disable-next-line:max-line-length
+      this.showToast('Collaborateurs ajouté', 'Les collaborateurs ont été ajouté à votre groupe de discussion', Icon.success, undefined, Duration.long);
+    });
+
+
+  }
+
+  usersFormGroupValidate() {
+    /*----TODO on refresh select css broken ------ */
+    this.usersFormGroup = this.formBuilder.group({
+      users: [this.loadedUsers, Validators.required]
+    });
 
   }
 
@@ -205,6 +270,7 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
       if (!room.users.some(item => item.id === this.loggedUser.id)) {
         this.router.navigate(['rooms']);
       }
+      // this.loadUsers(room);
     });
   }
 
@@ -214,12 +280,14 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
     this.chatService.getMessageByRoom(id).subscribe(msg => {
       this.loadedMessages = msg;
       this.messagesHasbeenLoaded = true;
-      this.scrollToElement('message' + msg[msg.length - 1].id, 'auto', 0);
-
+      if (msg.length > 0) {
+        this.scrollToElement('message' + msg[msg.length - 1].id, 'auto', 0);
+      }
     });
   }
 
   scrollToElement(elementSelector: string, behavior: string, time: number) {
+
     setTimeout(() => {
       const el = document.getElementById(elementSelector);
       switch (behavior) {
@@ -227,7 +295,7 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
           el.scrollIntoView({behavior: 'smooth', block: 'center'});
           break;
         case 'auto':
-          el.scrollIntoView({behavior: 'auto', block: 'center'});
+          el.scrollIntoView({behavior: 'auto', block: 'end'});
           break;
       }
     }, time);
@@ -314,20 +382,15 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
     switch (body.type) {
       case 'REACTION':
         const reaction = JSON.parse(body.body) as Reaction;
-        console.log(reaction);
         this.appendReaction(reaction, body.message_id);
         break;
       case 'TEXT':
-        const recivedMessage = JSON.parse(body.body) as Message;
-        recivedMessage.reactions = [];
-        this.loadedMessages.push(recivedMessage);
-        this.scrollToElement('message' + recivedMessage.id, 'smooth', 50);
+        const recivedText = JSON.parse(body.body) as Message;
+        this.appendText(recivedText);
         break;
       case 'SONDAGE':
         const recivedSondage = JSON.parse(body.body) as Message;
-        this.loadedMessages.push(recivedSondage);
-        this.loadedSondages.splice(0, 0, recivedSondage);
-        this.scrollToElement('message' + recivedSondage.id, 'smooth', 50);
+        this.appendSondage(recivedSondage);
 
         break;
       case 'VOTE':
@@ -389,6 +452,9 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
         this.bodyData.choix_id = choixId;
         this.bodyData.message_id = message.id;
         break;
+      case 'IMAGE':
+        this.bodyData.file = value;
+        break;
     }
     this.eventBus.send('chat.to.server', JSON.stringify(this.bodyData));
 
@@ -427,35 +493,21 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
   postSondage() {
     const {question, choix} = this.sondageFormGroup.value;
     this.dataSondage = {body: question, choix, room: new Room(this.loadedRoom.id), type: 'SONDAGE', user: this.loggedUser};
-
-    this.showSucces();
-
     this.publishMessage('SONDAGE', null, null, this.dataSondage);
     this.sondageFormGroup.reset();
+    // @ts-ignore
+    $('#modal-add-sondage').modal('toggle');
 
 
   }
 
-  showSucces() {
-    this.toastSucces = 'alert alert-success animated bounceInDown';
-    setTimeout(() => {
-
-      this.toastSucces = 'alert alert-success animated bounceOutUp';
-      setTimeout(() => {
-        // @ts-ignore
-        $('#modal-add-sondage').modal('toggle');
-        this.toastSucces = 'alert alert-succes d-none';
-      }, 400);
-    }, 1500);
-
-
-  }
-
-  scrollToBottom(): void {
-    try {
-      this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
-    } catch (err) {
-    }
+  showToast(title: string, description: string, icon?: Icon, timestamp?: string, duration?: Duration) {
+    const id = Date.now();
+    this.toastBootsrapService.show(id, title, description, {
+      timestamp,
+      icon,
+      duration
+    });
   }
 
   vote(id: number, message?: Message) {
@@ -513,4 +565,83 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
     this.allReactionChecked = false;
 
   }
+
+  private appendText(recivedMessage: Message) {
+    recivedMessage.reactions = [];
+    // tslint:disable-next-line:max-line-length
+    if ((recivedMessage.body) && (recivedMessage.body.indexOf('www') > -1 || recivedMessage.body.indexOf('http') > -1 || recivedMessage.body.indexOf('https') > -1)) {
+      this.getLinkPreview(recivedMessage);
+    }
+    console.log(recivedMessage);
+    this.loadedMessages.push(recivedMessage);
+    this.scrollToElement('message' + recivedMessage.id, 'smooth', 50);
+  }
+
+  private appendSondage(recivedSondage: Message) {
+    if (recivedSondage.user.id === this.loggedUser.id) {
+      this.showToast('Sondage crée', 'Votre sondage a été envoyée au discussion avec sucésss', Icon.success, undefined, Duration.long);
+    }
+    this.loadedMessages.push(recivedSondage);
+    this.loadedSondages.splice(0, 0, recivedSondage);
+    this.scrollToElement('message' + recivedSondage.id, 'smooth', 500);
+  }
+
+  openModalUplaodImage() {
+    this.photoToUpload = false;
+    this.photoChoosen = false;
+    this.presignedUrlForUpload = {};
+    this.imageUplaodProgress = 0;
+
+  }
+
+
+  getPresignedUrlForUpload(event) {
+    this.imageUplaodProgress = 0;
+    this.displayImageToUpload(event);
+    this.photoChoosen = true;
+    setTimeout(() => {
+      this.photoToUpload = true;
+    }, 100);
+    this.fileService.getPresignedUrlForUpload(event.target.files[0]).subscribe(upload => {
+      this.presignedUrlForUpload = upload;
+    });
+  }
+
+  displayImageToUpload(event) {
+    const reader = new FileReader();
+    reader.readAsDataURL(event.target.files[0]);
+    reader.onload = () => {
+      this.imageUrl = reader.result;
+    };
+  }
+
+  uploadPhoto(files: FileList) {
+    this.fileService.upload(files[0], true, this.presignedUrlForUpload).subscribe(value => {
+      if (value !== undefined) {
+        if (!isNaN(value)) {
+          this.imageUplaodProgress = value;
+        } else if (value instanceof Array) {
+          console.log('id: ' + value[0].id);
+          // @ts-ignore
+          $('#modal-uplaod-photo').modal('toggle');
+          this.publishMessage('IMAGE', value[0].id);
+
+        }
+      }
+    });
+
+  }
+
+
+  getLinkPreview(msg: Message) {
+
+
+    this.chatService.getLinkPreview(msg.body).subscribe(value => {
+      msg.linkPreview = value;
+    }, error => {
+      msg.linkPreview = undefined;
+    });
+  }
+
+
 }

@@ -1,12 +1,12 @@
 import {AfterViewInit, Component, OnInit, ViewEncapsulation} from '@angular/core';
-import Room from '../../../models/Room';
+import Room, {Status} from '../../../models/Room';
 import {RoomService} from '../../../services/room.service';
 import User from '../../../models/User';
 import {UserService} from '../../../services/user.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {TitleService} from '../../../services/title.service';
-import {ToastBootsrapService} from '../../../services/toast-bootsrap.service';
+import {Duration, Icon, ToastBootsrapService} from '../../../services/toast-bootsrap.service';
 
 
 @Component({
@@ -22,11 +22,9 @@ export class RoomsComponent implements OnInit, AfterViewInit {
   loadedUsers: User[];
   loggedUser: User;
   selectedUsersModal: User[];
-  /* ---- Select dropdown USers*/
-  selectedUsers: any;
+
   /* --------- Loader Post room --------*/
   roomCreated = false;
-  toastSucces = 'alert alert-success d-none';
   roomFormGroup: FormGroup;
   roomsHaveBeenLoaded = false;
   /*---- Room request class ---- */
@@ -48,7 +46,6 @@ export class RoomsComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-
     this.loadRooms();
     this.loadUsers();
     this.roomFormValidate();
@@ -61,7 +58,7 @@ export class RoomsComponent implements OnInit, AfterViewInit {
     this.roomFormGroup = this.formBuilder.group({
       name: ['', Validators.required],
       subject: ['', Validators.required],
-      users: [''],
+      users: [this.loadedUsers],
     });
 
   }
@@ -84,21 +81,6 @@ export class RoomsComponent implements OnInit, AfterViewInit {
 
   }
 
-  showSucces() {
-    this.toastSucces = 'alert alert-success animated bounceInDown';
-    setTimeout(() => {
-
-      this.toastSucces = 'alert alert-success animated bounceOutUp';
-      setTimeout(() => {
-        // @ts-ignore
-        $('#create-friend-group-1').modal('toggle');
-        this.toastSucces = 'alert alert-succes d-none';
-        this.roomCreated = false;
-      }, 400);
-    }, 1500);
-
-
-  }
 
   addRoom() {
     if (!this.roomFormGroup.valid) {
@@ -107,7 +89,7 @@ export class RoomsComponent implements OnInit, AfterViewInit {
     this.roomCreated = true;
     const {name, subject} = this.roomFormGroup.value;
     const usertoPersist: User[] = [];
-    this.selectedUsers.forEach(idUser => {
+    this.roomFormGroup.value.users.forEach(idUser => {
       const u = new User(idUser, null, null, null);
       usertoPersist.push(u);
     });
@@ -118,7 +100,9 @@ export class RoomsComponent implements OnInit, AfterViewInit {
       user: this.loggedUser
     };
     this.roomService.addRoom(dataRoom).subscribe(room => {
-      this.showSucces();
+      // @ts-ignore
+      $('#create-friend-group-1').modal('toggle');
+      this.showToast('Groupe crée', 'Votre groupe de discussion a été crée avec success', undefined, undefined, Duration.long);
       this.loadRooms();
       this.roomFormGroup.reset();
 
@@ -139,10 +123,11 @@ export class RoomsComponent implements OnInit, AfterViewInit {
 
 
   joinRoomRequest(room: Room) {
-    if (room.requestStatus === null) {
+    if (room.requestStatus === null || room.requestStatus === Status.REJECTED) {
       this.roomService.joinRoom(room.id).subscribe(() => {
-        room.requestStatus = 'PENDING';
+        room.requestStatus = Status.PENDING;
         this.requestedRoom = room;
+        this.showToast('Demande envoyée', 'Votre demande a été envoyée au proprietaire du groupe', Icon.info, undefined, Duration.long);
       });
     }
 
@@ -157,8 +142,12 @@ export class RoomsComponent implements OnInit, AfterViewInit {
 
   }
 
-  showToast() {
+  showToast(title: string, description: string, icon?: Icon, timestamp?: string, duration?: Duration) {
     const id = Date.now();
-    this.toastBootsrapService.show(id, 'titre', 'Welcomee to your friends groups! Do you wanna know what ', {timestamp: 'tawa tawa'});
+    this.toastBootsrapService.show(id, title, description, {
+      timestamp,
+      icon,
+      duration
+    });
   }
 }

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import * as JitsiMeetExternalAPI from '../../../../assets/js/Jitsi/external_api';
+import {FileService} from '../../../services/file.service';
 
 
 @Component({
@@ -11,22 +11,30 @@ export class JitsiFloatComponent implements OnInit {
   domain = 'meet.jit.si';
   options: any;
   apiJitsi: any;
+  uploadProgress: number;
 
-  constructor() {
+  constructor(private fileService: FileService) {
   }
 
   ngOnInit() {
-    this.openJitsi();
+
   }
 
-  openJitsi() {
-    this.options = {
-      roomName: 'toutou',
-      width: 500,
-      height: 350,
-      parentNode: document.querySelector('#jitsi')
-    };
-    this.apiJitsi = new JitsiMeetExternalAPI(this.domain, this.options);
+
+  uploadFile(event) {
+    this.fileService.uploadFile(event.target.files[0], true).subscribe(value => {
+
+      if (value !== undefined) {
+        if (!isNaN(value)) {
+          this.uploadProgress = value;
+        } else if (value instanceof Array) {
+          console.log('id: ' + value[0].id);
+
+        }
+      }
+    });
+
+
   }
 
 }

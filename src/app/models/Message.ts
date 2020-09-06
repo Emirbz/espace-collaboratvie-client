@@ -2,6 +2,7 @@ import User from './User';
 import Reaction from './Reaction';
 import Choix from './Choix';
 import Room from './Room';
+import LinkPreview from './LinkPreview';
 
 export default class Message {
   id?: number;
@@ -13,6 +14,7 @@ export default class Message {
   user?: User;
   reactions?: Reaction[];
   choix: Choix[];
+  linkPreview?: LinkPreview;
 
   constructor(body: string, timestamp: string, type: string, room: Room, user: User) {
     this.body = body;

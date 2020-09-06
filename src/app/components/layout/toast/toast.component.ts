@@ -21,6 +21,7 @@ export class ToastComponent implements OnInit {
   loadToasts() {
 
     this.loadedToasts = this.toastBootsrapService.getToasts();
+
   }
 
 

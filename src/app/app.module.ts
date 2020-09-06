@@ -41,6 +41,7 @@ import {JitsiFloatComponent} from './components/site/jitsi-float/jitsi-float.com
 import {RoomRequestService} from './services/room-request.service';
 import {ToastComponent} from './components/layout/toast/toast.component';
 import {ToastBootsrapService} from './services/toast-bootsrap.service';
+import {LightboxModule} from 'ngx-lightbox';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -79,7 +80,8 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
     AngularFontAwesomeModule,
     KeycloakAngularModule,
     BrowserAnimationsModule,
-    NgZorroAntdModule
+    NgZorroAntdModule,
+    LightboxModule
   ],
   providers: [
     RoomService,

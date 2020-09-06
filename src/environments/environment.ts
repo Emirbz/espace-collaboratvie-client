@@ -12,6 +12,7 @@ const keycloakConfig: KeycloakConfig = {
   clientId: 'angular-app',
 
 };
+const linkPreviewKey = 'f09affebf5ce7fd246b203c6854a0fb0';
 
 
 export const environment = {
@@ -30,7 +31,8 @@ export const environment = {
     keycloak: keycloakConfig,
     backUrl: backURL,
     badge: backURL + '/badge',
-    roomRequest: backURL + '/roomrequest'
+    roomRequest: backURL + '/roomrequest',
+    linkPreview: `http://api.linkpreview.net/?key=${linkPreviewKey}=&q=`
   },
 };
 

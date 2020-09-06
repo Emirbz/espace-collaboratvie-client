@@ -5753,8 +5753,13 @@ body {
 
 .update-header-photo {
   width: 770px; }
-  .update-header-photo .modal-body {
-    padding: 0; }
+.update-header-photo .modal-body {
+  padding: 0;
+}
+
+.display-inline-flex {
+  display: inline-flex;
+}
 
 .upload-photo-item {
   display: inline-block;
@@ -6916,7 +6921,8 @@ ol ol li {
 
 .video-thumb {
   position: relative;
-  float: left; }
+  float: right;
+}
   .video-thumb img {
     display: block;
     width: 100%; }

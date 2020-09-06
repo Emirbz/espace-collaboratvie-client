@@ -11,8 +11,7 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
-    return fromPromise(this.keycloak.getToken())
+    return request.headers.get('skip') ? next.handle(request) : fromPromise(this.keycloak.getToken())
       .pipe(
         flatMap(idToken => {
           if (idToken) {
@@ -26,5 +25,6 @@ export class AuthInterceptor implements HttpInterceptor {
           }
         })
       );
+
   }
 }

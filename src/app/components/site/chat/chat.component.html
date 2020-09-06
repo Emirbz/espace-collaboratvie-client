@@ -1333,15 +1333,26 @@
                            [attr.data-placement]="'top'" [attr.title]="m.timestamp*1000 | date: 'yyyy-MM-dd HH:MM'">
 
                     </div>
-                    <!-- Text MEssage -->
+
+                    <!--IMAGE MESSAGE-->
+                    <!--   <div class="notification-event min-width-7  added-photos widget w-last-photo js-zoom-gallery">
+                         <a href="assets/img/last-photo10-large.jpg">
+                           <img class="photo-chat" src="assets/img/last-photo10-large.jpg" alt="photo">
+                         </a>
+
+                       </div>-->
+                    <!--END IMAGE MESSAGE-->
+
+
+                    <!-- Text MEssage-->
                     <div *ngIf="m?.type==='TEXT'" class="notification-event min-width-7 ">
 
-                      <span class="chat-message-item ">{{m?.body | titlecase}}
-																</span>
+                             <span class="chat-message-item ">{{m?.body }}
+                                       </span>
                       <div [id]="'reaction'+m?.id" #reaction *ngIf="m?.reactions?.length>0 && loadedMessages "
                            [ngClass]="reaction.id == lastReactedId ? ' user-reactions blink': 'user-reactions'">
                         <ul data-toggle="modal" data-target="#modal-list-reactions" (click)="openModalReaction(m)">
-                          <!-- Reaction buttons container-->
+                          <!--     Reaction buttons container-->
                           <li *ngIf="checkReactionsExists(m,'LIKE')" class="reaction"><img src="assets/img/like.png">
                           </li>
                           <li *ngIf="checkReactionsExists(m,'LOVE')" class="reaction"><img src="assets/img/love.png">
@@ -1355,9 +1366,11 @@
                         </ul>
                       </div>
 
+
                     </div>
-                    <!-- End Text message -->
-                    <!-- Reaction - Make Reaction -->
+
+                    <!--    End Text message-->
+                    <!--Reaction - Make Reaction -->
                     <div *ngIf="m?.type==='TEXT'" class="box">
                       <input type="checkbox" id="likes" class="field-reactions">
                       <a class="label-reactions">
@@ -1397,39 +1410,41 @@
                       </button>
 
                     </div>
-                    <!-- End Make Reaction -->
-                    <!--Sondages -->
+                    <!--End Make Reaction-->
+                    <!-- Sondages -->
                     <div *ngIf="m?.type==='SONDAGE'" class="ui-block">
                       <div class="ui-block-title">
                         <h6 class="title">{{m?.body}}</h6>
                       </div>
                       <div class="ui-block-content padding-10">
 
-                        <!-- W-Pool -->
+                        <!--
+                                                        W-Pool
+                        -->
 
                         <ul class="widget w-pool margin-b-0">
                           <li *ngFor="let c of m?.choix">
                             <div class="skills-item full-width">
                               <div class="skills-item-info">
-									<span class="skills-item-title">
-										<span class="radio">
-											<label>
-												<input [checked]="checkUserHasVoted(c,loggedUser)" (change)="vote(c.id,m)" type="radio"
-                               [name]="'choice'+m?.id"><span class="circle"></span><span class="check"></span>
-                        {{c?.body}}
-											</label>
-										</span>
-									</span>
+                         <span class="skills-item-title">
+                           <span class="radio">
+                             <label>
+                               <input [checked]="checkUserHasVoted(c,loggedUser)" (change)="vote(c.id,m)" type="radio"
+                                      [name]="'choice'+m?.id"><span class="circle"></span><span class="check"></span>
+                               {{c?.body}}
+                             </label>
+                           </span>
+                         </span>
                                 <span class="skills-item-count">
-										<span class="count-animate" data-speed="1000" data-refresh-interval="50"
-                          [attr.data-to]="calculateUsersVote(c,m) | number"
-                          data-from="0"></span>
-										<span class="units">{{calculateUsersVote(c, m) | number}}%</span>
-									</span>
+                           <span class="count-animate" data-speed="1000" data-refresh-interval="50"
+                                 [attr.data-to]="calculateUsersVote(c,m) | number"
+                                 data-from="0"></span>
+                           <span class="units">{{calculateUsersVote(c, m) | number}}%</span>
+                         </span>
                               </div>
                               <div class="skills-item-meter">
-                                <span class="skills-item-meter-active bg-primary skills-animate"
-                                      style="opacity:1" [ngStyle]="{'width':calculateUsersVote(c,m)+'%'}"></span>
+                                       <span class="skills-item-meter-active bg-primary skills-animate"
+                                             style="opacity:1" [ngStyle]="{'width':calculateUsersVote(c,m)+'%'}"></span>
                               </div>
 
                               <div *ngIf="c?.users?.length===0" class="counter-friends">Personne n'a voté pour cela.
@@ -1462,12 +1477,16 @@
 
                         </ul>
 
-                        <!-- .. end W-Pool -->
+                        <!--
+                                                        .. end W-Pool
+                        -->
 
                       </div>
                     </div>
 
                     <!-- End Sondage -->
+
+
                   </li>
 
 
@@ -1484,11 +1503,13 @@
                     <textarea #msgInput (keyup.enter)="sendMessage(msgInput.value)" class="form-control"
                               placeholder="Ecrire votre message ...."></textarea>
                     <div class="add-options-message">
-                      <a href="#" class="options-message" data-toggle="modal" data-target="#update-header-photo">
+                      <a (click)="openModalUplaodImage()" class="options-message" data-toggle="modal"
+                         data-target="#modal-uplaod-photo">
                         <svg class="olymp-camera-icon">
                           <use xlink:href="#olymp-camera-icon"></use>
                         </svg>
                       </a>
+
                     </div>
                     <span class="material-input"></span></div>
                 </div>
@@ -1506,35 +1527,30 @@
       </div>
 
 
-      <!-- Pagination -->
-
-
-      <!-- ... end Pagination -->
-
     </div>
 
     <div [ngClass]="leftBarClass">
       <div class="ui-block">
         <div class="ui-block-title">
           <h6 class="title">Collaborateurs ({{loadedRoom?.users.length}})</h6>
-          <!-- TODO invite users -->
 
-          <!--    <a href="#" class="more">
-                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
-                     width="22" height="22"
-                     viewBox="0 0 172 172"
-                     style=" fill:#000000;">
-                  <g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt"
-                     stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0"
-                     font-family="none" font-size="none" style="mix-blend-mode: normal">
-                    <path d="M0,172v-172h172v172z" fill="none"></path>
-                    <g fill="#08ddc1">
-                      <path
-                        d="M117.53333,17.2c-12.18907,0 -14.33333,8.6 -14.33333,8.6c-4.25987,0 -7.66448,1.59494 -10.31328,4.25521c2.93547,6.31813 4.57995,13.59839 4.57995,21.54479c0,3.9904 -0.79102,7.86129 -1.67969,10.95156c1.1868,2.8036 1.76963,6.17427 1.27657,10.05573c-0.59627,4.67267 -2.00703,8.27553 -3.80729,11.13073c1.09507,3.15907 3.10532,6.39553 5.10625,8.95833c9.02427,-7.72853 20.71883,-12.42969 33.50417,-12.42969c3.61773,0 7.1483,0.38646 10.55964,1.09739c0.0516,-0.26947 0.1393,-0.55918 0.16797,-0.82864c2.0296,-0.1548 5.21858,-2.01679 6.15885,-9.37266c0.50454,-3.94453 -1.49443,-6.16485 -2.70989,-6.86432c0,0 3.02344,-6.36884 3.02344,-12.69844c0,-18.7996 -11.53547,-34.4 -31.53333,-34.4zM54.46667,17.2112c-12.18907,0 -14.33333,8.6 -14.33333,8.6c-11.73613,0 -17.2,11.87947 -17.2,25.8c0,6.94307 3.02344,12.68724 3.02344,12.68724c-1.21547,0.69947 -3.21443,2.91405 -2.7099,6.86432c0.94027,7.35587 4.12925,9.22906 6.15885,9.38386c0.774,6.8628 8.1476,15.64152 10.7276,16.92005v11.46667c-5.73333,17.2 -40.13333,5.73333 -40.13333,45.86667h85.70886c-3.4572,-6.92013 -5.44219,-14.6888 -5.44219,-22.93333c0,-4.2484 0.57638,-8.35624 1.54531,-12.30651c-5.96267,-2.3392 -11.09704,-4.88203 -13.01198,-10.62683v-11.46667c2.58,-1.27853 9.95361,-10.06272 10.72761,-16.93125c2.0296,-0.1548 5.21858,-2.01679 6.15885,-9.37266c0.50453,-3.94453 -1.49443,-6.16485 -2.70989,-6.86432c0,0 3.02344,-6.36884 3.02344,-12.69844c0,-18.7996 -11.53547,-34.39454 -31.53333,-34.3888zM131.86667,91.73333c-22.16507,0 -40.13333,17.96827 -40.13333,40.13333c0,22.16507 17.96827,40.13333 40.13333,40.13333c22.16507,0 40.13333,-17.96827 40.13333,-40.13333c0,-22.16507 -17.96827,-40.13333 -40.13333,-40.13333zM131.86667,108.93333c3.1648,0 5.73333,2.5628 5.73333,5.73333v11.46667h11.46667c3.1648,0 5.73333,2.5628 5.73333,5.73333c0,3.17053 -2.56853,5.73333 -5.73333,5.73333h-11.46667v11.46667c0,3.17053 -2.56853,5.73333 -5.73333,5.73333c-3.1648,0 -5.73333,-2.5628 -5.73333,-5.73333v-11.46667h-11.46667c-3.1648,0 -5.73333,-2.5628 -5.73333,-5.73333c0,-3.17053 2.56853,-5.73333 5.73333,-5.73333h11.46667v-11.46667c0,-3.17053 2.56853,-5.73333 5.73333,-5.73333z"></path>
-                    </g>
-                  </g>
-                </svg>
-              </a>-->
+
+          <a data-toggle="modal" data-target="#modal-invite-users" class="more">
+            <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+                 width="22" height="22"
+                 viewBox="0 0 172 172"
+                 style=" fill:#000000;">
+              <g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt"
+                 stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0"
+                 font-family="none" font-size="none" style="mix-blend-mode: normal">
+                <path d="M0,172v-172h172v172z" fill="none"></path>
+                <g fill="#08ddc1">
+                  <path
+                    d="M117.53333,17.2c-12.18907,0 -14.33333,8.6 -14.33333,8.6c-4.25987,0 -7.66448,1.59494 -10.31328,4.25521c2.93547,6.31813 4.57995,13.59839 4.57995,21.54479c0,3.9904 -0.79102,7.86129 -1.67969,10.95156c1.1868,2.8036 1.76963,6.17427 1.27657,10.05573c-0.59627,4.67267 -2.00703,8.27553 -3.80729,11.13073c1.09507,3.15907 3.10532,6.39553 5.10625,8.95833c9.02427,-7.72853 20.71883,-12.42969 33.50417,-12.42969c3.61773,0 7.1483,0.38646 10.55964,1.09739c0.0516,-0.26947 0.1393,-0.55918 0.16797,-0.82864c2.0296,-0.1548 5.21858,-2.01679 6.15885,-9.37266c0.50454,-3.94453 -1.49443,-6.16485 -2.70989,-6.86432c0,0 3.02344,-6.36884 3.02344,-12.69844c0,-18.7996 -11.53547,-34.4 -31.53333,-34.4zM54.46667,17.2112c-12.18907,0 -14.33333,8.6 -14.33333,8.6c-11.73613,0 -17.2,11.87947 -17.2,25.8c0,6.94307 3.02344,12.68724 3.02344,12.68724c-1.21547,0.69947 -3.21443,2.91405 -2.7099,6.86432c0.94027,7.35587 4.12925,9.22906 6.15885,9.38386c0.774,6.8628 8.1476,15.64152 10.7276,16.92005v11.46667c-5.73333,17.2 -40.13333,5.73333 -40.13333,45.86667h85.70886c-3.4572,-6.92013 -5.44219,-14.6888 -5.44219,-22.93333c0,-4.2484 0.57638,-8.35624 1.54531,-12.30651c-5.96267,-2.3392 -11.09704,-4.88203 -13.01198,-10.62683v-11.46667c2.58,-1.27853 9.95361,-10.06272 10.72761,-16.93125c2.0296,-0.1548 5.21858,-2.01679 6.15885,-9.37266c0.50453,-3.94453 -1.49443,-6.16485 -2.70989,-6.86432c0,0 3.02344,-6.36884 3.02344,-12.69844c0,-18.7996 -11.53547,-34.39454 -31.53333,-34.3888zM131.86667,91.73333c-22.16507,0 -40.13333,17.96827 -40.13333,40.13333c0,22.16507 17.96827,40.13333 40.13333,40.13333c22.16507,0 40.13333,-17.96827 40.13333,-40.13333c0,-22.16507 -17.96827,-40.13333 -40.13333,-40.13333zM131.86667,108.93333c3.1648,0 5.73333,2.5628 5.73333,5.73333v11.46667h11.46667c3.1648,0 5.73333,2.5628 5.73333,5.73333c0,3.17053 -2.56853,5.73333 -5.73333,5.73333h-11.46667v11.46667c0,3.17053 -2.56853,5.73333 -5.73333,5.73333c-3.1648,0 -5.73333,-2.5628 -5.73333,-5.73333v-11.46667h-11.46667c-3.1648,0 -5.73333,-2.5628 -5.73333,-5.73333c0,-3.17053 2.56853,-5.73333 5.73333,-5.73333h11.46667v-11.46667c0,-3.17053 2.56853,-5.73333 5.73333,-5.73333z"></path>
+                </g>
+              </g>
+            </svg>
+          </a>
         </div>
         <div class="ui-block-content">
 
@@ -1700,16 +1716,28 @@
           <!-- ... end W-Latest-Photo -->
         </div>
       </div>
+      <div class="ui-block">
+        <div class="ui-block-title">
+          <h6 class="title">Last Photos</h6>
+        </div>
+        <div class="ui-block-content">
+
+
+          <!-- W-Latest-Photo -->
+
+          <div *ngFor="let img of albums; let i=index">
+            <img [src]="img.thumb" (click)="open(i)"/>
+          </div>
+
+          <!-- ... end W-Latest-Photo -->
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
 <!-- ... end Your Account Personal Information -->
 
-
-<a class="back-to-top" href="#">
-  <img src="assets/svg-icons/back-to-top.svg" alt="arrow" class="back-icon">
-</a>
 
 <!-- Window-popup REaction Reactionm -->
 
@@ -2113,9 +2141,7 @@
                   class="btn btn-primary btn-md full-width blue-button c-white" style="color: white">Lancer le Sondage
           </button>
         </div>
-        <div [ngClass]="toastSucces" role="alert">
-          Le Sondage a été créer avec <b>succès</b>
-        </div>
+
       </div>
     </div>
   </div>
@@ -2124,3 +2150,117 @@
 <!-- ... end Window-popup add sondage -->
 
 
+<!-- Window-popup Upload Photo  -->
+
+<div class="modal fade" id="modal-uplaod-photo" tabindex="-1" role="dialog" aria-labelledby="update-header-photo"
+     aria-hidden="true">
+  <div class="modal-dialog window-popup update-header-photo" role="document">
+    <div class="modal-content">
+      <a href="#" class="close icon-close" data-dismiss="modal" aria-label="Close">
+        <svg class="olymp-close-icon">
+          <use xlink:href="#olymp-close-icon"></use>
+        </svg>
+      </a>
+
+      <div class="modal-header">
+        <h6 class="title">Update Header Photo</h6>
+      </div>
+
+      <div class="modal-body">
+        <a (click)="fileInput.click()" [ngClass]="!photoChoosen ? 'full-width upload-photo-item ':'upload-photo-item'">
+          <svg class="olymp-computer-icon">
+            <use xlink:href="#olymp-computer-icon"></use>
+          </svg>
+
+          <h6>Upload Photo</h6>
+          <span>Browse your computer.</span>
+        </a>
+
+        <input #fileInput (change)="getPresignedUrlForUpload($event)" type="file" hidden>
+        <div *ngIf="photoToUpload" class="video-thumb upload-photo-item padding-upload-photo"
+             style="text-align: -webkit-center;">
+          <img class="uploaded-photo" loading="lazy" [src]="imageUrl" alt="photo">
+          <a class="play-video" (click)="uploadPhoto(fileInput.files)">
+            <svg class="olymp-play-icon" style="margin-top: 12px;">
+              <use xlink:href="#olymp-play-icon"></use>
+            </svg>
+          </a>
+          <div class="skills-item width-55">
+            <div class="skills-item-meter">
+
+    <span class="skills-item-meter-active bg-primary skills-animate"
+          [ngStyle]="{'width':imageUplaodProgress+'%'}"
+          style=" opacity: 1;"></span>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ... end Window-popup Upload Photo -->
+
+
+<!-- Window-popup Create Friends Group -->
+
+<div class="modal fade" id="modal-invite-users" tabindex="-1" role="dialog" aria-labelledby="create-friend-group-1"
+     aria-hidden="true">
+  <div class="modal-dialog window-popup create-friend-group create-friend-group-1" role="document">
+    <div class="modal-content">
+      <a href="#" class="close icon-close" data-dismiss="modal" aria-label="Close">
+        <svg class="olymp-close-icon">
+          <use xlink:href="#olymp-close-icon"></use>
+        </svg>
+      </a>
+      <div class="modal-header">
+        <h6 class="title">Inviter des collaborateurs</h6>
+      </div>
+
+      <div class="modal-body">
+        <form [formGroup]="usersFormGroup" class="form-group label-floating">
+
+          <div class="form-group label-floating">
+
+            <ng-select
+              formControlName="users"
+              [items]="loadedUsers"
+              [multiple]="true"
+              bindValue="id"
+              bindLabel="firstName"
+              placeholder="Inviter des collaborateurs">
+              <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                <div class="ng-value " *ngFor="let item of items | slice:0:2">
+                  <span class="ng-value-label"><img class="rounded" [src]="item.image" width="20px" height="20px"><span
+                    style="padding: 0.25em"> {{item.firstName}} {{item.lastName}} </span></span>
+                  <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                </div>
+                <div class="ng-value " style="padding-top: 8px;" *ngIf="items.length > 2">
+                  <span class="ng-value-label">{{items.length - 2}} autres...</span>
+                </div>
+              </ng-template>
+
+              <ng-template ng-option-tmp let-item="item">
+                <img class="rounded" [src]="item.image" width="20px" height="20px"> <span
+                style="padding: 0.25em">{{item.firstName}} {{item.lastName}}</span>
+              </ng-template>
+            </ng-select>
+
+          </div>
+
+        </form>
+
+
+        <button [disabled]="usersFormGroup.invalid" class="btn btn-blue btn-lg full-width"
+                (click)="inviteUsers()">
+          Inviter les collaborateurs
+        </button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ... end Window-popup Create Friends Group -->

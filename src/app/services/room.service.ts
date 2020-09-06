@@ -30,8 +30,13 @@ export class RoomService {
 
   }
 
+  addUsers(id, users): Observable<Room> {
+    return this.http.put<Room>(`${this.roomUrl}/users/${id}`, users);
+
+  }
+
   leavRoom(id): Observable<Room> {
-    return this.http.put<Room>(`${this.roomUrl}/leav/${id}`, null);
+    return this.http.put<Room>(`${this.roomUrl}/leave/${id}`, null);
 
   }
 

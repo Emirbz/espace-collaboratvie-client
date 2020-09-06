@@ -25,6 +25,10 @@ export class UserService {
     return this.http.get<User[]>(`${this.userUrl}`);
   }
 
+  getUsersToInvite(roomId): Observable<User[]> {
+    return this.http.get<User[]>(`${this.userUrl}/invite/${roomId}`);
+  }
+
   getLoggedUser() {
     return this.http.get<User>(`${this.userUrl}/me`);
   }

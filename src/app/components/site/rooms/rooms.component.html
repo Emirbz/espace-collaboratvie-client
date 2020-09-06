@@ -80,7 +80,7 @@
         <!-- Friend Item -->
 
         <div class="friend-item friend-groups">
-          <div (click)="showToast()" *ngIf="r?.isPrivate" style="  right: 10px; top: 10px; z-index: 1"
+          <div *ngIf="r?.isPrivate" style="  right: 10px; top: 10px; z-index: 1"
                class=" more float-right "
                data-toggle="tooltip" data-placement="top"
                title="Groupe privée">
@@ -140,6 +140,18 @@
                 </svg>
 
               </a>
+              <a *ngIf=" (r?.isPrivate && r.requestStatus ==='REJECTED')" (click)="joinRoomRequest(r)"
+                 data-toggle="tooltip"
+                 data-placement="top"
+                 title="Demande Rejetée , Renvoyer une Demande"
+                 class="  btn btn-control bg-blue hover-color" style="background-color: #d22222">
+                <svg class="olymp-chat---messages-icon">
+                  <svg>
+                    <use xlink:href="#olymp-weather-refresh-icon"></use>
+                  </svg>
+                </svg>
+
+              </a>
               <a *ngIf="r.isPrivate && r.requestStatus === null" (click)="joinRoomRequest(r)" data-toggle="tooltip"
                  data-placement="top"
                  title="Demander de rejoindre le groupe"
@@ -151,7 +163,7 @@
                 </svg>
 
               </a>
-              <a *ngIf="r.isPrivate && r.requestStatus === 'PENDING'" (click)="joinRoomRequest(r)" data-toggle="tooltip"
+              <a *ngIf="r.isPrivate && r.requestStatus === 'PENDING'" data-toggle="tooltip"
                  data-placement="top"
                  title="Votre demande est en cours de validation"
                  class=" btn btn-control bg-blue hover-color hover-blocked" style="background-color: #ff9552">
@@ -219,7 +231,7 @@
               bindValue="id"
               bindLabel="firstName"
               placeholder="Inviter des collaborateurs"
-              [(ngModel)]="selectedUsers">
+            >
               <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
                 <div class="ng-value " *ngFor="let item of items | slice:0:2">
                   <span class="ng-value-label"><img class="rounded" [src]="item.image" width="20px" height="20px"><span
@@ -247,9 +259,7 @@
           <span *ngIf="roomCreated" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
           Créer le groupe
         </button>
-        <div [ngClass]="toastSucces" role="alert">
-          Le groupe a été créer avec <b>succès</b>
-        </div>
+
       </div>
     </div>
   </div>

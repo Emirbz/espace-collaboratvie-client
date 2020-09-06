@@ -5,6 +5,7 @@ import {Observable} from 'rxjs';
 import Message from '../models/Message';
 import Choix from '../models/Choix';
 import Reaction from '../models/Reaction';
+import LinkPreview from '../models/LinkPreview';
 
 @Injectable()
 export class ChatService {
@@ -49,4 +50,9 @@ export class ChatService {
 
     return this.http.post<Reaction>(`${this.reactionUrl}`, newReaction);
   }
+
+  getLinkPreview(link): Observable<LinkPreview> {
+    return this.http.get<LinkPreview>(`${environment.apis.linkPreview}${link}`);
+  }
+
 }
