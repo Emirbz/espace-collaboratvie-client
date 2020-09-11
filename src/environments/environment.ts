@@ -5,9 +5,10 @@
 import {KeycloakConfig} from 'keycloak-angular';
 
 const backURL = 'http://localhost:8089';
-const keycloakurl = 'http://localhost:8080/auth';
+const keycloakurl = 'http://localhost:8080';
+const minioQuarkus = 'http://192.168.1.21:8200';
 const keycloakConfig: KeycloakConfig = {
-  url: keycloakurl,
+  url: `${keycloakurl}/auth`,
   realm: 'espace_collaborative',
   clientId: 'angular-app',
 
@@ -32,7 +33,8 @@ export const environment = {
     backUrl: backURL,
     badge: backURL + '/badge',
     roomRequest: backURL + '/roomrequest',
-    linkPreview: `http://api.linkpreview.net/?key=${linkPreviewKey}=&q=`
+    linkPreview: `http://api.linkpreview.net/?key=${linkPreviewKey}=&q=`,
+    minioQuarkus: `${minioQuarkus}/api`
   },
 };
 

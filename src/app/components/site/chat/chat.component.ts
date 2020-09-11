@@ -28,21 +28,21 @@ export class ChatComponent implements OnInit {
   @ViewChild('msgInput', {static: false}) msgInput: ElementRef;
   @ViewChild('scrollMe', {static: true}) private myScrollContainer: ElementRef;
   /* -------- NgClasses ---------- */
-  leftBarClass = 'col col-xl-3 order-xl-1 col-lg-3 order-lg-1 col-md-12 order-md-2 col-sm-12 col-12 responsive-display-none';
-  rightBarClass = 'col col-xl-9 order-xl-2 col-lg-9 order-lg-2 col-md-12 order-md-1 col-sm-12 col-12';
-  toastSucces = 'alert alert-success d-none';
-  jitsiClass = 'col col-xl-6 order-xl-3 col-lg-9 order-lg-2 col-md-12 order-md-1 col-sm-12 col-12';
-  loaderClass = 'flexbox col col-xl-3 order-xl-3 col-lg-9 order-lg-2 col-md-12 order-md-1 col-sm-12 col-12 d-none';
+  leftBarClass: string = 'col col-xl-3 order-xl-1 col-lg-3 order-lg-1 col-md-12 order-md-2 col-sm-12 col-12 responsive-display-none';
+  rightBarClass: string = 'col col-xl-9 order-xl-2 col-lg-9 order-lg-2 col-md-12 order-md-1 col-sm-12 col-12';
+  toastSuccess: string = 'alert alert-success d-none';
+  jitsiClass: string = 'col col-xl-6 order-xl-3 col-lg-9 order-lg-2 col-md-12 order-md-1 col-sm-12 col-12';
+  loaderClass: string = 'flexbox col col-xl-3 order-xl-3 col-lg-9 order-lg-2 col-md-12 order-md-1 col-sm-12 col-12 d-none';
   /* ------- Jitsi ------- */
-  title = 'app';
-  domain = 'meet.jit.si';
+  title: string = 'app';
+  domain: string = 'meet.jit.si';
   options: any;
   apiJitsi: any;
-  divJitsiHidden = true;
-  videoCallHidden = false;
+  divJitsiHidden: boolean = true;
+  videoCallHidden: boolean = false;
   jitsiFormGroup: FormGroup;
-  connected = false;
-  private eventBus;
+  connected: boolean = false;
+  private eventBus: any;
   /* ------ Loaded Services -------- */
   loadedRoom: Room;
   loadedMessages: Message[] = [];
@@ -66,14 +66,15 @@ export class ChatComponent implements OnInit {
   allReactionChecked = false;
   /* ---- Photo upload --- */
   photoToUpload = false;
-  photoChoosen = false;
+  photoChosen = false;
   presignedUrlForUpload: {};
-  imageUplaodProgress = 0;
-  imageUrl;
-  albums = [];
+  imageUplaodProgress: number = 0;
+  imageUrl: any;
+  albums: any = [];
   /*----- Invite Users ------ */
   usersFormGroup: FormGroup;
   selectedUsersToInvite: User[];
+  uploadingFile: boolean = false;
 
   constructor(private formBuilder: FormBuilder,
               private route: ActivatedRoute,
@@ -82,26 +83,15 @@ export class ChatComponent implements OnInit {
               private titleService: TitleService,
               private userService: UserService,
               private router: Router,
-              private toastBootsrapService: ToastBootsrapService,
+              private toastBootstrapService: ToastBootsrapService,
               private lightBox: Lightbox,
               private fileService: FileService
   ) {
-    for (let i = 1; i <= 4; i++) {
-      const src = 'https://themyth92.com/project/ngx-lightbox/demo/img/image' + i + '.jpg';
-      const caption = 'Image ' + i + ' caption here';
-      const thumb = 'https://themyth92.com/project/ngx-lightbox/demo/img/image' + i + '-thumb.jpg';
-      const album = {
-        src,
-        caption,
-        thumb
-      };
-
-      this.albums.push(album);
-    }
   }
 
   open(index: number): void {
     console.log(index);
+
     this.lightBox.open(this.albums, index);
   }
 
@@ -112,11 +102,11 @@ export class ChatComponent implements OnInit {
 
   ngOnInit() {
     this.getLoggedUser();
-    this.loadUsersToInvite();
-    this.usersFormGroupValidate();
     this.joinRoom();
     this.jitsiFormValidate();
     this.loadRoomMessages();
+    this.loadUsersToInvite();
+    this.usersFormGroupValidate();
     this.loadRoomSondages();
     this.connectToChat();
     this.SondageFormValidate();
@@ -124,12 +114,14 @@ export class ChatComponent implements OnInit {
 
   }
 
+
   loadUsersToInvite() {
+    if (!this.roomOwner()) {
+      return;
+    }
     const id = this.route.snapshot.paramMap.get('id');
     this.userService.getUsersToInvite(id).subscribe(u => {
       this.loadedUsers = u;
-
-
     });
 
   }
@@ -142,7 +134,7 @@ export class ChatComponent implements OnInit {
       usersToPersist.push(u);
     });
 
-    this.roomService.addUsers(id, usersToPersist).subscribe(room => {
+    this.roomService.addUsers(id, usersToPersist).subscribe(() => {
       this.usersFormGroup.reset();
       this.loadRoom();
       this.loadUsersToInvite();
@@ -157,9 +149,13 @@ export class ChatComponent implements OnInit {
 
   usersFormGroupValidate() {
     /*----TODO on refresh select css broken ------ */
+    if (!this.roomOwner()) {
+      return;
+    }
     this.usersFormGroup = this.formBuilder.group({
       users: [this.loadedUsers, Validators.required]
     });
+
 
   }
 
@@ -278,6 +274,7 @@ export class ChatComponent implements OnInit {
     this.loadedMessages = [];
     const id = this.route.snapshot.paramMap.get('id');
     this.chatService.getMessageByRoom(id).subscribe(msg => {
+      this.loadRoomImages(msg);
       this.loadedMessages = msg;
       this.messagesHasbeenLoaded = true;
       if (msg.length > 0) {
@@ -331,12 +328,33 @@ export class ChatComponent implements OnInit {
     return [];
   }
 
-  loadRoomImages() {
-    // TODO
-    const id = this.route.snapshot.paramMap.get('id');
-    this.chatService.getImagesByRoom(id).subscribe(images => {
-      this.loadedImages = images;
+  loadRoomImages(msg: Message[]) {
+    msg.forEach(m => {
+      if (m.type === 'IMAGE') {
+        this.pushImageToAlbum(m);
+        this.loadedImages.unshift(m);
+      }
     });
+  }
+
+  pushImageToAlbum(m: Message, position?: string) {
+    const src = m.metaData.presignedUrl;
+    const caption = m.metaData.objectId;
+    const album = {
+      src,
+      caption
+    };
+    if (position === 'FIRST') {
+
+      this.albums.unshift(album);
+      this.loadedImages.unshift(m);
+
+    } else {
+
+      this.albums.push(album);
+    }
+    console.log(this.albums);
+
   }
 
 
@@ -380,14 +398,19 @@ export class ChatComponent implements OnInit {
 
   appendMessage(body: any) {
     switch (body.type) {
-      case 'REACTION':
+      case 'REACTION'  :
         const reaction = JSON.parse(body.body) as Reaction;
         this.appendReaction(reaction, body.message_id);
         break;
       case 'TEXT':
+      case 'VIDEO':
+      case  'IMAGE' :
+      case 'AUDIO' :
+      case 'FILE' :
         const recivedText = JSON.parse(body.body) as Message;
         this.appendText(recivedText);
         break;
+
       case 'SONDAGE':
         const recivedSondage = JSON.parse(body.body) as Message;
         this.appendSondage(recivedSondage);
@@ -431,6 +454,8 @@ export class ChatComponent implements OnInit {
   }
 
   publishMessage(type: string, value?: string, message?: Message, sondage?: any, choixId?: number) {
+    console.log(type);
+    console.log(value);
 
     this.bodyData = {
       room_id: this.loadedRoom.id,
@@ -452,7 +477,10 @@ export class ChatComponent implements OnInit {
         this.bodyData.choix_id = choixId;
         this.bodyData.message_id = message.id;
         break;
-      case 'IMAGE':
+      case 'VIDEO':
+      case  'IMAGE' :
+      case 'AUDIO' :
+      case 'FILE' :
         this.bodyData.file = value;
         break;
     }
@@ -503,7 +531,7 @@ export class ChatComponent implements OnInit {
 
   showToast(title: string, description: string, icon?: Icon, timestamp?: string, duration?: Duration) {
     const id = Date.now();
-    this.toastBootsrapService.show(id, title, description, {
+    this.toastBootstrapService.show(id, title, description, {
       timestamp,
       icon,
       duration
@@ -568,11 +596,9 @@ export class ChatComponent implements OnInit {
 
   private appendText(recivedMessage: Message) {
     recivedMessage.reactions = [];
-    // tslint:disable-next-line:max-line-length
-    if ((recivedMessage.body) && (recivedMessage.body.indexOf('www') > -1 || recivedMessage.body.indexOf('http') > -1 || recivedMessage.body.indexOf('https') > -1)) {
-      this.getLinkPreview(recivedMessage);
+    if (recivedMessage.type === 'IMAGE') {
+      this.pushImageToAlbum(recivedMessage, 'FIRST');
     }
-    console.log(recivedMessage);
     this.loadedMessages.push(recivedMessage);
     this.scrollToElement('message' + recivedMessage.id, 'smooth', 50);
   }
@@ -586,19 +612,21 @@ export class ChatComponent implements OnInit {
     this.scrollToElement('message' + recivedSondage.id, 'smooth', 500);
   }
 
-  openModalUplaodImage() {
+  openModalUploadImages() {
     this.photoToUpload = false;
-    this.photoChoosen = false;
+    this.photoChosen = false;
     this.presignedUrlForUpload = {};
     this.imageUplaodProgress = 0;
+    this.uploadingFile = false;
 
   }
 
 
   getPresignedUrlForUpload(event) {
+    this.uploadingFile = false;
     this.imageUplaodProgress = 0;
     this.displayImageToUpload(event);
-    this.photoChoosen = true;
+    this.photoChosen = true;
     setTimeout(() => {
       this.photoToUpload = true;
     }, 100);
@@ -616,6 +644,7 @@ export class ChatComponent implements OnInit {
   }
 
   uploadPhoto(files: FileList) {
+    this.uploadingFile = true;
     this.fileService.upload(files[0], true, this.presignedUrlForUpload).subscribe(value => {
       if (value !== undefined) {
         if (!isNaN(value)) {
@@ -624,12 +653,18 @@ export class ChatComponent implements OnInit {
           console.log('id: ' + value[0].id);
           // @ts-ignore
           $('#modal-uplaod-photo').modal('toggle');
-          this.publishMessage('IMAGE', value[0].id);
+          this.publishMessage(this.getFileType(files[0]), value[0].id);
+          this.uploadingFile = false;
 
         }
       }
     });
 
+  }
+
+  getFileType(file: File): string {
+    // tslint:disable-next-line:max-line-length
+    return file.type.indexOf('image') > -1 ? 'IMAGE' : file.type.indexOf('audio') > -1 ? 'AUDIO' : file.type.indexOf('video') > -1 ? 'VIDEO' : 'FILE';
   }
 
 
@@ -638,9 +673,29 @@ export class ChatComponent implements OnInit {
 
     this.chatService.getLinkPreview(msg.body).subscribe(value => {
       msg.linkPreview = value;
-    }, error => {
+    }, () => {
       msg.linkPreview = undefined;
     });
+  }
+
+
+  imageIndex(objectId: string) {
+    console.log(this.albums);
+    return this.albums.findIndex(album => album.caption === objectId);
+  }
+
+
+  public loadScript(url) {
+    const node = document.createElement('script');
+    node.src = url;
+    node.type = 'text/javascript';
+    document.getElementsByTagName('body')[0].appendChild(node);
+
+
+  }
+
+  roomOwner(): boolean {
+    return this.loadedRoom.user.id === this.loggedUser.id;
   }
 
 

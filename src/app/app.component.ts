@@ -25,6 +25,8 @@ export class AppComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     this.loadScript('assets/js/main.js');
     this.loadScript('assets/js/libs-init/libs-init.js');
+
+
   }
 
   public loadScript(url) {

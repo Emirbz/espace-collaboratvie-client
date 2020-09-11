@@ -21,17 +21,17 @@ import Badge from '../../../models/Badge';
 export class ProfileComponent implements OnInit, AfterViewInit {
   @ViewChild('searchInput', {static: false}) searchInput: ElementRef;
   /* ----- Containers Classes */
-  topicsClass = 'd-none';
-  searchPlaceHolder = 'Rechercher parmis vos groupes de discussion ...';
-  myroomsClass = 'row  fade-in';
-  myCreatedRoomsClass = 'd-none';
-  topicsSelected = '';
-  roomsSelected = ' selected scale-up-open';
-  badgesSelected = '';
+  topicsClass: string = 'd-none';
+  searchPlaceHolder: string = 'Rechercher parmis vos groupes de discussion ...';
+  myroomsClass: string = 'row  fade-in';
+  myCreatedRoomsClass: string = 'd-none';
+  topicsSelected: string = '';
+  roomsSelected: string = ' selected scale-up-open';
+  badgesSelected: string = '';
 
-  myCommentsClass = 'd-none';
-  myTopicsClass = 'd-none';
-  badgeClass = 'd-none';
+  myCommentsClass: string = 'd-none';
+  myTopicsClass: string = 'd-none';
+  badgeClass: string = 'd-none';
   /* --------- Loaded Services --------- */
   loggedUser: User;
   myRooms: Room[];
@@ -56,10 +56,10 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   leftRoom: Room;
   deletedRoom: Room;
   /* ----- Navigation */
-  activeNav = 'myRooms';
-  firstNavName = 'Mes groupes';
-  secondNavName = 'Groupes crées';
-  firstNavChecked = true;
+  activeNav: string = 'myRooms';
+  firstNavName: string = 'Mes groupes';
+  secondNavName: string = 'Groupes crées';
+  firstNavChecked: boolean = true;
   /* --- Back Url for badge images--- */
   backUrl = environment.apis.backUrl;
 

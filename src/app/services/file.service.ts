@@ -2,23 +2,24 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpEventType, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {map, mergeMap} from 'rxjs/operators';
+import {environment} from '../../environments/environment';
 
 
 @Injectable({providedIn: 'root'})
 export class FileService {
-  quarkusServer = 'http://192.168.1.17:8200/api/';
+  minioQuarkus = environment.apis.minioQuarkus;
 
 
   constructor(private http: HttpClient) {
   }
 
   public getAsOpenDocument(docId: string) {
-    return this.http.get(this.quarkusServer + 'files/getAsOpenDocument/' + docId);
+    return this.http.get(this.minioQuarkus + 'files/getAsOpenDocument/' + docId);
   }
 
   public getFileById(id: string) {
     if (id) {
-      return this.http.get(this.quarkusServer + 'files/presignedUrlForDownload' + '?fileName=' + id).pipe(map(response => {
+      return this.http.get(this.minioQuarkus + 'files/presignedUrlForDownload' + '?fileName=' + id).pipe(map(response => {
         const re: any = response;
         return re.presignedUrlForDownload;
       }));
@@ -36,7 +37,7 @@ export class FileService {
   public uploadFile(file: File, progress: boolean = false): Observable<any> {
     console.log(file.type);
     return this.http
-      .get(this.quarkusServer + 'files/presignedUrlForUpload' + '?fileName=' + file.name).pipe(
+      .get(this.minioQuarkus + '/files/presignedUrlForUpload' + '?fileName=' + file.name).pipe(
         mergeMap(response => {
           const re: any = response;
           console.log('size:' + file.size);
@@ -75,12 +76,12 @@ export class FileService {
   }
 
   public getPresignedUrlForUpload(file: File): Observable<any> {
-    return this.http.get(this.quarkusServer + 'files/presignedUrlForUpload' + '?fileName=' + file.name);
+    return this.http.get(this.minioQuarkus + '/files/presignedUrlForUpload' + '?fileName=' + file.name);
   }
 
   public upload(file: File, progress: boolean = false, data: any): Observable<any> {
     const headers = new HttpHeaders({
-      'Content-Disposition': 'attachment; filename=' + file.name,
+      'Content-type': file.type,
       'ngsw-bypass': 'true',
       skip: 'true'
     });

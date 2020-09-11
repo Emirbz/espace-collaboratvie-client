@@ -28,8 +28,8 @@ export class DetailsTopicComponent implements OnInit, AfterViewInit {
   pageOfItems: Reply[];
   lastLikedId: string;
   /* ----- Loader ------ */
-  repliesHasBeenLoaded = false;
-  topicHasBeenLoaded = false;
+  repliesHasBeenLoaded: boolean = false;
+  topicHasBeenLoaded: boolean = false;
 
 
   constructor(private route: ActivatedRoute,

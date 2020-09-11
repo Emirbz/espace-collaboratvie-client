@@ -1,5 +1,6 @@
 <!-- Fixed Sidebar Right -->
 
+
 <div class="fixed-sidebar right">
   <div class="fixed-sidebar-right sidebar--small" id="sidebar-right">
 
@@ -1225,7 +1226,7 @@
     </div>
 
   </div>
-  <div *ngIf="messagesHasbeenLoaded && sondagesHasBeenLoaded" class="row fade-in">
+  <div id="bigContainer" *ngIf="messagesHasbeenLoaded && sondagesHasBeenLoaded" class="row fade-in">
 
     <div [hidden]="loaderHidden" [ngClass]="loaderClass">
       <div class="jitsiLoader">
@@ -1319,7 +1320,7 @@
             <!-- Chat Field -->
 
             <div class="chat-field">
-              <!--              [scrollTop]="scrollMe.scrollHeight"-->
+
               <div #scrollMe class="mCustomScrollbarNew popup-chat"
                    style="overflow-y: scroll" data-mcs-theme="dark">
                 <ul class="notification-list chat-message chat-message-field ">
@@ -1335,13 +1336,41 @@
                     </div>
 
                     <!--IMAGE MESSAGE-->
-                    <!--   <div class="notification-event min-width-7  added-photos widget w-last-photo js-zoom-gallery">
-                         <a href="assets/img/last-photo10-large.jpg">
-                           <img class="photo-chat" src="assets/img/last-photo10-large.jpg" alt="photo">
-                         </a>
+                    <div *ngIf="m?.type ==='IMAGE'"
+                         class="notification-event min-width-7  added-photos widget w-last-photo js-zoom-gallery">
 
-                       </div>-->
+                      <img style=" border-radius: 20px 20px 0 0;" class="photo-chat" [src]="m?.metaData?.presignedUrl"
+                           alt="photo" (click)="open(imageIndex(m?.metaData.objectId))">
+
+
+                    </div>
                     <!--END IMAGE MESSAGE-->
+
+                    <!-- VIDEO MESSAGE-->
+                    <div *ngIf="m?.type==='VIDEO'" class=" width-30 notification-event">
+                      <div class="player">
+
+                        <video [src]="m?.metaData?.presignedUrl" class="full-width max-height-400" controls>
+
+                          Your browser does not support HTML video.
+                        </video>
+                      </div>
+                    </div>
+
+                    <!-- END VIDEO MESSAGE-->
+
+                    <!-- VIDEO MESSAGE-->
+                    <div *ngIf="m?.type==='AUDIO'" class=" width-30 notification-event">
+                      <div class="player-audio">
+
+                        <audio controls [src]="m?.metaData?.presignedUrl">
+                          Your browser does not support the audio element.
+                        </audio>
+
+                      </div>
+                    </div>
+
+                    <!-- END VIDEO MESSAGE-->
 
 
                     <!-- Text MEssage-->
@@ -1371,7 +1400,7 @@
 
                     <!--    End Text message-->
                     <!--Reaction - Make Reaction -->
-                    <div *ngIf="m?.type==='TEXT'" class="box">
+                    <div *ngIf="m?.type==='TEXT' " class="box">
                       <input type="checkbox" id="likes" class="field-reactions">
                       <a class="label-reactions">
                         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
@@ -1419,8 +1448,7 @@
                       <div class="ui-block-content padding-10">
 
                         <!--
-                                                        W-Pool
-                        -->
+                                                        W-Pool   -->
 
                         <ul class="widget w-pool margin-b-0">
                           <li *ngFor="let c of m?.choix">
@@ -1503,10 +1531,11 @@
                     <textarea #msgInput (keyup.enter)="sendMessage(msgInput.value)" class="form-control"
                               placeholder="Ecrire votre message ...."></textarea>
                     <div class="add-options-message">
-                      <a (click)="openModalUplaodImage()" class="options-message" data-toggle="modal"
+                      <a (click)="openModalUploadImages()" class="options-message" data-toggle="modal"
                          data-target="#modal-uplaod-photo">
-                        <svg class="olymp-camera-icon">
-                          <use xlink:href="#olymp-camera-icon"></use>
+                        <svg data-toggle="tooltip" data-placement="top" data-original-title="Ajouter un fichier"
+                        >
+                          <use xlink:href="#olymp-multimedia-icon"></use>
                         </svg>
                       </a>
 
@@ -1681,57 +1710,20 @@
           <!-- W-Latest-Photo -->
           <span *ngIf="loadedImages?.length==0">Aucune photo récente</span>
           <ul *ngIf="loadedImages?.length>0" class="widget w-last-photo js-zoom-gallery">
-            <li>
-              <a href="assets/img/last-photo1-large.jpg">
-                <img src="assets/img/last-photo1-large.jpg" alt="photo">
-              </a>
+            <li *ngFor="let m of loadedImages | slice:0:9 ; let i = index ">
+
+              <img class="loaded-images-width cursor-pointer" (click)="open(imageIndex(m?.metaData?.objectId))"
+                   [src]="m?.metaData.presignedUrl"
+                   alt="photo">
+
             </li>
-            <li>
-              <a href="assets/img/last-photo2-large.jpg">
-                <img src="assets/img/last-photo2-large.jpg" alt="photo">
-              </a>
-            </li>
-            <li>
-              <a href="assets/img/last-photo3-large.jpg">
-                <img src="assets/img/last-photo3-large.jpg" alt="photo">
-              </a>
-            </li>
-            <li>
-              <a href="assets/img/last-photo4-large.jpg">
-                <img src="assets/img/last-photo4-large.jpg" alt="photo">
-              </a>
-            </li>
-            <li>
-              <a href="assets/img/last-phot11-large.jpg">
-                <img src="assets/img/last-phot11-large.jpg" alt="photo">
-              </a>
-            </li>
-            <li>
-              <a href="assets/img/post-photo5.jpg">
-                <img src="assets/img/post-photo5.jpg" alt="photo">
-              </a>
-            </li>
+
           </ul>
 
           <!-- ... end W-Latest-Photo -->
         </div>
       </div>
-      <div class="ui-block">
-        <div class="ui-block-title">
-          <h6 class="title">Last Photos</h6>
-        </div>
-        <div class="ui-block-content">
 
-
-          <!-- W-Latest-Photo -->
-
-          <div *ngFor="let img of albums; let i=index">
-            <img [src]="img.thumb" (click)="open(i)"/>
-          </div>
-
-          <!-- ... end W-Latest-Photo -->
-        </div>
-      </div>
     </div>
   </div>
 </div>
@@ -2167,30 +2159,34 @@
       </div>
 
       <div class="modal-body">
-        <a (click)="fileInput.click()" [ngClass]="!photoChoosen ? 'full-width upload-photo-item ':'upload-photo-item'">
+        <a (click)="fileInput.click()" [ngClass]="!photoChosen ? 'full-width upload-photo-item ':'upload-photo-item'">
           <svg class="olymp-computer-icon">
             <use xlink:href="#olymp-computer-icon"></use>
           </svg>
 
-          <h6>Upload Photo</h6>
-          <span>Browse your computer.</span>
+          <h6>Ajouter un document</h6>
+          <span>(Photo, Vidéo, Document, ... )à partir de votre ordinateur</span>
         </a>
 
         <input #fileInput (change)="getPresignedUrlForUpload($event)" type="file" hidden>
-        <div *ngIf="photoToUpload" class="video-thumb upload-photo-item padding-upload-photo"
+        <div *ngIf="photoToUpload" class="video-thumb upload-photo-item padding-upload-photo full-height"
              style="text-align: -webkit-center;">
-          <img class="uploaded-photo" loading="lazy" [src]="imageUrl" alt="photo">
-          <a class="play-video" (click)="uploadPhoto(fileInput.files)">
+          <img *ngIf="fileInput.files[0].type.indexOf('image')>-1" class="uploaded-photo" loading="lazy"
+               [src]="imageUrl" alt="photo">
+          <span *ngIf="fileInput.files[0].type.indexOf('image')===-1"> {{fileInput.files[0].name}}</span>
+          <a *ngIf="!uploadingFile " class="play-video"
+             (click)="uploadPhoto(fileInput.files)">
             <svg class="olymp-play-icon" style="margin-top: 12px;">
               <use xlink:href="#olymp-play-icon"></use>
             </svg>
           </a>
+
           <div class="skills-item width-55">
-            <div class="skills-item-meter">
+            <div class="skilbols-item-meter">
 
     <span class="skills-item-meter-active bg-primary skills-animate"
           [ngStyle]="{'width':imageUplaodProgress+'%'}"
-          style=" opacity: 1;"></span>
+          style=" opacity: 1; height: 3% ;top:97%"></span>
 
             </div>
           </div>
@@ -2206,7 +2202,8 @@
 
 <!-- Window-popup Create Friends Group -->
 
-<div class="modal fade" id="modal-invite-users" tabindex="-1" role="dialog" aria-labelledby="create-friend-group-1"
+<div *ngIf="roomOwner()" class="modal fade" id="modal-invite-users" tabindex="-1" role="dialog"
+     aria-labelledby="create-friend-group-1"
      aria-hidden="true">
   <div class="modal-dialog window-popup create-friend-group create-friend-group-1" role="document">
     <div class="modal-content">

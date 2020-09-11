@@ -24,9 +24,9 @@ export class RoomsComponent implements OnInit, AfterViewInit {
   selectedUsersModal: User[];
 
   /* --------- Loader Post room --------*/
-  roomCreated = false;
+  roomCreated: boolean = false;
   roomFormGroup: FormGroup;
-  roomsHaveBeenLoaded = false;
+  roomsHaveBeenLoaded: boolean = false;
   /*---- Room request class ---- */
   requestedRoom: Room;
 
@@ -149,5 +149,9 @@ export class RoomsComponent implements OnInit, AfterViewInit {
       icon,
       duration
     });
+  }
+
+  userExistsInRoom(r: Room, loggedUser: User) {
+    return r.users.some(u => u.id === loggedUser.id);
   }
 }

@@ -4,6 +4,13 @@ import Choix from './Choix';
 import Room from './Room';
 import LinkPreview from './LinkPreview';
 
+class MetaData {
+  objectId: string;
+  mimeType: string;
+  presignedUrl: string;
+  fileName: string;
+}
+
 export default class Message {
   id?: number;
   body?: string;
@@ -15,6 +22,7 @@ export default class Message {
   reactions?: Reaction[];
   choix: Choix[];
   linkPreview?: LinkPreview;
+  metaData?: MetaData;
 
   constructor(body: string, timestamp: string, type: string, room: Room, user: User) {
     this.body = body;

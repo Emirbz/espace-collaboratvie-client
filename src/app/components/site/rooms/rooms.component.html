@@ -133,8 +133,13 @@
             </ul>
 
             <div class="control-block-button">
-              <a *ngIf="!r?.isPrivate || (r?.isPrivate && r.requestStatus ==='ACCEPTED')" (click)="joinRoom(r.id)"
-                 class="  btn btn-control bg-blue hover-color">
+              <a
+                *ngIf="!r?.isPrivate || (r?.isPrivate && userExistsInRoom(r,loggedUser)) ||(r?.isPrivate && r?.user?.id === loggedUser?.id)"
+                (click)="joinRoom(r.id)"
+                class="  btn btn-control bg-blue hover-color"
+                data-toggle="tooltip"
+                data-placement="top"
+                title="Rejoindre le groupe">
                 <svg class="olymp-chat---messages-icon">
                   <use xlink:href="#olymp-chat---messages-icon"></use>
                 </svg>
@@ -152,10 +157,12 @@
                 </svg>
 
               </a>
-              <a *ngIf="r.isPrivate && r.requestStatus === null" (click)="joinRoomRequest(r)" data-toggle="tooltip"
-                 data-placement="top"
-                 title="Demander de rejoindre le groupe"
-                 class="  btn btn-control bg-blue hover-color" style="background-color: #cbc4c4">
+              <a
+                *ngIf="(r.isPrivate && r.requestStatus === null && r?.user.id !== loggedUser?.id) || !userExistsInRoom(r,loggedUser) "
+                (click)="joinRoomRequest(r)" data-toggle="tooltip"
+                data-placement="top"
+                title="Demander de rejoindre le groupe"
+                class="  btn btn-control bg-blue hover-color" style="background-color: #cbc4c4">
                 <svg class="olymp-chat---messages-icon">
                   <svg>
                     <use xlink:href="#olymp-info-icon"></use>

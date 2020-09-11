@@ -786,8 +786,9 @@ label .fa {
 }
 
 .uploaded-photo {
-  max-width: 150px;
-  max-height: 150px;
+  width: 250px;
+  height: 150px;
+  object-fit: cover;
   border-radius: 20px 20px 0 0;
 }
 
@@ -798,6 +799,64 @@ label .fa {
 .padding-upload-photo {
   padding: 25px 50px 16px 50px;
 }
+
+.loaded-images-width {
+  object-fit: cover;
+  height: 77px;
+
+}
+
+/* ------ VIDEO PLAYER -------- */
+::ng-deep :root {
+  --accent: #ff5e3a;
+  --main: #ffffff;
+}
+
+
+.player-container {
+  padding: 40px;
+  max-width: 550px;
+  margin: auto;
+}
+
+.player {
+  width: 100%;
+  box-shadow: 3px 1px 6px 6px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+  background: #000000;
+}
+
+.player-audio {
+  width: 100%;
+  border-radius: 28px;
+  box-shadow: inset 3px 1px 6px 9px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.player-audio audio {
+  height: 40px;
+}
+
+.user-msg .player {
+  margin-left: 10px;
+  margin-top: 15px;
+}
+
+.sender .player {
+  margin-left: 0;
+}
+
+.width-60 {
+  width: 60%
+}
+
+.max-height-400 {
+  max-height: 400px;
+}
+
+
 
 
 

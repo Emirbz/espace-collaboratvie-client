@@ -15,14 +15,13 @@ import Topic from '../../../models/Topic';
   styleUrls: ['./create-topic.component.css']
 })
 export class CreateTopicComponent implements OnInit {
-  listOfOption = [];
-  listOfTagOptions = [];
+
   selectedTags: any[] = [];
   loadedTags: Tag[];
-  tagsSearching = false;
+  tagsSearching: boolean = false;
   topicFormGroup: FormGroup;
   loggedUser: User;
-  toastSucces = 'alert alert-success d-none full-width';
+  toastSuccess: string = 'alert alert-success d-none full-width';
   loadedPopularTopics: Topic[];
   recentTopics: Topic[];
 
@@ -80,10 +79,10 @@ export class CreateTopicComponent implements OnInit {
   }
 
   showSucces() {
-    this.toastSucces = 'alert alert-success full-width animated bounceInDown';
+    this.toastSuccess = 'alert alert-success full-width animated bounceInDown';
     setTimeout(() => {
 
-      this.toastSucces = 'alert alert-success full-width animated bounceOutUp';
+      this.toastSuccess = 'alert alert-success full-width animated bounceOutUp';
       setTimeout(() => {
         this.route.navigate(['/topic']);
       }, 400);

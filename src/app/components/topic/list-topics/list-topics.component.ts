@@ -21,13 +21,13 @@ export class ListTopicsComponent implements OnInit {
   loadedPopularTags: Tag[];
   loadedPopularTopics: Topic[];
   /*-------- search Tags -----*/
-  tagsSearching = false;
+  tagsSearching: boolean = false;
   headerSearch: string;
   /*----- Loader --------- */
-  topicsHasBeenLoaded = false;
-  tagsHasBeenLoaded = false;
-  popularTagsHasBeenLoaded = false;
-  popularTopicsHasBeenLoaded = false;
+  topicsHasBeenLoaded: boolean = false;
+  tagsHasBeenLoaded: boolean = false;
+  popularTagsHasBeenLoaded: boolean = false;
+  popularTopicsHasBeenLoaded: boolean = false;
 
 
   constructor(private topicService: TopicService,
