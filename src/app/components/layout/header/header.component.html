@@ -40,7 +40,7 @@
 
               <li *ngFor="let rr of loadedRoomRequests" [id]="'request'+rr?.id" #requestRow
                   [ngClass]="requestRow?.id ==='request'+acceptedRequest?.id? 'animated bounceOutUp':''">
-                <div class="author-thumb">
+                <div *ngIf="rr?.user.image" class="author-thumb">
                   <img [src]="rr?.user?.image" width="34" height="34" alt="author">
                 </div>
                 <div class="notification-event">
@@ -224,7 +224,7 @@
       </div>
 
       <div class="author-page author vcard inline-items more">
-        <div class="author-thumb">
+        <div *ngIf="loggedUser?.image" class="author-thumb fade-in">
           <img *ngIf="loggedUser?.image" alt="author" [src]="loggedUser?.image" width="36" height="36" class="avatar">
           <span class="icon-status online"></span>
           <div class="more-dropdown more-with-triangle">

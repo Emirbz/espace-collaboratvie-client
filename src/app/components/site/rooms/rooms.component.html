@@ -158,7 +158,7 @@
 
               </a>
               <a
-                *ngIf="(r.isPrivate && r.requestStatus === null && r?.user.id !== loggedUser?.id) || !userExistsInRoom(r,loggedUser) "
+                *ngIf="(r.isPrivate && r.requestStatus === null && r?.user.id !== loggedUser?.id) ||(r.isPrivate && !userExistsInRoom(r,loggedUser)) "
                 (click)="joinRoomRequest(r)" data-toggle="tooltip"
                 data-placement="top"
                 title="Demander de rejoindre le groupe"

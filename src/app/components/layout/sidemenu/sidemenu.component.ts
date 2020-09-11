@@ -51,7 +51,6 @@ export class SidemenuComponent implements OnInit {
   loadAllBadges() {
     this.badgeService.getAllBadges().subscribe(badges => {
       this.loadedBages = badges;
-      console.log(this.loadedBages);
 
     });
   }

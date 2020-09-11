@@ -116,9 +116,6 @@ export class ChatComponent implements OnInit {
 
 
   loadUsersToInvite() {
-    if (!this.roomOwner()) {
-      return;
-    }
     const id = this.route.snapshot.paramMap.get('id');
     this.userService.getUsersToInvite(id).subscribe(u => {
       this.loadedUsers = u;
@@ -149,9 +146,6 @@ export class ChatComponent implements OnInit {
 
   usersFormGroupValidate() {
     /*----TODO on refresh select css broken ------ */
-    if (!this.roomOwner()) {
-      return;
-    }
     this.usersFormGroup = this.formBuilder.group({
       users: [this.loadedUsers, Validators.required]
     });
@@ -240,7 +234,7 @@ export class ChatComponent implements OnInit {
         setTimeout(() => {
             // tslint:disable-next-line:max-line-length
             this.loaderClass += 'flexbox col col-xl-3 order-xl-3 col-lg-9 order-lg-2 col-md-12 order-md-1 col-sm-12 col-12 animated bounceInDown';
-          //  this.loaderHidden = false;
+            //  this.loaderHidden = false;
           }, 600
         );
       }, 300);
@@ -353,7 +347,6 @@ export class ChatComponent implements OnInit {
 
       this.albums.push(album);
     }
-    console.log(this.albums);
 
   }
 
@@ -380,11 +373,10 @@ export class ChatComponent implements OnInit {
     if (this.connected) {
       return;
     }
-    console.log('status = connected ');
     this.eventBus = new EventBus(environment.apis.eventBus + id);
     this.eventBus.enableReconnect(true);
     this.eventBus.onopen = () => {
-      console.log('Connected to the web socket Room id = ' + id);
+      console.log('------ Connected to the web socket Room id = ' + id + ' ----');
       self.connected = true;
       self.eventBus.registerHandler('chat.to.client/' + id, (error, message) => {
         try {
@@ -623,6 +615,7 @@ export class ChatComponent implements OnInit {
 
 
   getPresignedUrlForUpload(event) {
+    console.log(event.target.files[0].type);
     this.uploadingFile = false;
     this.imageUplaodProgress = 0;
     this.displayImageToUpload(event);
@@ -680,7 +673,6 @@ export class ChatComponent implements OnInit {
 
 
   imageIndex(objectId: string) {
-    console.log(this.albums);
     return this.albums.findIndex(album => album.caption === objectId);
   }
 
@@ -692,10 +684,6 @@ export class ChatComponent implements OnInit {
     document.getElementsByTagName('body')[0].appendChild(node);
 
 
-  }
-
-  roomOwner(): boolean {
-    return this.loadedRoom.user.id === this.loggedUser.id;
   }
 
 
