@@ -34,7 +34,8 @@ export const environment = {
     badge: backURL + '/badge',
     roomRequest: backURL + '/roomrequest',
     linkPreview: `http://api.linkpreview.net/?key=${linkPreviewKey}=&q=`,
-    minioQuarkus: `${minioQuarkus}/api`
+    minioQuarkus: `${minioQuarkus}/api`,
+    jitsiDomain: 'meet.jit.si'
   },
 };
 

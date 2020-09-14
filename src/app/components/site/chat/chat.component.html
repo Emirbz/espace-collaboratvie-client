@@ -1336,7 +1336,7 @@
                     </div>
 
                     <!--IMAGE MESSAGE-->
-                    <div *ngIf="m?.type ==='IMAGEE'"
+                    <div *ngIf="m?.type ==='IMAGE'"
                          class="notification-event min-width-7  added-photos widget w-last-photo js-zoom-gallery">
 
                       <img style=" border-radius: 20px 20px 0 0;" class="photo-chat" [src]="m?.metaData?.presignedUrl"
@@ -1360,15 +1360,19 @@
                     <!-- END VIDEO MESSAGE-->
 
                     <!-- Message FIlE-->
-                    <div *ngIf="m?.type==='IMAGE'" class="mainContainer">
+                    <div *ngIf="m?.type==='FILE'" class="mainContainer">
                       <div class="aside">
-                        <div class='cardview'>
-                          <div class="logo"><img src="assets/img/ic_xls.png"/></div>
+                        <div class='cardView'>
+                          <div class="logo"><img [src]="'assets/img/'+getFileExtension(m?.metaData)" alt=""/></div>
                         </div>
                       </div>
                       <div class="card-content">
                         <div id="header">
-                          <h2>POSTCARD</h2>
+                          <a target="_blank" data-toggle="tooltip" data-placement="top" title="Telecharger"
+                             [href]="m?.metaData?.presignedUrl">
+                            {{ m?.metaData?.fileName.length < 46 ? m?.metaData.fileName : m?.metaData.fileName.substr(0, 40) + '...' }}
+
+                          </a>
                         </div>
 
                       </div>

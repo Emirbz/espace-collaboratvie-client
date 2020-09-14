@@ -128,6 +128,7 @@ export class RoomsComponent implements OnInit, AfterViewInit {
         room.requestStatus = Status.PENDING;
         this.requestedRoom = room;
         this.showToast('Demande envoyée', 'Votre demande a été envoyée au proprietaire du groupe', Icon.info, undefined, Duration.long);
+        console.log(room);
       });
     }
 

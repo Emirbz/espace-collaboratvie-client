@@ -4,7 +4,7 @@ import Choix from './Choix';
 import Room from './Room';
 import LinkPreview from './LinkPreview';
 
-class MetaData {
+export class MetaData {
   objectId: string;
   mimeType: string;
   presignedUrl: string;

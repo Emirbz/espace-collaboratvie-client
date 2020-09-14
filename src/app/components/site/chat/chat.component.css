@@ -860,7 +860,7 @@ label .fa {
 
 .mainContainer {
   margin-left: 27px;
-  width: 12.250em;
+  max-width: 25em;
   height: 2.90em;
   margin-right: 20px;
   box-sizing: border-box;
@@ -887,7 +887,7 @@ label .fa {
   display: inline-block;
 }
 
-.cardview {
+.cardView {
   position: relative;
   width: 5em;
   height: 4.2em;
@@ -899,13 +899,13 @@ label .fa {
 }
 
 .card-content {
-  width: 500px;
+  max-width: 25em;
   height: inherit;
   box-sizing: border-box;
-  padding: 13px 0px;
+  padding: 13px 10px;
 }
 
-#header > h2 {
+#header > a {
   font-family: 'Roboto', sans-serif;
   color: #007767;
   font-size: 11px;

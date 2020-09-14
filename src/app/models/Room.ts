@@ -1,7 +1,7 @@
 import User from './User';
 
 export enum Status {
-  PENDING = 'ACCEPTED',
+  PENDING = 'PENDING',
   ACCEPTED = 'ACCEPTED',
   REJECTED = 'REJECTED'
 }

@@ -2,7 +2,7 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import * as JitsiMeetExternalAPI from '../../../../assets/js/Jitsi/external_api';
 import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import Room from '../../../models/Room';
-import Message from '../../../models/Message';
+import Message, {MetaData} from '../../../models/Message';
 import {ActivatedRoute, Router} from '@angular/router';
 import {RoomService} from '../../../services/room.service';
 import {ChatService} from '../../../services/chat.service';
@@ -35,7 +35,7 @@ export class ChatComponent implements OnInit {
   loaderClass: string = 'flexbox col col-xl-3 order-xl-3 col-lg-9 order-lg-2 col-md-12 order-md-1 col-sm-12 col-12 d-none';
   /* ------- Jitsi ------- */
   title: string = 'app';
-  domain: string = 'meet.jit.si';
+  domainJitsi: string = environment.apis.jitsiDomain;
   options: any;
   apiJitsi: any;
   divJitsiHidden: boolean = true;
@@ -96,7 +96,7 @@ export class ChatComponent implements OnInit {
   }
 
   close(): void {
-    // close lightbox programmatically
+
     this.lightBox.close();
   }
 
@@ -116,10 +116,12 @@ export class ChatComponent implements OnInit {
 
 
   loadUsersToInvite() {
-    const id = this.route.snapshot.paramMap.get('id');
-    this.userService.getUsersToInvite(id).subscribe(u => {
-      this.loadedUsers = u;
-    });
+    if (this.loggedUser && this.loadedRoom && this.loggedUser.id === this.loadedRoom.user.id) {
+      const id = this.route.snapshot.paramMap.get('id');
+      this.userService.getUsersToInvite(id).subscribe(u => {
+        this.loadedUsers = u;
+      });
+    }
 
   }
 
@@ -194,7 +196,7 @@ export class ChatComponent implements OnInit {
     this.loaderHidden = false;
     // @ts-ignore
     $('#modal-jitsi').modal('toggle');
-    this.apiJitsi = new JitsiMeetExternalAPI(this.domain, this.options);
+    this.apiJitsi = new JitsiMeetExternalAPI(this.domainJitsi, this.options);
 
     if (!this.jitsiFormGroup.value.video) {
       this.apiJitsi.executeCommand('toggleVideo');
@@ -271,8 +273,12 @@ export class ChatComponent implements OnInit {
       this.loadRoomImages(msg);
       this.loadedMessages = msg;
       this.messagesHasbeenLoaded = true;
+      console.log(msg);
       if (msg.length > 0) {
-        this.scrollToElement('message' + msg[msg.length - 1].id, 'auto', 0);
+        setTimeout(() => {
+          this.scrollToElement('message' + msg[msg.length - 1].id, 'auto', 0);
+        }, 500);
+
       }
     });
   }
@@ -339,7 +345,6 @@ export class ChatComponent implements OnInit {
       caption
     };
     if (position === 'FIRST') {
-
       this.albums.unshift(album);
       this.loadedImages.unshift(m);
 
@@ -686,5 +691,28 @@ export class ChatComponent implements OnInit {
 
   }
 
+  getFileExtension(metaData: MetaData) {
+    if ((metaData.mimeType.indexOf('excel') > -1) || (metaData.mimeType.indexOf('spreadsheetml') > -1)) {
+      return 'ic_xls.png';
+    }
+    if ((metaData.mimeType.indexOf('word') > -1) || (metaData.fileName.indexOf('.doc') > -1)) {
+      return 'ic_doc.png';
+    }
+    if (metaData.mimeType.indexOf('pdf') > -1) {
+      return 'ic_pdf.png';
+    }
+    // tslint:disable-next-line:max-line-length
+    if ((metaData.mimeType.indexOf('presentation') > -1) || (metaData.mimeType.indexOf('powerpoint') > -1)) {
+      return 'ic_ppt.png';
+    }
+    if (metaData.mimeType.indexOf('text/plain') > -1) {
+      return 'ic_txt.png';
+    }
+    return 'ic_file.png';
+
+  }
 
 }
+
+
+
